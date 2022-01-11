@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web" InitialTargets="BuildAppSettings">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="3.0.2" />
+    <PackageReference Include="Flurl.Http" Version="3.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="XLocalizer" Version="1.0.3" />
+    <PackageReference Include="XLocalizer.TagHelpers" Version="1.1.0" />
+    <PackageReference Include="XLocalizer.Translate" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\LocSource.de.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+	<Target Name="BuildAppSettings">
+		<ItemGroup>
+			<FromFile Include="appsettings.default.json" />
+			<ToFile Include="appsettings.json" />
+		</ItemGroup>
+
+		<Message Text="Copying @(FromFile) file to: @(ToFile)" Importance="high" />
+
+		<Copy
+            SourceFiles="@(FromFile)"
+            DestinationFiles="@(ToFile)"
+            Condition="!Exists('@(ToFile)')"
+            OverwriteReadOnlyFiles="true"
+            SkipUnchangedFiles="false" />
+	</Target>
+
+</Project>

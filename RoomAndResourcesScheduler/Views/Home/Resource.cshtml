@@ -1,0 +1,102 @@
+﻿@using System.Web
+@model ResourceViewModel
+@{
+    ViewData["Title"] = "Home Page";
+
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+    int taskCount = 0;
+}
+<script>
+$(document).ready(function() {
+
+    var headers = [];
+    var date = new Date();
+    for(var i = 0; i < 30; i++){
+
+        var yyyy = date.getFullYear();
+        var mm = date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+        headers.push(dd+"."+mm+"."+yyyy);
+        date.setDate(date.getDate() + 1);
+    }
+    
+    var tasks = [
+        @foreach(Event evt in Model.Events)
+        {
+            foreach (TimePeriod period in evt.Schedule)
+            {
+            double start = period.From.Hour;
+            start += (100 / 60 * period.From.Minute)/100;
+            double houers = (period.To - period.From).TotalHours;
+            double displayHouers = houers;
+            int column = period.From.DayOfYear - DateTime.Now.DayOfYear;
+
+            
+            string txt = "";
+            if (evt.Image != null)
+            {
+                //txt += '<img src="'+evt.Image+'" alt="" style="width:100%;"/>';
+            }
+            txt += HttpUtility.HtmlDecode(evt.Name.Replace("'", "\'"))+"<hr/><small>Freie Plätze: "+ (evt.MaxVisitorCount- evt.VisitorIds.Count) +"</small>";
+
+            while(houers > 0)
+            {
+                if ((start + houers) > 24.0)
+                {
+                    displayHouers = 24.0 - start;
+                }
+                else
+                {
+                    displayHouers = houers;    
+                }
+                @Html.Raw("{startTime: "+start.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)+",duration: "+displayHouers.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)+",column: "+column+",id: "+taskCount+",title: '"+txt+"', eventId:"+evt.Id+"},")
+                taskCount++;
+                start = 0.0;
+                houers = houers - displayHouers;
+                column++;
+            }
+           }
+        }
+    ];
+
+    $("#skeduler-container").skeduler({
+      headers: headers,
+      tasks: tasks,
+      cardTemplate: '<div>${title}</div>',
+      onClick: function (e, t) {
+          window.location = "/Event/"+t.eventId; 
+      }
+    });
+});
+</script>
+<div class="container px-4 px-lg-5">
+
+    <!-- Heading Row-->
+    <div class="card text-white bg-secondary">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-lg-4"><img class="img-fluid rounded mb-4 mb-lg-0" src="@Model.Resource.Image" alt="@Model.Resource.Name" style="height:200px;"></div>
+            <div class="col-lg-6">
+                <h1 class="font-weight-light">@Model.Resource.Name</h1>
+                <p>@Model.Resource.Description</p>
+            </div>
+            <div class="col-lg-2">
+                <a class="btn btn-primary" href="#!" style="width:150px;">Bearbeiten</a><br/>
+                <br/>
+                <a class="btn btn-danger" href="#!" style="width:150px;">Löschen</a>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="row align-items-center">
+        <div class="overflow-auto" style="width:100%">
+            <div id="skeduler-container"></div>
+        </div>
+    </div>
+</div>

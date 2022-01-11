@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RoomAndResourcesScheduler</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-notify/jquery.notify.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script src="~/lib/jquery-loading/jquery.loading.min.js"></script>
+    <script src="~/lib/jquery-notify/jquery.notify.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body style="background-color: #9A616D;">
+     @RenderBody()
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

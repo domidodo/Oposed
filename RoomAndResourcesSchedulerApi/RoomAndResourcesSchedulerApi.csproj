@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web" InitialTargets="BuildAppSettings">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerImageLabels></DockerImageLabels>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteDB" Version="5.0.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="3.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+  </ItemGroup>
+
+	<Target Name="BuildAppSettings">
+		<ItemGroup>
+			<FromFile Include="appsettings.default.json" />
+			<ToFile Include="appsettings.json" />
+		</ItemGroup>
+
+		<Message Text="Copying @(FromFile) file to: @(ToFile)" Importance="high" />
+
+		<Copy
+            SourceFiles="@(FromFile)"
+            DestinationFiles="@(ToFile)"
+            Condition="!Exists('@(ToFile)')"
+            OverwriteReadOnlyFiles="true"
+            SkipUnchangedFiles="false" />
+	</Target>
+	
+</Project>
