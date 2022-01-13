@@ -21,21 +21,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
-	<Target Name="BuildAppSettings">
-		<ItemGroup>
-			<FromFile Include="appsettings.default.json" />
-			<ToFile Include="appsettings.json" />
-		</ItemGroup>
-
-		<Message Text="Copying @(FromFile) file to: @(ToFile)" Importance="high" />
-
-		<Copy
-            SourceFiles="@(FromFile)"
-            DestinationFiles="@(ToFile)"
-            Condition="!Exists('@(ToFile)')"
-            OverwriteReadOnlyFiles="true"
-            SkipUnchangedFiles="false" />
-	</Target>
+	
+  <Target Name="BuildAppSettings">
+    <ItemGroup>
+      <FromFile Include="appsettings.default.json" />
+      <ToFile Include="appsettings.json" />
+      <ToFileOut Include="$(OutDir)appsettings.json" />
+    </ItemGroup>
+    <Message Text="Copying @(FromFile) file to: @(ToFile)" Importance="high" />
+    <Copy SourceFiles="@(FromFile)" DestinationFiles="@(ToFile)" Condition="!Exists('@(ToFile)')" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="@(FromFile)" DestinationFiles="@(ToFileOut)" Condition="!Exists('@(ToFileOut)')" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
+  </Target>
 
 </Project>
