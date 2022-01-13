@@ -55,10 +55,13 @@ namespace RoomAndResourcesSchedulerApi.Controllers
         [Auth(Role = UserRole.User)]
         [Route("Resource/{resourceId}/Next")]
         [SwaggerOperation(Summary = "Get current or next events of resource")]
-        public ActionResult<Event?> GetNextEventsByResourceId(int resourceId)
+        public ActionResult<Event> GetNextEventsByResourceId(int resourceId)
         {
-            List < Event > list = EventUtility.GetAllEventsOfResource(resourceId);
-            return list.FirstOrDefault();
+            var evt = EventUtility.GetNextEventsOfResource(resourceId);
+            if (evt != null)
+                return evt;
+            else
+                return ErrorManager.Get(Errors.EVENT_NOT_FOUND);
         }
 
         [HttpGet]
