@@ -13,7 +13,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 DateTime now = DateTime.Now;
 
                 var timePeriodDb = db.GetCollection<TimePeriod>();
-                var timePeriodIds = timePeriodDb.Find(o => (now < o.To || o.OpenEnd)).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+                var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
             
                 var col = db.GetCollection<Event>();
                 return FillEventList(col.Find(x => timePeriodIds.Contains(x.Id)).ToList());
@@ -33,7 +33,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 {
                     DateTime now = DateTime.Now;
                     var timePeriodDb = db.GetCollection<TimePeriod>();
-                    var timePeriodIds = timePeriodDb.Find(o => (now < o.To || o.OpenEnd)).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+                    var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
 
                     return FillEventList(eventDb.Find(x => x.ResourceId == resourceId && timePeriodIds.Contains(x.Id)).ToList());
                 }
@@ -48,7 +48,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                
                 DateTime now = DateTime.Now;
                 var timePeriodDb = db.GetCollection<TimePeriod>();
-                var timePeriodIds = timePeriodDb.Find(o => (now < o.To || o.OpenEnd)).OrderBy(o => o.From).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+                var timePeriodIds = timePeriodDb.Find(o => now < o.To).OrderBy(o => o.From).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
 
                 if (timePeriodIds.Count > 0)
                 {
@@ -63,7 +63,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
             using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
             {
                 var col = db.GetCollection<Event>();
-                return col.FindById(id);
+                return FillEvent(col.FindById(id), db);
             }
         }
 
@@ -156,7 +156,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
                 foreach (var t in time) {
-                    var eventsIdInSameTime = timePeriodDb.Find(o => o.From < t.To && (o.To > t.From || o.OpenEnd)).Select(x => x.EventId).ToList();
+                    var eventsIdInSameTime = timePeriodDb.Find(o => o.From < t.To && o.To > t.From).Select(x => x.EventId).ToList();
 
                     var exists = eventDb.Query().Where(o => o.ResourceId == resourceId && eventsIdInSameTime.Contains(o.Id)).Exists();
 

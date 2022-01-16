@@ -42,7 +42,7 @@ $(document).ready(function() {
                     let from = new Date(schedule.from);
                     let to = new Date(schedule.to);
 
-                    if((now < to || schedule.openEnd) && from < now){
+                    if(now < to && from < now){
                         var hh = to.getHours() < 10 ? "0" + to.getHours() : to.getHours();
                         var min = to.getMinutes() < 10 ? "0" + to.getMinutes() : to.getMinutes();
                         
