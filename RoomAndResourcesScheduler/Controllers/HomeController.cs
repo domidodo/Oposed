@@ -68,6 +68,30 @@ namespace RoomAndResourcesScheduler.Controllers
             return View(vm);
         }
 
+        [Auth]
+        [Route("Event/{eventId}")]
+        public async Task<IActionResult?> Event(int eventId)
+        { 
+            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+
+            Event evt;
+            try
+            {
+                User usr = HttpContext.Items["User"] as User;
+
+                evt = await $"{apiUrl}/Event/{eventId}"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<Event>();
+            }
+            catch (Exception)
+            {
+                HttpContext.Response.Redirect(LOGIN_URL);
+                return null;
+            }
+
+            return View(evt);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

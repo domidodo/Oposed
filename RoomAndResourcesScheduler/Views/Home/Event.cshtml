@@ -1,0 +1,80 @@
+﻿@model Event
+@{
+    ViewData["Title"] = "Home Page";
+    
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+}
+
+<script>
+$(document).ready(function() {
+    var qrcode = new QRCode("qrcode");
+    let eventId = @Model.Id;
+
+    window.icsUrl = window.location.origin + "/Files/Event/" + eventId + "/Ics/" + encodeURIComponent($.cookie('AuthKey'));
+    qrcode.makeCode(window.icsUrl);
+});
+</script>
+
+<div class="container px-4 px-lg-5">
+
+    <div class="row my-5">
+        <div class="col-md-8">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="visitors-tab" data-bs-toggle="tab" data-bs-target="#visitors" type="button" role="tab" aria-controls="visitors" aria-selected="false">Visitors</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="organizer-tab" data-bs-toggle="tab" data-bs-target="#organizer" type="button" role="tab" aria-controls="contact" aria-selected="false">Organizer</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade m-3 show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                  @Model.Description
+                 </div>
+              <div class="tab-pane fade m-3" id="events" role="tabpanel" aria-labelledby="events-tab">
+                  ...
+              </div>
+              <div class="tab-pane fade m-3" id="visitors" role="tabpanel" aria-labelledby="visitors-tab">
+                  ...
+              </div>
+              <div class="tab-pane fade m-3" id="organizer" role="tabpanel" aria-labelledby="organizer-tab">
+                  @Model.Organizer.Name @Model.Organizer.Surname
+              </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="card text-white bg-secondary">
+                <img src="@Model.Image" alt="" class="w-100"/>
+                <div class="card-body">
+                    <h2>@Model.Name</h2>
+                    <a class="btn btn-primary w-100" href="#!">Join</a>
+                    <hr/>
+                    10 free places
+                    <hr/>
+                    2 Events
+                    <hr/>
+                    <center>
+                        <div id="qrcode" class="w-100" onclick="window.location = window.icsUrl;"></div>
+                    </center>
+                    <hr/>
+                    @foreach(string tag in Model.Tags)
+                    {
+                        <span class="badge text-black bg-light">@tag</span>
+                    }
+               </div>
+            </div>  
+         </div>
+      
+    </div>
+</div>
