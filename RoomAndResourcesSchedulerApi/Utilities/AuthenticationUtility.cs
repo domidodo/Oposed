@@ -13,7 +13,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
         public static string GetNewAuthId()
         {
             var authId = "";
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$%&/()=?#+~*-_:.,;";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()~*-_.";
             bool authIdExists = false;
 
             using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
