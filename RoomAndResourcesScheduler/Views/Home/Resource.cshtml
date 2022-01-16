@@ -80,19 +80,30 @@ $(document).ready(function() {
     <!-- Heading Row-->
     <div class="card text-white bg-secondary">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-lg-4"><img class="img-fluid rounded mb-4 mb-lg-0" src="@Model.Resource.Image" alt="@Model.Resource.Name" style="height:200px;"></div>
-            <div class="col-lg-6">
-                <h1 class="font-weight-light">@Model.Resource.Name</h1>
-                <p>@Model.Resource.Description</p>
+            <div class="col-lg-4">
+                <img class="img-fluid rounded mb-4 mb-lg-0" src="@Model.Resource.Image" alt="@Model.Resource.Name" style="width:100%;">
             </div>
-            <div class="col-lg-2">
-                <a class="btn btn-primary" href="#!" style="width:150px;">Bearbeiten</a><br/>
-                <br/>
-                <a class="btn btn-danger" href="#!" style="width:150px;">Löschen</a>
+            <div class="col-lg-6 mx-5">
+               <h1 class="font-weight-light">@Model.Resource.Name</h1>
+               <p>@Model.Resource.Description</p>
             </div>
         </div>
     </div>
     <br/>
+    <div class="row gx-4 gx-lg-5 align-items-center">
+         <div class="col-md-4">
+            <a class="btn btn-success mb-3 w-100" href="/Event/New?ResourceId=@Model.Resource.Id">Event hinzufügen</a>
+         </div>
+         @if (user.Role == RoomAndResourcesScheduler.Enum.UserRole.Admin)
+         {
+              <div class="col-md-4">
+                 <a class="btn btn-primary mb-3 w-100" href="/Resource/@Model.Resource.Id/Edit">Bearbeiten</a>
+              </div>
+              <div class="col-md-4">
+                 <a class="btn btn-danger mb-3 w-100" href="#!">Löschen</a>
+              </div>
+         }
+    </div>
     <br/>
     <div class="row align-items-center">
         <div class="overflow-auto" style="width:100%">
