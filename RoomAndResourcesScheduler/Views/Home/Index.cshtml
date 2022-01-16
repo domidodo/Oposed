@@ -13,13 +13,6 @@
 
 <script>
 $(document).ready(function() {
-    $( ".card.h-100" ).hover(
-        function() {
-            $(this).addClass('shadow').css('cursor', 'pointer'); 
-    }, function() {
-        $(this).removeClass('shadow');
-    });
-
     $("*[resourceId]").each(function() {
         let me = $(this);
         let resourceId = me.attr("resourceId");
