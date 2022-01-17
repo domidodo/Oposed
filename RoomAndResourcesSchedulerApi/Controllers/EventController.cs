@@ -124,7 +124,7 @@ namespace RoomAndResourcesSchedulerApi.Controllers
         [HttpPut]
         [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Join current user as visitor to event")]
-        [Route("Event/{eventId}/Join")]
+        [Route("{eventId}/Join")]
         public ActionResult<Event> JoinToEvent(int eventId)
         {
             var currentUser = UserUtility.GetCurrentUser(HttpContext);
@@ -142,7 +142,7 @@ namespace RoomAndResourcesSchedulerApi.Controllers
         [HttpPut]
         [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Unjoin current user from visitor of event")]
-        [Route("Event/{eventId}/Unjoin")]
+        [Route("{eventId}/Unjoin")]
         public ActionResult<Event> UnjoinToEvent(int eventId)
         {
             var currentUser = UserUtility.GetCurrentUser(HttpContext);
