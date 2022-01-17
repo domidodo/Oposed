@@ -4,6 +4,8 @@ namespace RoomAndResourcesScheduler.Models
 {
     public record User
     {
+        private string _avatar;
+
         public int Id { get; init; }
         public string AuthKey { get; set; }
         public string LdapDn { get; set; }
@@ -13,6 +15,17 @@ namespace RoomAndResourcesScheduler.Models
         public string Mail { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Avatar { get; set; }
+        public string Avatar { 
+            get {
+                if (!string.IsNullOrWhiteSpace(_avatar))
+                {
+                    return _avatar;
+                }
+                return "/img/DefaultUserAvatar.png";
+            } 
+            set { 
+                _avatar = value; 
+            }
+        }
     }
 }
