@@ -121,6 +121,42 @@ namespace RoomAndResourcesSchedulerApi.Controllers
                 return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
         }
 
+        [HttpPut]
+        [Auth(Role = UserRole.User)]
+        [SwaggerOperation(Summary = "Join current user as visitor to event")]
+        [Route("Event/{eventId}/Join")]
+        public ActionResult<Event> JoinToEvent(int eventId)
+        {
+            var currentUser = UserUtility.GetCurrentUser(HttpContext);
+
+            var evt = EventUtility.GetEventById(eventId);
+            evt.VisitorIds.Add(currentUser.Id);
+
+            var successful = EventUtility.UpdateEvent(evt);
+            if (successful)
+                return Ok();
+            else
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+        }
+
+        [HttpPut]
+        [Auth(Role = UserRole.User)]
+        [SwaggerOperation(Summary = "Unjoin current user from visitor of event")]
+        [Route("Event/{eventId}/Unjoin")]
+        public ActionResult<Event> UnjoinToEvent(int eventId)
+        {
+            var currentUser = UserUtility.GetCurrentUser(HttpContext);
+
+            var evt = EventUtility.GetEventById(eventId);
+            evt.VisitorIds.Remove(currentUser.Id);
+
+            var successful = EventUtility.UpdateEvent(evt);
+            if (successful)
+                return Ok();
+            else
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+        }
+
         [HttpDelete]
         [Auth(Role = UserRole.User)]
         [Route("{id}")]
