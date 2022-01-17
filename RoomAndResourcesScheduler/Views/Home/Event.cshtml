@@ -1,7 +1,9 @@
-﻿@model Event
+﻿@using System.Globalization
+@model Event
 @{
     ViewData["Title"] = "Home Page";
-    
+    User organizer = Model.Organizer;
+
 
     User user = new User();
     if (Context.Items.ContainsKey("User"))
@@ -18,18 +20,48 @@ $(document).ready(function() {
     window.icsUrl = window.location.origin + "/Files/Event/" + eventId + "/Ics/" + encodeURIComponent($.cookie('AuthKey'));
     qrcode.makeCode(window.icsUrl);
 });
+
+
+function doJoin(join){  
+    let url = join ? "/Proxy?Api=/Event/@(Model.Id)/Join" : "/Proxy?Api=/Event/@(Model.Id)/Unjoin";
+    
+    $("#contentBox").loading('start');
+    $.ajax({
+        url: url,
+        type:"PUT",
+        success: function(res){
+            location.reload(); 
+        },
+        error: function(e){
+             $("#contentBox").loading('stop');
+
+            notify({
+               type: "error", //alert | success | error | warning | info
+               title: "@Localizer["Error"]",
+               message: "<p localize-content>@Localizer["Unexpected error"]</p>",
+               position: {
+                   x: "right",
+                   y: "top"
+               },
+               autoHide: true,
+               delay: 4000
+            });
+        }
+    });
+}
+
 </script>
 
 <div class="container px-4 px-lg-5">
 
-    <div class="row my-5">
+    <div class="row my-5" id="contentBox">
         <div class="col-md-8">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events</button>
+                    <button class="nav-link" id="dates-tab" data-bs-toggle="tab" data-bs-target="#dates" type="button" role="tab" aria-controls="dates" aria-selected="false">Dates</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="visitors-tab" data-bs-toggle="tab" data-bs-target="#visitors" type="button" role="tab" aria-controls="visitors" aria-selected="false">Visitors</button>
@@ -39,30 +71,94 @@ $(document).ready(function() {
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade m-3 show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                  @Model.Description
-                 </div>
-              <div class="tab-pane fade m-3" id="events" role="tabpanel" aria-labelledby="events-tab">
-                  ...
-              </div>
-              <div class="tab-pane fade m-3" id="visitors" role="tabpanel" aria-labelledby="visitors-tab">
-                  ...
-              </div>
-              <div class="tab-pane fade m-3" id="organizer" role="tabpanel" aria-labelledby="organizer-tab">
-                  @Model.Organizer.Name @Model.Organizer.Surname
-              </div>
+                <div class="tab-pane fade m-3 show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    @Model.Description
+                   </div>
+                <div class="tab-pane fade m-3" id="dates" role="tabpanel" aria-labelledby="dates-tab">
+                    @foreach(var d in Model.Schedule)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <b>From:</b> @d.From.ToString("dd.MM.yyyy HH:mm tt", DateTimeFormatInfo.InvariantInfo)
+                                    </div>
+                                    <div class="col">
+                                        <b>To:</b> @d.To.ToString("dd.MM.yyyy HH:mm tt", DateTimeFormatInfo.InvariantInfo)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane fade m-3" id="visitors" role="tabpanel" aria-labelledby="visitors-tab">
+                    @foreach(var visitor in Model.Visitors)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <img class="rounded-circle" src="@visitor.Avatar" style="height:40px">
+                                    </div>
+                                    <div class="col-7">
+                                        @visitor.Name @visitor.Surname
+                                    </div>
+                                    <div class="col-4">
+                                        @if (organizer.Id == user.Id)
+                                        {
+                                            <a href="mailto:@visitor.Mail" target="_blank" class="btn btn-primary float-right">Send mail</a>
+                                            <a href="#" target="_blank" class="btn btn-danger float-right">Unjoin</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if(Model.Visitors.Count == 0)
+                    {
+                        <p class="m-0">No visitors joined</p>
+                    }
+                </div>
+                <div class="tab-pane fade m-3" id="organizer" role="tabpanel" aria-labelledby="organizer-tab">
+                    <div class="row my-5">
+                      <div class="col-md-4">
+                          <img class="w-100" src="@organizer.Avatar" alt=""/>
+                      </div>
+                      <div class="col-md-8">
+                          @organizer.Name @organizer.Surname<br/>
+                          <a href="mailto:@organizer.Mail">@organizer.Mail</a>
+                      </div>
+                    </div>
+                </div>
             </div>
          </div>
          <div class="col-md-4">
-            <div class="card text-white bg-secondary">
+            <div class="card text-white bg-secondary"> 
                 <img src="@Model.Image" alt="" class="w-100"/>
                 <div class="card-body">
                     <h2>@Model.Name</h2>
-                    <a class="btn btn-primary w-100" href="#!">Join</a>
+                    @if (organizer.Id == user.Id)
+                    {
+                        <a class="btn btn-primary w-100 mb-2" href="#!">Edit</a>
+                        <a class="btn btn-danger w-100" href="#!">Delete</a>
+                    }
+                    else
+                    {
+                        if (Model.Visitors.Select(e => e.Id).Contains(user.Id))
+                        {
+                            <button class="btn btn-danger w-100" onClick="doJoin(false)">Unjoin</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary w-100" onClick="doJoin(true)">Join</button>
+                        }
+                    }
                     <hr/>
-                    10 free places
+                    @(@Model.MaxVisitorCount - @Model.Visitors.Count) free places
                     <hr/>
-                    2 Events
+                    @Model.Schedule.Count dates
+                    <hr/>
+                    @Model.Resource.Name
                     <hr/>
                     <center>
                         <div id="qrcode" class="w-100" onclick="window.location = window.icsUrl;"></div>
