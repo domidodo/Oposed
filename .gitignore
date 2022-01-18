@@ -352,3 +352,5 @@ RoomAndResourcesSchedulerApi/Database.db
 RoomAndResourcesScheduler/appsettings.json
 RoomAndResourcesSchedulerApi/appsettings.json
 *.bak
+RoomAndResourcesSchedulerApi/Properties/launchSettings.json
+RoomAndResourcesScheduler/Properties/launchSettings.json
