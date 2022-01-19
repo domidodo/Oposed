@@ -17,7 +17,7 @@ namespace RoomAndResourcesScheduler.Controllers
         [Route("Files/Event/{eventId}/Ics/{authKey}")]
         public async Task<ActionResult> GetCalenderOfEventAsync(int eventId, string authKey)
         {
-            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+            var apiUrl = Settings.UrlApi;
 
             Event evt;
             try

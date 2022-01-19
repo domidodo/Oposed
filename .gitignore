@@ -348,9 +348,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-RoomAndResourcesSchedulerApi/Database.db
-RoomAndResourcesScheduler/appsettings.json
-RoomAndResourcesSchedulerApi/appsettings.json
+RoomAndResourcesSchedulerApi/Database/
+RoomAndResourcesScheduler/Database/
 *.bak
 RoomAndResourcesSchedulerApi/Properties/launchSettings.json
 RoomAndResourcesScheduler/Properties/launchSettings.json

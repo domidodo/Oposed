@@ -7,7 +7,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
     {
         public static int SaveResource(Resource resource)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Resource>();
                 var id = col.Insert(resource);
@@ -17,7 +17,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static bool UpdateResource(Resource resource)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Resource>();
                 return col.Update(resource);
@@ -26,7 +26,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static bool DeleteResourceById(int id)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Resource>();
                 return col.Delete(id);
@@ -35,7 +35,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static Resource GetResourceById(int id)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Resource>();
                 return col.Query().Where(x => x.Id == id).FirstOrDefault();
@@ -44,7 +44,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static List<Resource> GetAllResources()
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Resource>();
                 return col.Query().ToList();

@@ -10,7 +10,7 @@ namespace RoomAndResourcesScheduler.Controllers
     {
         public ActionResult<string> Index()
         {
-            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+            var apiUrl = Settings.UrlApi;
            
             HttpRequest original = this.Request;
             original.Query.TryGetValue("Api", out StringValues urlPath);
@@ -80,17 +80,25 @@ namespace RoomAndResourcesScheduler.Controllers
             }
             catch (WebException e) {
 
-                HttpWebResponse res = (HttpWebResponse)e.Response;
-                using (var reader = new System.IO.StreamReader(res.GetResponseStream(), ASCIIEncoding.ASCII))
+                if (e.Response != null)
                 {
-                    switch (res.StatusCode) {
-                        case HttpStatusCode.BadRequest:
-                            return new BadRequestObjectResult(reader.ReadToEnd());
-                        case HttpStatusCode.Unauthorized:
-                            return new UnauthorizedObjectResult(reader.ReadToEnd());
-                        default:
-                            return "Error: "+res.StatusCode+" not mapped in ProxyController.cs";
+                    HttpWebResponse res = (HttpWebResponse)e.Response;
+                    using (var reader = new System.IO.StreamReader(res.GetResponseStream(), ASCIIEncoding.ASCII))
+                    {
+                        switch (res.StatusCode)
+                        {
+                            case HttpStatusCode.BadRequest:
+                                return new BadRequestObjectResult(reader.ReadToEnd());
+                            case HttpStatusCode.Unauthorized:
+                                return new UnauthorizedObjectResult(reader.ReadToEnd());
+                            default:
+                                return "Error: " + res.StatusCode + " not mapped in ProxyController.cs";
+                        }
                     }
+                }
+                else 
+                {
+                    return "Error: " + e.Message;
                 }
             }
 

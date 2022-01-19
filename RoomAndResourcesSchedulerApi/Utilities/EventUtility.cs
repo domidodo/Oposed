@@ -8,7 +8,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static List<Event> GetAllEvents()
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 DateTime now = DateTime.Now;
 
@@ -22,7 +22,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static List<Event> GetAllEventsOfResource(int resourceId, bool hitPast = false)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var eventDb = db.GetCollection<Event>();
                 if (hitPast)
@@ -42,7 +42,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static Event? GetNextEventsOfResource(int resourceId)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var eventDb = db.GetCollection<Event>();
                
@@ -60,7 +60,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static Event GetEventById(int id)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Event>();
                 return FillEvent(col.FindById(id), db);
@@ -74,7 +74,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 return null;
             }
 
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
@@ -108,7 +108,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 }
             }
 
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
@@ -137,7 +137,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static bool DeleteEventById(int id)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
@@ -151,7 +151,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
         internal static List<TimePeriod> GetBlockedTimePeriods(int resourceId, List<TimePeriod> time)
         {
             List<TimePeriod> ret = new List<TimePeriod>();
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
@@ -172,7 +172,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         private static List<Event> FillEventList(List<Event> events)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var userDb = db.GetCollection<User>();
                 var resourceDb = db.GetCollection<Resource>();

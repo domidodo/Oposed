@@ -1,0 +1,28 @@
+version: '2.1'
+services:
+
+    RoomAndResourcesScheduler-Api:
+      image: RoomAndResourcesScheduler_Api
+      environment:
+        - TZ=${TZ}
+      volumes:
+        - ./data/hooks/unbound:/hooks:Z
+        - ./data/conf/unbound/unbound.conf:/etc/unbound/unbound.conf:ro,Z
+      restart: always
+      networks:
+        roomandresourcesscheduler-network:
+      
+    RoomAndResourcesScheduler-Web:
+      image: RoomAndResourcesScheduler_Web
+      environment:
+        - TZ=${TZ}
+      volumes:
+        - ./data/hooks/unbound:/hooks:Z
+        - ./data/conf/unbound/unbound.conf:/etc/unbound/unbound.conf:ro,Z
+      restart: always
+      networks:
+        roomandresourcesscheduler-network:
+        
+networks:
+  roomandresourcesscheduler-network:
+    driver: bridge

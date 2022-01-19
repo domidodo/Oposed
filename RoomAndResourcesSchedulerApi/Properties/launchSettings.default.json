@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "LDAP_BIND_DN": "",
+        "LDAP_ADMIN_GROUP_DN": "",
+        "SMTP_MAIL_PASSWORD": "",
+        "LDAP_FILTER_USER": "",
+        "SMTP_SERVER_PORT": "465",
+        "SMTP_SERVER_HOST": "",
+        "LDAP_BIND_PASSWORD": "",
+        "LDAP_SERVER_PORT": "389",
+        "LDAP_SERVER_HOST": "",
+        "SMTP_MAIL_ADDRESS": "",
+        "LDAP_BASE_DN": "",
+        "SMTP_ENABLE_SSL": "true"
+      },
+      "httpPort": 5000,
+      "publishAllPorts": true
+    }
+  }
+}

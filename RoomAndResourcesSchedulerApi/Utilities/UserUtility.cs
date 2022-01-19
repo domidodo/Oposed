@@ -12,7 +12,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
         }
 
         public static void SaveUser(User usr) {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<User>();
                 col.Update(usr);
@@ -22,7 +22,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
         public static List<User> GetAllUsers()
         {
             List<User> list = null;
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<User>();
                 list = col.Query().ToList();
@@ -58,7 +58,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         internal static User GetUser(int id)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<User>();
                 return col.Query().Where(x => x.Id == id).FirstOrDefault();

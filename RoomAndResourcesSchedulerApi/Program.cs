@@ -17,15 +17,8 @@ builder.Services.AddSwaggerGen(c => {
 });
 
 
-WebHost.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration((hostingContext, config) =>
-    {
-        config.AddJsonFile(
-            "appsettings.Development.json",
-             optional: true,
-             reloadOnChange: true);
-    });
-
+//WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:5000");
+    
 
 var app = builder.Build();
 
@@ -43,6 +36,7 @@ app.UseCors(x => x
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()); // allow credentials
+
 
 
 app.UseAuthorization();

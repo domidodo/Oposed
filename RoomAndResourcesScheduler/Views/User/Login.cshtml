@@ -2,8 +2,8 @@
     ViewData["Title"] = "Login";
     Layout = "_LayoutLogin";
 
-    string impressumUrl = Configuration["ImpressumUrl"];
-    string apiUrl = Configuration["ApiUrl"];
+    string impressumUrl = Settings.UrlImpressum;
+    string apiUrl = Settings.UrlApi;
 }
 <script>
     $(document).ready(function() {
@@ -100,7 +100,7 @@
                                 <form onSubmit="return false;">
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
-                                        <img src="@Configuration["LogoUrl"]" style="max-height:150px; max-width:100%"/>
+                                        <img src="@Settings.UrlLogo" style="max-height:150px; max-width:100%"/>
                                     </div>
 
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;" localize-content>Please enter your login-data</h5>

@@ -10,13 +10,11 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static void Init()
         {
-            var ldapConf = ApplicationSettings.GetConfiguration().GetSection("SmtpMail");
-
-            var host = ldapConf.GetValue<string>("Host");
-            var port = ldapConf.GetValue<int>("Port");
-            var mail = ldapConf.GetValue<string>("Mail");
-            var password = ldapConf.GetValue<string>("Password");
-            var ssl = ldapConf.GetValue<bool>("EnableSsl");
+            var host = Settings.SmtpServerHost;
+            var port = Convert.ToInt32(Settings.SmtpServerPort);
+            var mail = Settings.SmtpServerMailAddress;
+            var password = Settings.SmtpServerMailPassword;
+            var ssl = Convert.ToBoolean(Settings.SmtpServerIsSsl);
 
             if (host == null)
                 return;

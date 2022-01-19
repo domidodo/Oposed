@@ -17,7 +17,7 @@ namespace RoomAndResourcesScheduler.Attributes
                 return;
             }  
 
-            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+            var apiUrl = Settings.UrlApi;
 
             try
             {

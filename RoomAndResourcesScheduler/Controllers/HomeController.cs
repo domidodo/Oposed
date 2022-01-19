@@ -20,7 +20,7 @@ namespace RoomAndResourcesScheduler.Controllers
         [Auth]
         public async Task<IActionResult?> IndexAsync()
         {
-            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+            var apiUrl = Settings.UrlApi;
 
             List<Resource> resourcen = new List<Resource>();
 
@@ -44,7 +44,7 @@ namespace RoomAndResourcesScheduler.Controllers
         [Route("Resource/{resourceId}")]
         public async Task<IActionResult?> Resource(int resourceId)
         { // /Home/Resource/1
-             var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+             var apiUrl = Settings.UrlApi;
 
            ResourceViewModel vm = new ResourceViewModel();
 
@@ -72,7 +72,7 @@ namespace RoomAndResourcesScheduler.Controllers
         [Route("Event/{eventId}")]
         public async Task<IActionResult?> Event(int eventId)
         { 
-            var apiUrl = ApplicationSettings.GetConfiguration().GetValue<string>("ApiUrl");
+            var apiUrl = Settings.UrlApi;
 
             Event evt;
             try

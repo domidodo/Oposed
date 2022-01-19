@@ -16,7 +16,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()~*-_.";
             bool authIdExists = false;
 
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 do
                 {
@@ -37,7 +37,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static User GetUserByAuthId(string authId)
         {
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<User>();
                 
@@ -51,7 +51,7 @@ namespace RoomAndResourcesSchedulerApi.Utilities
         public static User? GetUserByAuthentication(Authentication auth)
         {
             User? user = null;
-            using (var db = new LiteDatabase(ApplicationSettings.GetConfiguration().GetValue<string>("DbPath")))
+            using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<User>();
 
@@ -81,21 +81,19 @@ namespace RoomAndResourcesSchedulerApi.Utilities
 
         public static User? GetLdapUser(string mail) 
         {
-            var ldapConf = ApplicationSettings.GetConfiguration().GetSection("Ldap");
-
-            var serverIp = ldapConf.GetValue<string>("ServerIp");
-            var serverPort = ldapConf.GetValue<int>("ServerPort");
-            var baseDn = ldapConf.GetValue<string>("BaseDn");
-            var bindDn = ldapConf.GetValue<string>("BindDn");
-            var bindPassword = ldapConf.GetValue<string>("BindPassword");
-            var userFilter = ldapConf.GetValue<string>("UserFilter");
-            var adminGroupDn = ldapConf.GetValue<string>("AdminGroupDn");
+            var serverHost = Settings.LdapServerHost;
+            var serverPort = Convert.ToInt32(Settings.LdapServerPort);
+            var baseDn = Settings.LdapServerBaseDn;
+            var bindDn = Settings.LdapServerBindDn;
+            var bindPassword = Settings.LdapServerBindPassword;
+            var userFilter = Settings.LdapServerUserFilter;
+            var adminGroupDn = Settings.LdapServerAdminGroupDn;
 
             User? usr = null;
 
             using (var cn = new LdapConnection())
             {
-                cn.Connect(serverIp, serverPort);
+                cn.Connect(serverHost, serverPort);
                 cn.Bind(LdapConnection.LdapV3, bindDn, bindPassword);
                
                 string[] attrs = { "memberOf", "sn", "givenName", "jpegPhoto", "nsaccountlock" };
@@ -150,10 +148,8 @@ namespace RoomAndResourcesSchedulerApi.Utilities
             if (string.IsNullOrWhiteSpace(password))
                 return false;
 
-            var ldapConf = ApplicationSettings.GetConfiguration().GetSection("Ldap");
-
-            var serverIp = ldapConf.GetValue<string>("ServerIp");
-            var serverPort = ldapConf.GetValue<int>("ServerPort");
+            var serverIp = Settings.LdapServerHost;
+            var serverPort = Convert.ToInt32(Settings.LdapServerPort);
 
             bool correctPassword = false;
             using (var cn = new LdapConnection())
