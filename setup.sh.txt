@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-docker build -f "RoomAndResourcesSchedulerApi\Dockerfile" --force-rm -t RoomAndResourcesScheduler_Api .
-docker build -f "RoomAndResourcesScheduler\Dockerfile" --force-rm -t RoomAndResourcesScheduler_Web .
