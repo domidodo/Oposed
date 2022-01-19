@@ -353,3 +353,4 @@ RoomAndResourcesScheduler/Database/
 *.bak
 RoomAndResourcesSchedulerApi/Properties/launchSettings.json
 RoomAndResourcesScheduler/Properties/launchSettings.json
+docker-compose.override.yml

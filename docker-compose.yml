@@ -3,6 +3,8 @@ services:
 
     RoomAndResourcesScheduler-Api:
       image: roomandresourcesscheduler_api
+      #ports:
+      #  - "5000:5000"
       environment:
         - LDAP_ADMIN_GROUP_DN=''
         - LDAP_BASE_DN=''
@@ -24,6 +26,8 @@ services:
 
     RoomAndResourcesScheduler-Web:
       image: roomandresourcesscheduler_web
+      ports:
+        - "80:80"
       environment:
         - URL_LOGO='/img/Logo.png'
         - URL_IMPRESSUM=''

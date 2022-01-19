@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
+        "ASPNETCORE_URLS": "http://+:5000",
         "LDAP_BIND_DN": "",
         "LDAP_ADMIN_GROUP_DN": "",
         "SMTP_MAIL_PASSWORD": "",
@@ -27,8 +28,7 @@
         "LDAP_BASE_DN": "",
         "SMTP_ENABLE_SSL": "true"
       },
-      "httpPort": 5000,
-      "publishAllPorts": true
+      "httpPort": 5000
     }
   }
 }
