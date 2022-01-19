@@ -31,7 +31,7 @@ services:
       environment:
         - URL_LOGO=/img/Logo.png
         - URL_IMPRESSUM=
-        - URL_API=http://localhost:5000
+        - URL_API=127.0.0.1:5000
       restart: always
       networks:
         roomandresourcesscheduler-network:
