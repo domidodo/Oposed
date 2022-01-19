@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "http://+:5000",
         "LDAP_BIND_DN": "",
         "LDAP_ADMIN_GROUP_DN": "",

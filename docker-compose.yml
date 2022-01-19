@@ -6,20 +6,20 @@ services:
       #ports:
       #  - "5000:5000"
       environment:
-        - LDAP_ADMIN_GROUP_DN=''
-        - LDAP_BASE_DN=''
-        - LDAP_BIND_DN=''
-        - LDAP_BIND_PASSWORD=''
-        - LDAP_FILTER_USER=''
-        - LDAP_SERVER_HOST=''
-        - LDAP_SERVER_PORT='389'
-        - SMTP_ENABLE_SSL='true'
-        - SMTP_MAIL_ADDRESS=''
-        - SMTP_MAIL_PASSWORD=''
-        - SMTP_SERVER_HOST=''
-        - SMTP_SERVER_PORT='465'
+        - LDAP_ADMIN_GROUP_DN=
+        - LDAP_BASE_DN=
+        - LDAP_BIND_DN=
+        - LDAP_BIND_PASSWORD=
+        - LDAP_FILTER_USER=
+        - LDAP_SERVER_HOST=
+        - LDAP_SERVER_PORT=389
+        - SMTP_ENABLE_SSL=true
+        - SMTP_MAIL_ADDRESS=
+        - SMTP_MAIL_PASSWORD=
+        - SMTP_SERVER_HOST=
+        - SMTP_SERVER_PORT=465
       volumes:
-        - ./app/Database/:/home/Database/
+        - db:/app/Database/
       restart: always
       networks:
         roomandresourcesscheduler-network:
@@ -29,14 +29,15 @@ services:
       ports:
         - "80:80"
       environment:
-        - URL_LOGO='/img/Logo.png'
-        - URL_IMPRESSUM=''
-        - URL_API='http://localhost:5000'
-      volumes:
-        - ./app/Database/:/home/Database/
+        - URL_LOGO=/img/Logo.png
+        - URL_IMPRESSUM=
+        - URL_API=http://localhost:5000
       restart: always
       networks:
         roomandresourcesscheduler-network:
+
+volumes:
+  db:
 
 networks:
   roomandresourcesscheduler-network:
