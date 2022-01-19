@@ -6,6 +6,7 @@ services:
       #ports:
       #  - "5000:5000"
       environment:
+        #- ASPNETCORE_ENVIRONMENT=Development
         - LDAP_ADMIN_GROUP_DN=
         - LDAP_BASE_DN=
         - LDAP_BIND_DN=
@@ -22,19 +23,20 @@ services:
         - db:/app/Database/
       restart: always
       networks:
-        roomandresourcesscheduler-network:
-
+        - roomandresourcesscheduler-network
+        
     RoomAndResourcesScheduler-Web:
       image: roomandresourcesscheduler_web
       ports:
         - "80:80"
       environment:
+        #- ASPNETCORE_ENVIRONMENT=Development
         - URL_LOGO=/img/Logo.png
         - URL_IMPRESSUM=
-        - URL_API=127.0.0.1:5000
+        - URL_API=http://RoomAndResourcesScheduler-Api:5000
       restart: always
       networks:
-        roomandresourcesscheduler-network:
+        - roomandresourcesscheduler-network
 
 volumes:
   db:
