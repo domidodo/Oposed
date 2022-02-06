@@ -1,5 +1,5 @@
 ﻿@using System.Web
-@model Resource
+@model Event
 @{
     ViewData["Title"] = "Home Page";
 
@@ -14,6 +14,10 @@
         
     function save()
     {
+        return null;
+
+        //TODO: 
+
         let id = window.id;
         let type = $("#type").val();
         let name = $("#name").val();
@@ -29,7 +33,7 @@
 
         $("#form").loading('start');
         $.ajax({
-            url:"/Proxy?Api=/Resource",
+            url:"/Proxy?Api=/Event",
             type:httpMethod,
             data:JSON.stringify({ "id": id, "type" : type, "name" : name, "image" : image, "description" : description }),
             dataType:httpDataType,
@@ -102,29 +106,8 @@
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <form id="form">
             <div class="form-group my-2">
-                <label for="type">Type  </label>
-                <select id="type" class="form-control">
-                    <option value="@ResourceType.Room" selected="@(Model.Type == ResourceType.Room)">Room</option>
-                    <option value="@ResourceType.Device" selected="@(Model.Type == ResourceType.Device)">Device</option>
-                </select>
-            </div>
-            <div class="form-group row my-2">
-                <div class="col-sm-10">
-                    <label for="image">Bild</label>
-                    <small class="form-text text-muted">(366×275px)</small>
-                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" onChange="updateAvatar()">
-                    <input type="hidden" class="form-control" id="imageBase64" value="@Model.Image">
-                    <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");'>Remove image</button>
-                </div>
-                <img class="img-responsive col-sm-2" id="imageView" src="@Model.Image" alt="" style="width:200px;"><br/>
-            </div>
-            <div class="form-group my-2">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" value="@Model.Name">
-            </div>
-            <div class="form-group my-2">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" rows="3">@Model.Description</textarea>
             </div>
             <button type="button" class="btn btn-primary my-2" onclick="save();">Save</button>
         </form>
