@@ -69,6 +69,57 @@ namespace RoomAndResourcesScheduler.Controllers
         }
 
         [Auth]
+        [Route("Resource/New")]
+        public IActionResult NewResource()
+        {
+            var vm = new Resource();
+
+            if (Request.Query.TryGetValue("Type", out var type)) {
+                if (System.Enum.TryParse(typeof(Enum.ResourceType), type.ToString(), true, out var type2)) {
+#pragma warning disable CS8605
+                    vm.Type = (Enum.ResourceType)type2;
+#pragma warning restore CS8605
+                }
+            }
+
+            if (Request.Query.TryGetValue("Name", out var name))
+            {
+                vm.Name = name;
+            }
+
+            if (Request.Query.TryGetValue("Description", out var description))
+            {
+                vm.Description = description;
+            }
+
+            return View("ResourceForm", vm);
+        }
+
+        [Auth]
+        [Route("Resource/{resourceId}/Edit")]
+        public async Task<IActionResult?> EditResource(int resourceId)
+        {
+            var apiUrl = Settings.UrlApi;
+
+            var vm = new Resource();
+
+            try
+            {
+                User usr = HttpContext.Items["User"] as User;
+                vm = await $"{apiUrl}/Resource/{resourceId}"
+                        .WithHeader("AuthKey", usr.AuthKey)
+                        .GetJsonAsync<Resource>();
+            }
+            catch (Exception)
+            {
+                HttpContext.Response.Redirect(LOGIN_URL);
+                return null;
+            }
+
+            return View("ResourceForm", vm);
+        }
+
+        [Auth]
         [Route("Event/{eventId}")]
         public async Task<IActionResult?> Event(int eventId)
         { 

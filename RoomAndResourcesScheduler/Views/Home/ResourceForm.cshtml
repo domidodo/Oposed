@@ -1,0 +1,133 @@
+﻿@using System.Web
+@using RoomAndResourcesScheduler.Enum
+@model Resource
+@{
+    ViewData["Title"] = "Home Page";
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+}
+<script>
+    window.id = @Model.Id;
+        
+    function save()
+    {
+        let id = window.id;
+        let type = $("#type").val();
+        let name = $("#name").val();
+        let image = $("#imageBase64").val();
+        let description = $("#description").val();
+        
+        let httpMethod = "PUT";
+        let httpDataType = "";
+        if(id <= 0){
+            httpMethod = "POST";
+            httpDataType = "json";
+        }
+
+        $("#form").loading('start');
+        $.ajax({
+            url:"/Proxy?Api=/Resource",
+            type:httpMethod,
+            data:JSON.stringify({ "id": id, "type" : type, "name" : name, "image" : image, "description" : description }),
+            dataType:httpDataType,
+            success: function(res){
+                window.id = res.id;
+                
+                $("#form").loading('stop');
+                
+                notify({
+	                type: "success", //alert | success | error | warning | info
+	                title: "@Localizer["Saved"]",
+	                message: "<p localize-content>Changes saved</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            },
+            error: function(e){
+                console.err(e);
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["API connection failed"]";
+                
+                notify({
+	                type: "error", //alert | success | error | warning | info
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+        });
+    }
+
+    function updateAvatar()
+	{
+		var fileReader = new FileReader();
+		fileReader.onload = function () {
+			var img = document.createElement("img");
+			img.src = fileReader.result;
+			
+			setTimeout(function(){ 
+				var canvas = document.createElement("CANVAS");
+				canvas.width = img.width;
+				canvas.height = img.height;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+				
+                let ratio = img.width / img.height;
+                let height = 366 / ratio
+
+				var av = Canvas2Image.convertToPNG(canvas, 366, height);
+				$("#imageView").attr("src",av.src);
+				$("#imageBase64").val(av.src);
+			}, 100);
+			
+		};
+		fileReader.readAsDataURL($('#image').prop('files')[0]);
+	}
+
+</script>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+        <form id="form">
+            <div class="form-group my-2">
+                <label for="type">Type  </label>
+                <select id="type" class="form-control">
+                    <option value="@ResourceType.Room" selected="@(Model.Type == ResourceType.Room)">Room</option>
+                    <option value="@ResourceType.Device" selected="@(Model.Type == ResourceType.Device)">Device</option>
+                </select>
+            </div>
+            <div class="form-group row my-2">
+                <div class="col-sm-10">
+                    <label for="image">Bild</label>
+                    <small class="form-text text-muted">(366×275px)</small>
+                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" onChange="updateAvatar()">
+                    <input type="hidden" class="form-control" id="imageBase64" value="@Model.Image">
+                    <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");'>Remove image</button>
+                </div>
+                <img class="img-responsive col-sm-2" id="imageView" src="@Model.Image" alt="" style="width:200px;"><br/>
+            </div>
+            <div class="form-group my-2">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" value="@Model.Name">
+            </div>
+            <div class="form-group my-2">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" rows="3">@Model.Description</textarea>
+            </div>
+            <button type="button" class="btn btn-primary my-2" onclick="save();">Save</button>
+        </form>
+    </div>
+</div>
