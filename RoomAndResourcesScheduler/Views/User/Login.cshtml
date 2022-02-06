@@ -37,8 +37,6 @@
             data:JSON.stringify({ "mail": mail, "password" : password }),
             dataType:"json",
             success: function(res){
-                console.log(res);
-
                 $.cookie('AuthKey', res.authKey, {
                     expires: 10, 
                     path: '/',
