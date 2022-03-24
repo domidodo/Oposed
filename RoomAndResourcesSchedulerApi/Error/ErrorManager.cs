@@ -32,6 +32,7 @@ namespace RoomAndResourcesSchedulerApi.Error
                     break;
                 case Errors.RESOURCE_DELETING_FAILED:
                 case Errors.EVENT_DELETING_FAILED:
+                case Errors.TEMPLATE_DELETING_FAILED:
                     errorMessage = "Deleting failed";
                     break;
                 case Errors.RESOURCE_UPDATING_FAILED:
