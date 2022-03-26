@@ -38,8 +38,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\jquery-smartwizard\" />
-  </ItemGroup>
-
 </Project>
