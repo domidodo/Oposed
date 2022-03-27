@@ -17,9 +17,9 @@ namespace RoomAndResourcesSchedulerApi.Controllers
        [HttpGet]
        [Auth(Role = UserRole.User)]
        [SwaggerOperation(Summary = "Get all templates")]
-       public ActionResult<List<User>> GetAllTemplates()
+       public ActionResult<List<Template>> GetAllTemplates()
        {
-           return UserUtility.GetAllUsers();
+           return TemplateUtility.GetAllTemplates();
        }
         
        [HttpPost]
