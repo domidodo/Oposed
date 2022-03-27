@@ -26,7 +26,7 @@ namespace RoomAndResourcesScheduler.Controllers
 
             try
             {
-                User usr = HttpContext.Items["User"] as User;
+                User usr = GetUser(HttpContext);
                 resourcen = await $"{apiUrl}/Resource"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<List<Resource>>();
@@ -50,7 +50,7 @@ namespace RoomAndResourcesScheduler.Controllers
 
             try
             {
-                User usr = HttpContext.Items["User"] as User;
+                User usr = GetUser(HttpContext);
                 vm.Resource = await $"{apiUrl}/Resource/{resourceId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<Resource>();
@@ -105,7 +105,7 @@ namespace RoomAndResourcesScheduler.Controllers
 
             try
             {
-                User usr = HttpContext.Items["User"] as User;
+                User usr = GetUser(HttpContext);
                 vm = await $"{apiUrl}/Resource/{resourceId}"
                         .WithHeader("AuthKey", usr.AuthKey)
                         .GetJsonAsync<Resource>();
@@ -128,7 +128,7 @@ namespace RoomAndResourcesScheduler.Controllers
             Event evt;
             try
             {
-                User usr = HttpContext.Items["User"] as User;
+                User usr = GetUser(HttpContext);
 
                 evt = await $"{apiUrl}/Event/{eventId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
@@ -145,51 +145,73 @@ namespace RoomAndResourcesScheduler.Controllers
 
         [Auth]
         [Route("Event/New")]
-        public IActionResult NewEvent()
+        public async Task<IActionResult> NewEvent()
         {
-            var vm = new Event();
+            User usr = GetUser(HttpContext);
+            var apiUrl = Settings.UrlApi;
+            var vm = new EventViewModel();
 
             if (Request.Query.TryGetValue("ResourceId", out var resourceId))
             {
-                vm.ResourceId = Int32.Parse(resourceId);
+                vm.Event.ResourceId = Int32.Parse(resourceId);
             }
 
             if (Request.Query.TryGetValue("isPrivate", out var isPrivate))
             {
-                vm.IsPrivate = bool.Parse(isPrivate);
+                vm.Event.IsPrivate = bool.Parse(isPrivate);
             }
 
             if (Request.Query.TryGetValue("joinNotification", out var joinNotification))
             {
-                vm.EnableJoinNotification = bool.Parse(joinNotification);
+                vm.Event.EnableJoinNotification = bool.Parse(joinNotification);
             }
 
             if (Request.Query.TryGetValue("Name", out var name))
             {
-                vm.Name = name;
+                vm.Event.Name = name;
             }
 
             if (Request.Query.TryGetValue("Description", out var description))
             {
-                vm.Description = description;
+                vm.Event.Description = description;
             }
 
             if (Request.Query.TryGetValue("VisitorIds", out var visitorIds))
             {
                 var visitorIdsList = visitorIds.ToString().Split(',');
-                vm.VisitorIds = visitorIdsList.Select(x => Int32.Parse(x)).ToList();
+                vm.Event.VisitorIds = visitorIdsList.Select(x => Int32.Parse(x)).ToList();
             }
 
             if (Request.Query.TryGetValue("MaxVisitorCount", out var maxVisitorCount))
             {
-                vm.MaxVisitorCount = Int32.Parse(maxVisitorCount);
+                vm.Event.MaxVisitorCount = Int32.Parse(maxVisitorCount);
             }
 
             if (Request.Query.TryGetValue("Tags", out var tags))
             {
                 var tagsList = visitorIds.ToString().Split(',');
-                vm.Tags = tagsList.ToList();
+                vm.Event.Tags = tagsList.ToList();
             }
+
+            try
+            {
+                vm.Templates = await $"{apiUrl}/Template"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Template>>();
+            }
+            catch (Exception){}
+
+            try
+            {
+                vm.Resources = await $"{apiUrl}/Resource"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Resource>>();
+            }
+            catch (Exception) { }
+
+
+            vm.Tags = new List<string>() { "Sipervision", "Kinder"};
+
 
             return View("EventForm", vm);
         }
@@ -199,13 +221,12 @@ namespace RoomAndResourcesScheduler.Controllers
         public async Task<IActionResult?> EditEvent(int  eventId)
         {
             var apiUrl = Settings.UrlApi;
-
-            var vm = new Event();
+            User usr = GetUser(HttpContext);
+            var vm = new EventViewModel();
 
             try
             {
-                User usr = HttpContext.Items["User"] as User;
-                vm = await $"{apiUrl}/Event/{eventId}"
+                vm.Event = await $"{apiUrl}/Event/{eventId}"
                         .WithHeader("AuthKey", usr.AuthKey)
                         .GetJsonAsync<Event>();
             }
@@ -215,6 +236,22 @@ namespace RoomAndResourcesScheduler.Controllers
                 return null;
             }
 
+            try
+            {
+                vm.Templates = await $"{apiUrl}/Template"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Template>>();
+            }
+            catch (Exception) { }
+
+            try
+            {
+                vm.Resources = await $"{apiUrl}/Resource"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Resource>>();
+            }
+            catch (Exception) { }
+
             return View("EventForm", vm);
         }
 
@@ -222,6 +259,13 @@ namespace RoomAndResourcesScheduler.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+
+        private User GetUser(HttpContext context) 
+        {
+            return context.Items["User"] as User;
         }
     }
 }
