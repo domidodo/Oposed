@@ -14,7 +14,6 @@
         
     function save()
     {
-        
         let id = window.id;
         let name = $("#name").val();
         let description = $("#description").val();
@@ -55,6 +54,21 @@
             }
         }
 
+        if(!validateData(data)){
+            notify({
+	                type: "error",
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>@Localizer["Some fields were not filled out correctly"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+            return;
+        }
 
         let httpMethod = "PUT";
         let httpDataType = "";
@@ -105,6 +119,30 @@
                 });
             }
         });
+    }
+
+    function validateData(data){
+        if(data.name.length === 0){
+            $('#smartwizard').smartWizard("goToStep", 1);
+            return false;
+        }
+
+        if(data.resourceId === 0){
+            $('#smartwizard').smartWizard("goToStep", 2);
+            return false;
+        }
+
+        if(data.schedule.length === 0){
+            $('#smartwizard').smartWizard("goToStep", 3);
+            return false;
+        }
+        
+        if(data.maxVisitorCount < 0){
+            $('#smartwizard').smartWizard("goToStep", 4);
+            return false;
+        }
+
+        return true;
     }
 
     function updateAvatar()
@@ -194,7 +232,7 @@
                     </div>
                     <div id="step-2" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="name">Name</label>
+                            <label for="name">Name <font color="red">*</font></label>
                             <input type="text" class="form-control" id="name" value="@Model.Event.Name">
                         </div>
                         <div class="form-group my-2">
@@ -221,7 +259,7 @@
                     </div>
                     <div id="step-3" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="resourceId">Room</label>
+                            <label for="resourceId">Room <font color="red">*</font></label>
                             <select id="resourceId" class="form-control">
                                 @foreach(var resource in Model.Resources){
                                     if (resource.Type == ResourceType.Room)
@@ -236,10 +274,10 @@
                         <div id="timePeriods">
                             <div class="form-group row my-2">
                                 <div class="col-sm-5">
-                                    <label for="">From</label>
+                                    <label for="">From <font color="red">*</font></label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <label for="">To</label>
+                                    <label for="">To <font color="red">*</font></label>
                                 </div>
                             </div>
                             <div class="form-group row my-2">
@@ -273,7 +311,7 @@
                             <label class="form-check-label" for="enableJoinNotification">Enable Join-Notification</label>
                         </div>
                         <div class="form-group my-2">
-                            <label for="maxVisitorCount">Max. count of visitors</label>
+                            <label for="maxVisitorCount">Max. count of visitors <font color="red">*</font></label>
                             <input type="number" class="form-control" id="maxVisitorCount" min="0" value="@Model.Event.MaxVisitorCount">
                         </div>
                         <div class="form-group my-2">
