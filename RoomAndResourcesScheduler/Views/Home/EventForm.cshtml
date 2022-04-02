@@ -136,6 +136,8 @@
     function addTimePeriod(from = '', to = ''){
         let timePeriods = $("#timePeriods");
         timePeriods.append('<div class="form-group row my-2"><div class="col-sm-5"> <input type="datetime-local" class="form-control from" value="'+from+'"></div><div class="col-sm-5"><input type="datetime-local" class="form-control to" value="'+to+'"></div><div class="col-sm-1"><button type="button" class="btn btn-danger" onclick="removeTimePeriod(this);">Remove</button></div></div>');
+        
+        $('#smartwizardContent').height($('#smartwizardContent').height() + 46);
     }
 
     function removeTimePeriod(btn){
@@ -143,116 +145,177 @@
             .parent()
             .parent()
             .remove();
+
+        $('#smartwizardContent').height($('#smartwizardContent').height() - 46);
     }
 </script>
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <form id="form">
-            <div class="form-group my-2">
-                <label for="type">Template</label>
-                <select id="type" class="form-control">
-                    <option value="">No</option>
-                    @foreach(var template in Model.Templates){
-                        <option value="@template.Id">@template.Data.Name</option>
-                    }
-                </select>
-            </div>
-            <hr/>
-            <b>What</b>
-            <div class="form-group my-2">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" value="@Model.Event.Name">
-            </div>
-            <div class="form-group my-2">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" rows="3">@Model.Event.Description</textarea>
-            </div>
-            <div class="form-group row my-2">
-                <div class="col-sm-10">
-                    <label for="image">Image</label>
-                    <small class="form-text text-muted">(366×275px)</small>
-                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" onChange="updateAvatar()">
-                    <input type="hidden" class="form-control" id="imageBase64" value="@Model.Event.Image">
-                    <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");'>Remove image</button>
-                </div>
-                <img class="img-responsive col-sm-2" id="imageView" src="@Model.Event.Image" alt="" style="width:200px;"><br/>
-            </div>
-
-            <br/><br/><br/><br/>  
-            <b>Where</b>
-            <div class="form-group my-2">
-                <label for="resourceId">Room</label>
-                <select id="resourceId" class="form-control">
-                    @foreach(var resource in Model.Resources){
-                        if (resource.Type == ResourceType.Room)
-                        {
-                            <option value="@resource.Id" selected="@(Model.Event.ResourceId == resource.Id)">@resource.Name</option>
-                        }
-                    }
-                </select>
-            </div>
-
-            <br/><br/><br/><br/>  
-            <b>When</b>
-            <div id="timePeriods">
-                <div class="form-group row my-2">
-                    <div class="col-sm-5">
-                        <label for="">From</label>
+            <div id="smartwizard">
+                <ul class="nav">
+                   <li>
+                       <a class="nav-link" href="#step-1">
+                          Template
+                       </a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="#step-2">
+                          What
+                       </a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="#step-3">
+                          Where
+                       </a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="#step-4">
+                          When
+                       </a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="#step-5">
+                          Who
+                       </a>
+                   </li>
+                </ul>
+                <div class="tab-content" id="smartwizardContent">
+                    <div id="step-1" class="tab-pane" role="tabpanel">
+                        <div class="form-group my-2">
+                            <label for="type">Template</label>
+                            <select id="type" class="form-control">
+                                <option value="">No</option>
+                                @foreach(var template in Model.Templates){
+                                    <option value="@template.Id">@template.Data.Name</option>
+                                }
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-sm-5">
-                        <label for="">To</label>
+                    <div id="step-2" class="tab-pane" role="tabpanel">
+                        <div class="form-group my-2">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" value="@Model.Event.Name">
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" rows="3">@Model.Event.Description</textarea>
+                        </div>
+                        <div class="form-group row my-2">
+                            <div class="col-sm-10">
+                                <label for="image">Image</label>
+                                <small class="form-text text-muted">(366×275px)</small>
+                                <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" onChange="updateAvatar()">
+                                <input type="hidden" class="form-control" id="imageBase64" value="@Model.Event.Image">
+                                <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");'>Remove image</button>
+                            </div>
+                            <img class="img-responsive col-sm-2" id="imageView" src="@Model.Event.Image" alt="" style="width:200px;"><br/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row my-2">
-                    <div class="col-sm-5">
-                        <input type="datetime-local" class="form-control from" value="@(Model.Event.Schedule?.Count >= 1 ? Model.Event.Schedule[0].From.ToString("s") : "")">
+                    <div id="step-3" class="tab-pane" role="tabpanel">
+                        <div class="form-group my-2">
+                            <label for="resourceId">Room</label>
+                            <select id="resourceId" class="form-control">
+                                @foreach(var resource in Model.Resources){
+                                    if (resource.Type == ResourceType.Room)
+                                    {
+                                        <option value="@resource.Id" selected="@(Model.Event.ResourceId == resource.Id)">@resource.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="datetime-local" class="form-control to" value="@(Model.Event.Schedule?.Count >= 1 ? Model.Event.Schedule[0].To.ToString("s") : "")">
+                    <div id="step-4" class="tab-pane" role="tabpanel">
+                        <div id="timePeriods">
+                            <div class="form-group row my-2">
+                                <div class="col-sm-5">
+                                    <label for="">From</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="">To</label>
+                                </div>
+                            </div>
+                            <div class="form-group row my-2">
+                                <div class="col-sm-5">
+                                    <input type="datetime-local" class="form-control from" value="@(Model.Event.Schedule?.Count >= 1 ? Model.Event.Schedule[0].From.ToString("s") : "")">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="datetime-local" class="form-control to" value="@(Model.Event.Schedule?.Count >= 1 ? Model.Event.Schedule[0].To.ToString("s") : "")">
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            @if (Model.Event.Schedule != null)
+                            {
+                                for (int i = 1; i < Model.Event.Schedule.Count; i++)
+                                {
+                                    var schedule = Model.Event.Schedule[i];
+                                    @Html.Raw($"addTimePeriod('{schedule.From.ToString("s")}','{schedule.To.ToString("s")}');");
+                                }
+                            }
+                        </script>
+                        <button type="button" class="btn btn-success" onclick='addTimePeriod();'>Add period of time</button>
+                    </div>
+                    <div id="step-5" class="tab-pane" role="tabpanel">
+                        <div class="form-group my-2 form-switch">
+                            <input class="form-check-input" type="checkbox" id="isPublic" value="1" @(Model.Event.IsPrivate ? "" : "checked")>
+                            <label class="form-check-label" for="isPublic">Public </label>
+                        </div>
+                        <div class="form-group my-2 form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableJoinNotification" value="1" @(Model.Event.EnableJoinNotification ? "checked" : "")>
+                            <label class="form-check-label" for="enableJoinNotification">Enable Join-Notification</label>
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="maxVisitorCount">Max. count of visitors</label>
+                            <input type="number" class="form-control" id="maxVisitorCount" min="0" value="@Model.Event.MaxVisitorCount">
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="tags">Tags</label>
+                            <select id="tags" multiple>
+                                @foreach(var tag in Model.Tags){
+                                    <option value="@tag" selected="@(Model.Event.Tags.Contains(tag))">@tag</option>
+                                }
+                            </select>
+                            <script>
+                                $('#tags').tokenize2();
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
             <script>
-                @if (Model.Event.Schedule != null)
-                {
-                    for (int i = 1; i < Model.Event.Schedule.Count; i++)
-                    {
-                        var schedule = Model.Event.Schedule[i];
-                        @Html.Raw($"addTimePeriod('{schedule.From.ToString("s")}','{schedule.To.ToString("s")}');");
-                    }
+                var smartwizardConfig = {
+                      selected: 0,
+                      anchorSettings:{
+                          enableAllAnchors: (window.id !== 0)
+                      },
+                      toolbarSettings: {
+                          showNextButton: false,
+                          showPreviousButton: false
+                      },
+                      disabledSteps: []
+                };
+                if(window.id !== 0){
+                    smartwizardConfig.disabledSteps.push(0);
+                    smartwizardConfig.selected = 1;
+                }
+
+                $('#smartwizard').smartWizard(smartwizardConfig);
+
+                if(window.id === 0){
+                    $("#smartwizard").on("showStep", function() {
+                        setTimeout(function() {
+                            var stepIndex = $('#smartwizard').smartWizard("getStepIndex");
+                            if(stepIndex === 4){
+                                 $("#nextButton").hide();
+                                 $("#saveButton").show();
+                            }
+                        }, 450);
+                    });
                 }
             </script>
-            <button type="button" class="btn btn-success" onclick='addTimePeriod();'>Add period of time</button>
-            
-            <br/><br/><br/><br/>  
-            <b>Who</b>
-            <div class="form-group my-2 form-switch">
-                <input class="form-check-input" type="checkbox" id="isPublic" value="1" @(Model.Event.IsPrivate ? "" : "checked")>
-                <label class="form-check-label" for="isPublic">Public </label>
-            </div>
-            <div class="form-group my-2 form-switch">
-                <input class="form-check-input" type="checkbox" id="enableJoinNotification" value="1" @(Model.Event.EnableJoinNotification ? "checked" : "")>
-                <label class="form-check-label" for="enableJoinNotification">Enable Join-Notification</label>
-            </div>
-            <div class="form-group my-2">
-                <label for="maxVisitorCount">Max. count of visitors</label>
-                <input type="number" class="form-control" id="maxVisitorCount" min="0" value="@Model.Event.MaxVisitorCount">
-            </div>
-            <div class="form-group my-2">
-                <label for="tags">Tags</label>
-                <select id="tags" multiple>
-                    @foreach(var tag in Model.Tags){
-                        <option value="@tag" selected="@(Model.Event.Tags.Contains(tag))">@tag</option>
-                    }
-                </select>
-                <script>
-                    $('#tags').tokenize2({
-                        dataSource: 'select'
-                    });
-                </script>
-            </div>
-            
-            <button type="button" class="btn btn-primary my-2" onclick="save();">Save</button>
+            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton" onclick="$('#smartwizard').smartWizard('next');">Next</button>
+            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "none" : "block");" id="saveButton" onclick="save();">Save</button>
         </form>
     </div>
 </div>
