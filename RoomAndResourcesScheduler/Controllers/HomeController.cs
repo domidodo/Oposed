@@ -210,7 +210,7 @@ namespace RoomAndResourcesScheduler.Controllers
             catch (Exception) { }
 
 
-            vm.Tags = new List<string>() { "Sipervision", "Kinder"};
+            vm.Tags = GetTags();
 
 
             return View("EventForm", vm);
@@ -252,6 +252,9 @@ namespace RoomAndResourcesScheduler.Controllers
             }
             catch (Exception) { }
 
+            vm.Tags = GetTags();
+
+
             return View("EventForm", vm);
         }
 
@@ -266,6 +269,13 @@ namespace RoomAndResourcesScheduler.Controllers
         private User GetUser(HttpContext context) 
         {
             return context.Items["User"] as User;
+        }
+
+
+        private List<String> GetTags() 
+        {
+            // TODO: Use API
+            return new List<string>() { "Sipervision", "Kinder" };
         }
     }
 }
