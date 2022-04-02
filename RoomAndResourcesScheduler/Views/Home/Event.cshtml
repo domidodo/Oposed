@@ -72,7 +72,7 @@ function doJoin(join){
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade m-3 show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    @Model.Description
+                    @Html.Raw(Model.Description)
                    </div>
                 <div class="tab-pane fade m-3" id="dates" role="tabpanel" aria-labelledby="dates-tab">
                     @foreach(var d in Model.Schedule)

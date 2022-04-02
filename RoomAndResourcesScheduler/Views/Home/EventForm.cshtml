@@ -201,6 +201,13 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" rows="3">@Model.Event.Description</textarea>
                         </div>
+                        <script>
+                            $('#description').richText({
+                                imageUpload: false,
+	                            fileUpload: false,
+                                videoEmbed: false,
+                            });
+                        </script>
                         <div class="form-group row my-2">
                             <div class="col-sm-10">
                                 <label for="image">Image</label>
