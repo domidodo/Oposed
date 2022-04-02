@@ -41,6 +41,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\lib\jquery-tokenize2\" />
     <Folder Include="wwwroot\lib\jquery-smartwizard\" />
+    <Folder Include="wwwroot\lib\jquery-richtext\" />
   </ItemGroup>
 
 </Project>
