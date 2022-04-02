@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\jquery-tokenize2\" />
+    <Folder Include="wwwroot\lib\jquery-smartwizard\" />
   </ItemGroup>
 
 </Project>
