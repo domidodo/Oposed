@@ -59,6 +59,8 @@ $(document).ready(function() {
                             var dd = from.getDate() < 10 ? "0" + from.getDate() : from.getDate();
                             me.html("<b class='text-success'>Derzeit frei</b><br/><small>bis zum "+dd+"."+mm+"."+yyyy+" um "+hh+":"+min+" Uhr</small>");
                         }
+                    }else{
+                        me.html("<b class='text-success'>Derzeit frei</b>");
                     }
                 }
             },
