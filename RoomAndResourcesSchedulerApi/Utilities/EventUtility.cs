@@ -50,9 +50,11 @@ namespace RoomAndResourcesSchedulerApi.Utilities
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var timePeriodIds = timePeriodDb.Find(o => now < o.To).OrderBy(o => o.From).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
 
-                if (timePeriodIds.Count > 0)
-                {
-                    return FillEvent(eventDb.FindById(timePeriodIds[0]), db);
+                foreach (var id in timePeriodIds) {
+                    var evet = eventDb.FindById(id);
+                    if (evet != null && evet.ResourceId == resourceId) { 
+                        return FillEvent(evet, db);
+                    }
                 }
             }
             return null;
