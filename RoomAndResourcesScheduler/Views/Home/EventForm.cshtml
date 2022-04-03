@@ -48,8 +48,8 @@
         for(i = 0; i < fromDOMs.length; i++){
             if(fromDOMs[i].value !== "" && toDOMs[i].value !== ""){
                 data.schedule.push({
-                    from: fromDOMs[i].value,
-                    to: toDOMs[i].value
+                    from: toIsoString(new Date(fromDOMs[i].value)),
+                    to: toIsoString(new Date(toDOMs[i].value))
                 });  
             }
         }
