@@ -57,7 +57,7 @@ namespace RoomAndResourcesScheduler.Controllers
                 var eventList = await $"{apiUrl}/Event/Resource/{resourceId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<List<Event>>();
-                vm.EventWithFrom = ToEventWithFrom(eventList);
+                vm.EventWithFrom = ToEventWithSchedule(eventList);
 
             }
             catch (Exception)
@@ -259,6 +259,30 @@ namespace RoomAndResourcesScheduler.Controllers
             return View("EventForm", vm);
         }
 
+        [Auth]
+        [Route("Events")]
+        public async Task<IActionResult?> AllEvents()
+        {
+            var apiUrl = Settings.UrlApi;
+            User usr = GetUser(HttpContext);
+            var vm = new List<EventWithSchedule>();
+
+            try
+            {
+                var evt = await $"{apiUrl}/Event/"
+                        .WithHeader("AuthKey", usr.AuthKey)
+                        .GetJsonAsync<List<Event>>();
+                vm = ToEventWithSchedule(evt);
+            }
+            catch (Exception)
+            {
+                HttpContext.Response.Redirect(LOGIN_URL);
+                return null;
+            }
+
+            return View("EventList", vm);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -272,7 +296,7 @@ namespace RoomAndResourcesScheduler.Controllers
             return context.Items["User"] as User;
         }
 
-        private List<EventWithSchedule> ToEventWithFrom(List<Event> eventList) 
+        private List<EventWithSchedule> ToEventWithSchedule(List<Event> eventList) 
         {
             DateTime now = DateTime.Now;
             var list = new List<EventWithSchedule>();

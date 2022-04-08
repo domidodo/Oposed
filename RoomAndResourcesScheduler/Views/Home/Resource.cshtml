@@ -43,38 +43,7 @@
     <br/>
     <div class="row align-items-center">
         <div class="overflow-auto" style="width:100%">
-            @foreach(var item in Model.EventWithFrom)
-            {
-                int freePlaces = item.Event.MaxVisitorCount - item.Event.Visitors.Count;
-                var description = item.Event.Description.ReplaceLineEndings(" ");
-                description = Regex.Replace(description, "<.*?>", " ");
-                if (description.Length >= 200)
-                {
-                    description = description.Substring(0, 200) + "...";
-                }
-                
-                <div class="card mb-3">
-                    <h5 class="card-header">@item.Schedule.From - @item.Schedule.To</h5>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
-                                <img class="img-fluid rounded mb-4 mb-lg-0" src="@item.Event.Image" alt="" style="width:100%;">
-                            </div>
-                            <div class="col">
-                                <h5 class="card-title">@item.Event.Name</h5>
-                                <p class="card-text">@description</p>
-                                @foreach(var tag in item.Event.Tags)
-                                {
-                                    <span class="badge text-black bg-light">@tag</span>
-                                }
-                                <div class="pull-right">
-                                    <b class="m-3">@freePlaces free places</b><a href="/Event/@item.Event.Id" class="btn btn-primary">Informations</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+            @Html.RenderPartialAsync("_EventWithScheduleList", Model.EventWithFrom)
         </div>
     </div>
 </div>
