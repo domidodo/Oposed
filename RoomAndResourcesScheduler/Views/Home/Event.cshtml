@@ -77,14 +77,14 @@ function doJoin(join){
                 <div class="tab-pane fade m-3" id="dates" role="tabpanel" aria-labelledby="dates-tab">
                     @foreach(var d in Model.Schedule)
                     {
-                        <div class="card">
+                        <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <b>From:</b> @d.From
+                                        <b>From:</b> @d.From.ToString("g")
                                     </div>
                                     <div class="col">
-                                        <b>To:</b> @d.To
+                                        <b>To:</b> @d.To.ToString("g")
                                     </div>
                                 </div>
                             </div>
