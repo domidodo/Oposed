@@ -57,7 +57,7 @@ namespace RoomAndResourcesScheduler.Controllers
                 var eventList = await $"{apiUrl}/Event/Resource/{resourceId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<List<Event>>();
-                vm.EventWithFrom = ToEventWithSchedule(eventList);
+                vm.EventWithFrom = ToEventWithSchedule(eventList, true);
 
             }
             catch (Exception)
@@ -296,21 +296,24 @@ namespace RoomAndResourcesScheduler.Controllers
             return context.Items["User"] as User;
         }
 
-        private List<EventWithSchedule> ToEventWithSchedule(List<Event> eventList) 
+        private List<EventWithSchedule> ToEventWithSchedule(List<Event> eventList, bool addPrivateEvents = false) 
         {
             DateTime now = DateTime.Now;
             var list = new List<EventWithSchedule>();
             foreach (var evt in eventList)
             {
-                foreach (var schedule in evt.Schedule)
+                if (addPrivateEvents || !evt.IsPrivate)
                 {
-                    if (schedule.From > now)
+                    foreach (var schedule in evt.Schedule)
                     {
-                        list.Add(new EventWithSchedule()
+                        if (schedule.From > now)
                         {
-                            Event = evt,
-                            Schedule = schedule
-                        });
+                            list.Add(new EventWithSchedule()
+                            {
+                                Event = evt,
+                                Schedule = schedule
+                            });
+                        }
                     }
                 }
             }
