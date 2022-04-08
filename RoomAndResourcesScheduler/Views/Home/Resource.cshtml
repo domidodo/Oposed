@@ -1,4 +1,5 @@
 ﻿@using System.Web
+@using System.Text.RegularExpressions
 @model ResourceViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -9,72 +10,7 @@
     {
         user = Context.Items["User"] as User;
     }
-    int taskCount = 0;
 }
-<script>
-$(document).ready(function() {
-
-    var headers = [];
-    var date = new Date();
-    for(var i = 0; i < 30; i++){
-
-        var yyyy = date.getFullYear();
-        var mm = date.getMonth() < 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-        var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-
-        headers.push(dd+"."+mm+"."+yyyy);
-        date.setDate(date.getDate() + 1);
-    }
-    
-    var tasks = [
-        @foreach(Event evt in Model.Events)
-        {
-            foreach (TimePeriod period in evt.Schedule)
-            {
-            double start = period.From.Hour;
-            start += (100 / 60 * period.From.Minute)/100;
-            double houers = (period.To - period.From).TotalHours;
-            double displayHouers = houers;
-            int column = period.From.DayOfYear - DateTime.Now.DayOfYear;
-
-            
-            string txt = "";
-            if (evt.Image != null)
-            {
-                //txt += '<img src="'+evt.Image+'" alt="" style="width:100%;"/>';
-            }
-            txt += HttpUtility.HtmlDecode(evt.Name.Replace("'", "\'"))+"<hr/><small>Freie Plätze: "+ (evt.MaxVisitorCount- evt.VisitorIds.Count) +"</small>";
-
-            while(houers > 0)
-            {
-                if ((start + houers) > 24.0)
-                {
-                    displayHouers = 24.0 - start;
-                }
-                else
-                {
-                    displayHouers = houers;    
-                }
-                @Html.Raw("{startTime: "+start.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)+",duration: "+displayHouers.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)+",column: "+column+",id: "+taskCount+",title: '"+txt+"', eventId:"+evt.Id+"},")
-                taskCount++;
-                start = 0.0;
-                houers = houers - displayHouers;
-                column++;
-            }
-           }
-        }
-    ];
-
-    $("#skeduler-container").skeduler({
-      headers: headers,
-      tasks: tasks,
-      cardTemplate: '<div>${title}</div>',
-      onClick: function (e, t) {
-          window.location = "/Event/"+t.eventId; 
-      }
-    });
-});
-</script>
 <div class="container px-4 px-lg-5">
 
     <!-- Heading Row-->
@@ -107,7 +43,38 @@ $(document).ready(function() {
     <br/>
     <div class="row align-items-center">
         <div class="overflow-auto" style="width:100%">
-            <div id="skeduler-container"></div>
+            @foreach(var item in Model.EventWithFrom)
+            {
+                int freePlaces = item.Event.MaxVisitorCount - item.Event.Visitors.Count;
+                var description = item.Event.Description.ReplaceLineEndings(" ");
+                description = Regex.Replace(description, "<.*?>", " ");
+                if (description.Length >= 200)
+                {
+                    description = description.Substring(0, 200) + "...";
+                }
+                
+                <div class="card mb-3">
+                    <h5 class="card-header">@item.Schedule.From - @item.Schedule.To</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <img class="img-fluid rounded mb-4 mb-lg-0" src="@item.Event.Image" alt="" style="width:100%;">
+                            </div>
+                            <div class="col">
+                                <h5 class="card-title">@item.Event.Name</h5>
+                                <p class="card-text">@description</p>
+                                @foreach(var tag in item.Event.Tags)
+                                {
+                                    <span class="badge text-black bg-light">@tag</span>
+                                }
+                                <div class="pull-right">
+                                    <b class="m-3">@freePlaces free places</b><a href="/Event/@item.Event.Id" class="btn btn-primary">Informations</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
