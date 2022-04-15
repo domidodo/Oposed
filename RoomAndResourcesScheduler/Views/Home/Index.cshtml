@@ -64,7 +64,13 @@ $(document).ready(function() {
                     }
                 }
             },
-            error: function(e){}
+            statusCode: {
+                400: function(e) {
+                    if(JSON.parse(e.responseText).errorId === 13){
+                        me.html("<b class='text-success'>Derzeit frei</b>");
+                    }
+                }
+            }
         });
     });
 });
