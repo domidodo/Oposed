@@ -44,7 +44,7 @@ int lastMonth = 0;
                         <span class="badge text-black bg-light">@tag</span>
                     }
                     <div class="pull-right">
-                        <b class="m-3">@freePlaces free places</b><a href="/Event/@item.Event.Id" class="btn btn-primary">Informations</a>
+                        <b class="m-3">@freePlaces <i localize-content>Free places</i></b><a href="/Event/@item.Event.Id" class="btn btn-primary" localize-content>Informations</a>
                     </div>
                 </div>
             </div>
@@ -53,5 +53,5 @@ int lastMonth = 0;
 }
 @if(Model.Count == 0)
 {
-    <center>No Events fount</center>
+    <center localize-content>No Events fount</center>
 }

@@ -107,7 +107,7 @@ $(document).ready(function() {
     </div>
     <!-- Devives -->
     <div class="card text-white bg-secondary my-5 text-center">
-        <div class="card-body"><p class="text-white m-0" localize-content>Devives</p></div>
+        <div class="card-body"><p class="text-white m-0" localize-content>Devices</p></div>
     </div>
     <div class="row gx-4 gx-lg-5">
         @foreach(Resource device in Model.FindAll(e => e.Type == RoomAndResourcesScheduler.Enum.ResourceType.Device).OrderBy(o=>o.Name).ToList())

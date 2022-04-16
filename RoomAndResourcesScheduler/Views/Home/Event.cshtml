@@ -58,16 +58,16 @@ function doJoin(join){
         <div class="col-md-8">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true" localize-content>Description</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="dates-tab" data-bs-toggle="tab" data-bs-target="#dates" type="button" role="tab" aria-controls="dates" aria-selected="false">Dates</button>
+                    <button class="nav-link" id="dates-tab" data-bs-toggle="tab" data-bs-target="#dates" type="button" role="tab" aria-controls="dates" aria-selected="false" localize-content>Dates</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="visitors-tab" data-bs-toggle="tab" data-bs-target="#visitors" type="button" role="tab" aria-controls="visitors" aria-selected="false">Visitors</button>
+                    <button class="nav-link" id="visitors-tab" data-bs-toggle="tab" data-bs-target="#visitors" type="button" role="tab" aria-controls="visitors" aria-selected="false" localize-content>Visitors</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="organizer-tab" data-bs-toggle="tab" data-bs-target="#organizer" type="button" role="tab" aria-controls="contact" aria-selected="false">Organizer</button>
+                    <button class="nav-link" id="organizer-tab" data-bs-toggle="tab" data-bs-target="#organizer" type="button" role="tab" aria-controls="contact" aria-selected="false" localize-content>Organizer</button>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -81,10 +81,10 @@ function doJoin(join){
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <b>From:</b> @d.From.ToString("g")
+                                        <b localize-content>From:</b> @d.From.ToString("g")
                                     </div>
                                     <div class="col">
-                                        <b>To:</b> @d.To.ToString("g")
+                                        <b localize-content>To:</b> @d.To.ToString("g")
                                     </div>
                                 </div>
                             </div>
@@ -106,8 +106,8 @@ function doJoin(join){
                                     <div class="col-4">
                                         @if (organizer.Id == user.Id)
                                         {
-                                            <a href="mailto:@visitor.Mail" target="_blank" class="btn btn-primary float-right">Send mail</a>
-                                            <a href="#" target="_blank" class="btn btn-danger float-right">Unjoin</a>
+                                            <a href="mailto:@visitor.Mail" target="_blank" class="btn btn-primary float-right" localize-content>Send mail</a>
+                                            <a href="#" target="_blank" class="btn btn-danger float-right" localize-content>Unjoin</a>
                                         }
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@ function doJoin(join){
                     }
                     @if(Model.Visitors.Count == 0)
                     {
-                        <p class="m-0">No visitors joined</p>
+                        <p class="m-0" localize-content>No visitors joined</p>
                     }
                 </div>
                 <div class="tab-pane fade m-3" id="organizer" role="tabpanel" aria-labelledby="organizer-tab">
@@ -139,24 +139,24 @@ function doJoin(join){
                     <h2>@Model.Name</h2>
                     @if (organizer.Id == user.Id)
                     {
-                        <a class="btn btn-primary w-100 mb-2" href="/Event/@Model.Id/Edit">Edit</a>
-                        <a class="btn btn-danger w-100" href="#!">Delete</a>
+                        <a class="btn btn-primary w-100 mb-2" href="/Event/@Model.Id/Edit" localize-content>Edit</a>
+                        <a class="btn btn-danger w-100" href="#!" localize-content>Delete</a>
                     }
                     else
                     {
                         if (Model.Visitors.Select(e => e.Id).Contains(user.Id))
                         {
-                            <button class="btn btn-danger w-100" onClick="doJoin(false)">Unjoin</button>
+                            <button class="btn btn-danger w-100" onClick="doJoin(false)" localize-content>Unjoin</button>
                         }
                         else
                         {
-                            <button class="btn btn-primary w-100" onClick="doJoin(true)">Join</button>
+                            <button class="btn btn-primary w-100" onClick="doJoin(true)" localize-content>Join</button>
                         }
                     }
                     <hr/>
-                    @(@Model.MaxVisitorCount - @Model.Visitors.Count) free places
+                    @(@Model.MaxVisitorCount - @Model.Visitors.Count) <i localize-content>Free places</i>
                     <hr/>
-                    @Model.Schedule.Count dates
+                    @Model.Schedule.Count <i localize-content>Dates</i>
                     <hr/>
                     @Model.Resource.Name
                     <hr/>

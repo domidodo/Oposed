@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add event" xml:space="preserve">
+    <value>Event hinzufügen</value>
+  </data>
   <data name="Add new Device" xml:space="preserve">
     <value>Gerät hinzufügen</value>
   </data>
   <data name="Add new Room" xml:space="preserve">
     <value>Raum hinzufügen</value>
+  </data>
+  <data name="Add period of time" xml:space="preserve">
+    <value>Zeitraum hinzufügen</value>
   </data>
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
@@ -132,14 +138,29 @@
   <data name="Currently occupied" xml:space="preserve">
     <value>Derzeit belegt</value>
   </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Termine</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
   <data name="Device" xml:space="preserve">
     <value>Gerät</value>
   </data>
   <data name="Devices" xml:space="preserve">
     <value>Geräte</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
   <data name="Email address" xml:space="preserve">
     <value>Mail-Adresse</value>
+  </data>
+  <data name="Enable Join-Notification" xml:space="preserve">
+    <value>Beitrittsbenachrichtigung aktivieren</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
@@ -147,11 +168,29 @@
   <data name="Events" xml:space="preserve">
     <value>Veranstaltungen</value>
   </data>
+  <data name="Free places" xml:space="preserve">
+    <value>Freie Plätze</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="From:" xml:space="preserve">
+    <value>Von:</value>
+  </data>
   <data name="Hello" xml:space="preserve">
     <value>Hallo</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Bild</value>
+  </data>
+  <data name="Informations" xml:space="preserve">
+    <value>Informationen</value>
+  </data>
+  <data name="Join" xml:space="preserve">
+    <value>Mitmachen</value>
   </data>
   <data name="Logged in as:" xml:space="preserve">
     <value>Angemeldet als:</value>
@@ -162,8 +201,29 @@
   <data name="Logout" xml:space="preserve">
     <value>Abmelden</value>
   </data>
+  <data name="Max. count of visitors" xml:space="preserve">
+    <value>Max. Besucheranzahl</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="No Events fount" xml:space="preserve">
+    <value>Keine Events gefunden</value>
+  </data>
+  <data name="No visitors joined" xml:space="preserve">
+    <value>Es sind keine Besucher beigetreten</value>
+  </data>
   <data name="Notifications" xml:space="preserve">
     <value>Benachrichtigungen</value>
+  </data>
+  <data name="Organizer" xml:space="preserve">
+    <value>Organisator</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Passwort</value>
@@ -174,14 +234,41 @@
   <data name="Please enter your login-data" xml:space="preserve">
     <value>Bitte geben Sie Ihre anmeldedaten ein</value>
   </data>
+  <data name="Public" xml:space="preserve">
+    <value>Öffentlich</value>
+  </data>
+  <data name="Remove image" xml:space="preserve">
+    <value>Bild löschen</value>
+  </data>
   <data name="Room" xml:space="preserve">
     <value>Raum</value>
   </data>
   <data name="Rooms" xml:space="preserve">
     <value>Räume</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Send mail" xml:space="preserve">
+    <value>E-Mail senden</value>
+  </data>
   <data name="Tag-Manager" xml:space="preserve">
     <value>Tag-Manager</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Template" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="To:" xml:space="preserve">
+    <value>Bis:</value>
+  </data>
+  <data name="Unjoin" xml:space="preserve">
+    <value>Nicht mitmachen</value>
   </data>
   <data name="Until #0#" xml:space="preserve">
     <value>bis #0#</value>
@@ -196,5 +283,20 @@
   </data>
   <data name="User not found" xml:space="preserve">
     <value>Benutzer existiert nicht</value>
+  </data>
+  <data name="Visitors" xml:space="preserve">
+    <value>Besucher</value>
+  </data>
+  <data name="What" xml:space="preserve">
+    <value>Was</value>
+  </data>
+  <data name="When" xml:space="preserve">
+    <value>Wann</value>
+  </data>
+  <data name="Where" xml:space="preserve">
+    <value>Wo</value>
+  </data>
+  <data name="Who" xml:space="preserve">
+    <value>Wer</value>
   </data>
 </root>

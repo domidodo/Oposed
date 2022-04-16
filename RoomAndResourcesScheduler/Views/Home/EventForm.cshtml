@@ -193,27 +193,27 @@
             <div id="smartwizard">
                 <ul class="nav">
                    <li>
-                       <a class="nav-link" href="#step-1">
+                       <a class="nav-link" href="#step-1" localize-content>
                           Template
                        </a>
                    </li>
                    <li>
-                       <a class="nav-link" href="#step-2">
+                       <a class="nav-link" href="#step-2" localize-content>
                           What
                        </a>
                    </li>
                    <li>
-                       <a class="nav-link" href="#step-3">
+                       <a class="nav-link" href="#step-3" localize-content>
                           Where
                        </a>
                    </li>
                    <li>
-                       <a class="nav-link" href="#step-4">
+                       <a class="nav-link" href="#step-4" localize-content>
                           When
                        </a>
                    </li>
                    <li>
-                       <a class="nav-link" href="#step-5">
+                       <a class="nav-link" href="#step-5" localize-content>
                           Who
                        </a>
                    </li>
@@ -221,9 +221,9 @@
                 <div class="tab-content" id="smartwizardContent">
                     <div id="step-1" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="type">Template</label>
+                            <label for="type" localize-content>Template</label>
                             <select id="type" class="form-control">
-                                <option value="">No</option>
+                                <option value="" localize-content>No</option>
                                 @foreach(var template in Model.Templates){
                                     <option value="@template.Id">@template.Data.Name</option>
                                 }
@@ -232,11 +232,11 @@
                     </div>
                     <div id="step-2" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="name">Name <font color="red">*</font></label>
+                            <label for="name" localize-content>Name <font color="red">*</font></label>
                             <input type="text" class="form-control" id="name" value="@Model.Event.Name">
                         </div>
                         <div class="form-group my-2">
-                            <label for="description">Description</label>
+                            <label for="description" localize-content>Description</label>
                             <textarea class="form-control" id="description" rows="3">@Model.Event.Description</textarea>
                         </div>
                         <script>
@@ -248,18 +248,18 @@
                         </script>
                         <div class="form-group row my-2">
                             <div class="col-sm-10">
-                                <label for="image">Image</label>
+                                <label for="image" localize-content>Image</label>
                                 <small class="form-text text-muted">(366×275px)</small>
                                 <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" onChange="updateAvatar()">
                                 <input type="hidden" class="form-control" id="imageBase64" value="@Model.Event.Image">
-                                <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");'>Remove image</button>
+                                <button type="button" class="btn btn-danger my-2" onclick='$("#imageView").attr("src","");	$("#imageBase64").val("");' localize-content>Remove image</button>
                             </div>
                             <img class="img-responsive col-sm-2" id="imageView" src="@Model.Event.Image" alt="" style="width:200px;"><br/>
                         </div>
                     </div>
                     <div id="step-3" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="resourceId">Room <font color="red">*</font></label>
+                            <label for="resourceId" localize-content>Room</label> <font color="red">*</font>
                             <select id="resourceId" class="form-control">
                                 @foreach(var resource in Model.Resources){
                                     if (resource.Type == ResourceType.Room)
@@ -274,10 +274,10 @@
                         <div id="timePeriods">
                             <div class="form-group row my-2">
                                 <div class="col-sm-5">
-                                    <label for="">From <font color="red">*</font></label>
+                                    <label for="" localize-content>From</label> <font color="red">*</font>
                                 </div>
                                 <div class="col-sm-5">
-                                    <label for="">To <font color="red">*</font></label>
+                                    <label for="" localize-content>To</label> <font color="red">*</font>
                                 </div>
                             </div>
                             <div class="form-group row my-2">
@@ -299,23 +299,23 @@
                                 }
                             }
                         </script>
-                        <button type="button" class="btn btn-success" onclick='addTimePeriod();'>Add period of time</button>
+                        <button type="button" class="btn btn-success" onclick='addTimePeriod();' localize-content>Add period of time</button>
                     </div>
                     <div id="step-5" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2 form-switch">
                             <input class="form-check-input" type="checkbox" id="isPublic" value="1" @(Model.Event.IsPrivate ? "" : "checked")>
-                            <label class="form-check-label" for="isPublic">Public </label>
+                            <label class="form-check-label" for="isPublic" localize-content>Public </label>
                         </div>
                         <div class="form-group my-2 form-switch">
                             <input class="form-check-input" type="checkbox" id="enableJoinNotification" value="1" @(Model.Event.EnableJoinNotification ? "checked" : "")>
-                            <label class="form-check-label" for="enableJoinNotification">Enable Join-Notification</label>
+                            <label class="form-check-label" for="enableJoinNotification" localize-content>Enable Join-Notification</label>
                         </div>
                         <div class="form-group my-2">
-                            <label for="maxVisitorCount">Max. count of visitors <font color="red">*</font></label>
+                            <label for="maxVisitorCount" localize-content>Max. count of visitors</label> <font color="red">*</font>
                             <input type="number" class="form-control" id="maxVisitorCount" min="0" value="@Model.Event.MaxVisitorCount">
                         </div>
                         <div class="form-group my-2">
-                            <label for="tags">Tags</label>
+                            <label for="tags" localize-content>Tags</label>
                             <select id="tags" multiple>
                                 @foreach(var tag in Model.Tags){
                                     <option value="@tag" selected="@(Model.Event.Tags.Contains(tag))">@tag</option>
@@ -359,8 +359,8 @@
                     });
                 }
             </script>
-            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton" onclick="$('#smartwizard').smartWizard('next');">Next</button>
-            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "none" : "block");" id="saveButton" onclick="save();">Save</button>
+            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton" onclick="$('#smartwizard').smartWizard('next');" localize-content>Next</button>
+            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "none" : "block");" id="saveButton" onclick="save();" localize-content>Save</button>
         </form>
     </div>
 </div>
