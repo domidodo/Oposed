@@ -36,38 +36,32 @@ $(document).ready(function() {
                     let to = new Date(schedule.to);
 
                     if(now < to && from < now){
-                        var hh = to.getHours() < 10 ? "0" + to.getHours() : to.getHours();
-                        var min = to.getMinutes() < 10 ? "0" + to.getMinutes() : to.getMinutes();
-                        
+                        var time = to.toLocaleTimeString();
+
                         if(now.getFullYear() == to.getFullYear() && now.getMonth() == to.getMonth() && now.getDate() == to.getDate()){
-                            me.html("<b class='text-danger'>Derzeit belegt</b><br/><small>bis "+hh+":"+min+" Uhr</small>");
+                            me.html("<b class='text-danger'>@Localizer["Currently occupied"]</b><br/><small>@Localizer["Until #0#"]</small>".format(time));
                         }else{
-                            var yyyy = to.getFullYear();
-                            var mm = to.getMonth() < 9 ? "0" + (to.getMonth() + 1) : (to.getMonth() + 1);
-                            var dd = to.getDate() < 10 ? "0" + to.getDate() : to.getDate();
-                            me.html("<b class='text-danger'>Derzeit belegt</b><br/><small>bis zum "+dd+"."+mm+"."+yyyy+" um "+hh+":"+min+" Uhr</small>");
+                            var date = to.toLocaleDateString();
+                            me.html("<b class='text-danger'>@Localizer["Currently occupied"]</b><br/><small>@Localizer["Until #0# at #1#"]</small>".format(date, time));
                         }
                     }else if(from > now){
-                        var hh = from.getHours() < 10 ? "0" + from.getHours() : from.getHours();
-                        var min = from.getMinutes() < 10 ? "0" + from.getMinutes() : from.getMinutes();
-                        
+                        var time = to.toLocaleTimeString();
+
                         if(now.getFullYear() == from.getFullYear() && now.getMonth() == from.getMonth() && now.getDate() == from.getDate()){
-                            me.html("<b class='text-success'>Derzeit frei</b><br/><small>bis "+hh+":"+min+" Uhr</small>");
+                            me.html("<b class='text-success'>@Localizer["Currently free"]</b><br/><small>@Localizer["Until #0#"]</small>".format(time));
                         }else{
-                            var yyyy = from.getFullYear();
-                            var mm = from.getMonth() < 9 ? "0" + (from.getMonth() + 1) : (from.getMonth() + 1);
-                            var dd = from.getDate() < 10 ? "0" + from.getDate() : from.getDate();
-                            me.html("<b class='text-success'>Derzeit frei</b><br/><small>bis zum "+dd+"."+mm+"."+yyyy+" um "+hh+":"+min+" Uhr</small>");
+                            var date = to.toLocaleDateString();
+                            me.html("<b class='text-success'>@Localizer["Currently free"]</b><br/><small>@Localizer["Until #0# at #1#"]</small>".format(date, time));
                         }
                     }else{
-                        me.html("<b class='text-success'>Derzeit frei</b>");
+                        me.html("<b class='text-success'>@Localizer["Currently free"]</b>");
                     }
                 }
             },
             statusCode: {
                 400: function(e) {
                     if(JSON.parse(e.responseText).errorId === 13){
-                        me.html("<b class='text-success'>Derzeit frei</b>");
+                        me.html("<b class='text-success'>@Localizer["Currently free"]</b>");
                     }
                 }
             }
@@ -79,7 +73,7 @@ $(document).ready(function() {
 <div class="container px-4 px-lg-5">
     <!-- Rooms -->
     <div class="card text-white bg-secondary my-5 text-center">
-        <div class="card-body"><p class="text-white m-0">Rooms</p></div>
+        <div class="card-body"><p class="text-white m-0" localize-content>Rooms</p></div>
     </div>
     <div class="row gx-4 gx-lg-5">
         @foreach(Resource room in Model.FindAll(e => e.Type == RoomAndResourcesScheduler.Enum.ResourceType.Room).OrderBy(o=>o.Name).ToList())
@@ -102,7 +96,7 @@ $(document).ready(function() {
             <div class="col-md-4 mb-5">
                 <div class="card d-flex h-100" onClick="window.location = '/Resource/New?Type=Room'">
                   <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
-                    <h5 class="card-title">Add new Room</h5>
+                    <h5 class="card-title" localize-content>Add new Room</h5>
                     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg>
@@ -113,7 +107,7 @@ $(document).ready(function() {
     </div>
     <!-- Devives -->
     <div class="card text-white bg-secondary my-5 text-center">
-        <div class="card-body"><p class="text-white m-0">Devives</p></div>
+        <div class="card-body"><p class="text-white m-0" localize-content>Devives</p></div>
     </div>
     <div class="row gx-4 gx-lg-5">
         @foreach(Resource device in Model.FindAll(e => e.Type == RoomAndResourcesScheduler.Enum.ResourceType.Device).OrderBy(o=>o.Name).ToList())
@@ -136,7 +130,7 @@ $(document).ready(function() {
             <div class="col-md-4 mb-5">
                 <div class="card h-100" onClick="window.location = '/Resource/New?Type=Device'">
                   <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
-                    <h5 class="card-title">Add new Device</h5>
+                    <h5 class="card-title" localize-content>Add new Device</h5>
                     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg>

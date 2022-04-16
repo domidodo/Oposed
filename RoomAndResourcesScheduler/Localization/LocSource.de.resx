@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add new Device" xml:space="preserve">
+    <value>Gerät hinzufügen</value>
+  </data>
+  <data name="Add new Room" xml:space="preserve">
+    <value>Raum hinzufügen</value>
+  </data>
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
+  </data>
+  <data name="Currently free" xml:space="preserve">
+    <value>Derzeit frei</value>
+  </data>
+  <data name="Currently occupied" xml:space="preserve">
+    <value>Derzeit belegt</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>Gerät</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Geräte</value>
   </data>
   <data name="Email address" xml:space="preserve">
     <value>Mail-Adresse</value>
@@ -156,8 +174,22 @@
   <data name="Please enter your login-data" xml:space="preserve">
     <value>Bitte geben Sie Ihre anmeldedaten ein</value>
   </data>
+  <data name="Room" xml:space="preserve">
+    <value>Raum</value>
+  </data>
+  <data name="Rooms" xml:space="preserve">
+    <value>Räume</value>
+  </data>
   <data name="Tag-Manager" xml:space="preserve">
     <value>Tag-Manager</value>
+  </data>
+  <data name="Until #0#" xml:space="preserve">
+    <value>bis #0#</value>
+    <comment>#0# = Uhrzeit</comment>
+  </data>
+  <data name="Until #0# at #1#" xml:space="preserve">
+    <value>bis zum #0# um #1#</value>
+    <comment>#0# = Datum | #1# = Uhrzeit</comment>
   </data>
   <data name="User is blocked" xml:space="preserve">
     <value>Benutzer ist blockiert</value>

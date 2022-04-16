@@ -26,3 +26,11 @@ function toIsoString(date) {
         dif + pad(Math.floor(Math.abs(tzo) / 60)) +
         ':' + pad(Math.abs(tzo) % 60);
 }
+
+String.prototype.format = function () {
+    a = this;
+    for (k in arguments) {
+        a = a.replace("#" + k + "#", arguments[k])
+    }
+    return a
+}
