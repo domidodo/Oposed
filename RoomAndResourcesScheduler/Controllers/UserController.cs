@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Localization;
 
 namespace RoomAndResourcesScheduler.Controllers
 {
@@ -6,7 +7,23 @@ namespace RoomAndResourcesScheduler.Controllers
     {
         public IActionResult Login()
         {
+            Microsoft.Extensions.Primitives.StringValues lang;
+
+            if (HttpContext.Request.Query.TryGetValue("lng", out lang))
+            {
+                var langStr = lang.FirstOrDefault();
+                if (langStr != null)
+                {
+                    Response.Cookies.Append(
+                      CookieRequestCultureProvider.DefaultCookieName,
+                      CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(langStr)),
+                      new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                  );
+                }
+            }
+
             return View();
         }
+
     }
 }
