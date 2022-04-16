@@ -30,7 +30,6 @@ builder.Services.Configure<RequestLocalizationOptions>(ops =>
     ops.RequestCultureProviders.Insert(0, new RouteSegmentRequestCultureProvider(cultures));
 });
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,5 +47,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.UseRequestLocalization();
 
 app.Run();

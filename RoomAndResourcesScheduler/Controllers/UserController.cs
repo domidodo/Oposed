@@ -20,6 +20,7 @@ namespace RoomAndResourcesScheduler.Controllers
                       new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
                   );
                 }
+                Response.Redirect(HttpContext.Request.Path);
             }
 
             return View();
