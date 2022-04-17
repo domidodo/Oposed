@@ -132,6 +132,9 @@
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
   </data>
+  <data name="Changes saved" xml:space="preserve">
+    <value>Änderungen gespeichert</value>
+  </data>
   <data name="Currently free" xml:space="preserve">
     <value>Derzeit frei</value>
   </data>
@@ -251,6 +254,9 @@
   </data>
   <data name="Send mail" xml:space="preserve">
     <value>E-Mail senden</value>
+  </data>
+  <data name="Some fields were not filled out correctly" xml:space="preserve">
+    <value>Einige Felder wurden nicht korrekt ausgefüllt</value>
   </data>
   <data name="Tag-Manager" xml:space="preserve">
     <value>Tag-Manager</value>

@@ -31,11 +31,32 @@
         let mail = $("#mail").val();
         let password = $("#password").val();
         
+        let data = { 
+            mail: mail, 
+            password: password 
+        };
+
+        if(!validateData(data)){
+            notify({
+	                type: "error",
+	                title: "@Localizer["Error"]",
+	                message: "<p>@Localizer["Some fields were not filled out correctly"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+            return;
+        }
+
         $("#form").loading('start');
         $.ajax({
             url:"/Proxy?Api=/Authentication/Login",
             type:"POST",
-            data:JSON.stringify({ "mail": mail, "password" : password }),
+            data:JSON.stringify(data),
             dataType:"json",
             success: function(res){
                 $.cookie('AuthKey', res.authKey, {
@@ -81,6 +102,25 @@
 
         return false;
     }
+
+    function validateData(data){
+        if(data.mail.length <= 0){
+            $("#mail").focus();
+            return false;
+        }
+        
+        if (data.password.length <= 0){
+            $("#password").focus();
+            return false;
+        }
+
+        if(/\S+@@\S+\.\S+/.test(data.mail) === false){
+            $("#mail").focus();
+            return false;
+        }
+
+        return true;
+    }
 </script>
 <section class="vh-100">
     <div class="container py-5 h-100">
@@ -106,12 +146,26 @@
 
                                     <div class="form-outline mb-4">
                                         <input type="email" id="mail" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form2Example17" localize-content>Email address</label>
+                                        <label class="form-label" for="mail" localize-content>Email address</label>
+                                        <script>
+                                            $("#mail").on('keypress',function(e) {
+                                                if(e.which == 13) {
+                                                    $("#password").focus();
+                                                }
+                                            });
+                                       </script>
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <input type="password" id="password" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form2Example27" localize-content>Password</label>
+                                        <label class="form-label" for="password" localize-content>Password</label>
+                                        <script>
+                                            $("#password").on('keypress',function(e) {
+                                                if(e.which == 13) {
+                                                    $("#btnLogin").click();
+                                                }
+                                            });
+                                       </script>
                                     </div>
 
                                     <div class="form-outline m-3 float-end">
@@ -124,7 +178,7 @@
                                     </div>
 
                                     <div class="pt-1 mb-4">
-                                        <button class="btn btn-dark btn-lg btn-block" type="button" onclick="doSubmit()" localize-content>Login</button>
+                                        <button class="btn btn-dark btn-lg btn-block" type="button" id="btnLogin" onclick="doSubmit()" localize-content>Login</button>
                                     </div>
                                     
                                     @if (!string.IsNullOrEmpty(impressumUrl))
