@@ -31,9 +31,12 @@ services:
         - "80:80"
       environment:
         #- ASPNETCORE_ENVIRONMENT=Development
-        - URL_LOGO=/img/Logo.png
+        - URL_LOGO=/img/Oposed-Logo.png
         - URL_IMPRESSUM=
         - URL_API=http://Oposed-Api:5000
+        - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+        #- LC_ALL=de_DE.UTF-8
+        #- LANG=de_DE.UTF-8
       restart: always
       networks:
         - oposed-network
