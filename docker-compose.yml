@@ -1,8 +1,8 @@
 version: '2.1'
 services:
 
-    RoomAndResourcesScheduler-Api:
-      image: roomandresourcesscheduler_api
+    Oposed-Api:
+      image: oposed_api
       #ports:
       #  - "5000:5000"
       environment:
@@ -23,24 +23,24 @@ services:
         - db:/app/Database/
       restart: always
       networks:
-        - roomandresourcesscheduler-network
+        - oposed-network
         
-    RoomAndResourcesScheduler-Web:
-      image: roomandresourcesscheduler_web
+    Oposed-Web:
+      image: oposed_web
       ports:
         - "80:80"
       environment:
         #- ASPNETCORE_ENVIRONMENT=Development
         - URL_LOGO=/img/Logo.png
         - URL_IMPRESSUM=
-        - URL_API=http://RoomAndResourcesScheduler-Api:5000
+        - URL_API=http://Oposed-Api:5000
       restart: always
       networks:
-        - roomandresourcesscheduler-network
+        - oposed-network
 
 volumes:
   db:
 
 networks:
-  roomandresourcesscheduler-network:
+  oposed-network:
     driver: bridge

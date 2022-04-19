@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker build -f "RoomAndResourcesSchedulerApi/Dockerfile" --force-rm -t roomandresourcesscheduler_api .
-docker build -f "RoomAndResourcesScheduler/Dockerfile" --force-rm -t roomandresourcesscheduler_web .
+docker build -f "OposedApi/Dockerfile" --force-rm -t oposed_api .
+docker build -f "Oposed/Dockerfile" --force-rm -t oposed_web .
 
 docker-compose up -d

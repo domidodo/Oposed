@@ -348,9 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-RoomAndResourcesSchedulerApi/Database/
-RoomAndResourcesScheduler/Database/
+OposedApi/Database/
+Oposed/Database/
 *.bak
-RoomAndResourcesSchedulerApi/Properties/launchSettings.json
-RoomAndResourcesScheduler/Properties/launchSettings.json
+OposedApi/Properties/launchSettings.json
+Oposed/Properties/launchSettings.json
 docker-compose.override.yml

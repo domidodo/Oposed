@@ -1,0 +1,9 @@
+body {
+    background-color: #006f44;
+}
+
+a:link, a:visited {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+}

@@ -1,0 +1,36 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:32741",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Oposed": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "URL_LOGO": "/img/Oposed-Logo.png",
+        "URL_IMPRESSUM": "",
+        "URL_API": "http://localhost:5000"
+      },
+      "applicationUrl": "http://localhost:5147",
+      "dotnetRunMessages": true
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true
+    }
+  }
+}

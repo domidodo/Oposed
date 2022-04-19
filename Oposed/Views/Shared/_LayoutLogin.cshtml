@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Oposed</title>
+    <link rel="icon" href="@Settings.UrlLogo" type="image/x-icon">
+	<link rel="shortcut icon" href="@Settings.UrlLogo" type="image/x-icon">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-notify/jquery.notify.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script src="~/lib/jquery-loading/jquery.loading.min.js"></script>
+    <script src="~/lib/jquery-notify/jquery.notify.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+     @RenderBody()
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
