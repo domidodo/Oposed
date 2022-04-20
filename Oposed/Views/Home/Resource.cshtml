@@ -43,7 +43,9 @@
     <br/>
     <div class="row align-items-center">
         <div class="overflow-auto" style="width:100%">
-            @Html.RenderPartialAsync("_EventWithScheduleList", Model.EventWithFrom)
+            @{
+                await Html.RenderPartialAsync("_EventWithScheduleList", Model.EventWithFrom);
+            }
         </div>
     </div>
 </div>

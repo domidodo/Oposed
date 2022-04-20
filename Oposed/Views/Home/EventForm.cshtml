@@ -101,10 +101,13 @@
                 });
             },
             error: function(e){
-                console.err(e);
                 $("#form").loading('stop');
 
                 let errTxt = "@Localizer["API connection failed"]";
+                if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
+                    $('#smartwizard').smartWizard("goToStep", 3);
+                    errTxt = "@Localizer["An event is already taking place in the specified period"]";
+                }
                 
                 notify({
 	                type: "error", //alert | success | error | warning | info
