@@ -354,3 +354,12 @@ Oposed/Database/
 OposedApi/Properties/launchSettings.json
 Oposed/Properties/launchSettings.json
 docker-compose.override.yml
+
+# Icons
+Oposed/wwwroot/lib/bootstrap-icons/*
+!Oposed/wwwroot/lib/bootstrap-icons/bootstrap-icons.css
+!Oposed/wwwroot/lib/bootstrap-icons/calendar3.svg
+!Oposed/wwwroot/lib/bootstrap-icons/bell.svg
+!Oposed/wwwroot/lib/bootstrap-icons/gear.svg
+!Oposed/wwwroot/lib/bootstrap-icons/people.svg
+!Oposed/wwwroot/lib/bootstrap-icons/door-closed.svg

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="~/lib/jquery-tokenize2/tokenize2.min.css" />
     <link rel="stylesheet" href="~/lib/jquery-smartwizard/smart_wizard_all.min.css" />
     <link rel="stylesheet" href="~/lib/jquery-richtext/richtext.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css">
     <script src="~/js/canvas2image.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>  
@@ -43,14 +44,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="/Events" localize-content>Events</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!" localize-content>Notifications</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Events"><i class="bi bi-calendar3"></i> <span localize-content>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-bell"></i> <span localize-content>Notifications</span></a></li>
                     @if (user.Role == Oposed.Enum.UserRole.Admin)
                     {
-                        <li class="nav-item"><a class="nav-link" href="#!" localize-content>Tag-Manager</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!" localize-content>Users</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-gear"></i> <span localize-content>Tag-Manager</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-people"></i> <span localize-content>Users</span></a></li>
                     }
-                    <li class="nav-item"><a class="nav-link" href="/User/Login" localize-content>Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/User/Login"><i class="bi bi-door-closed"></i> <span localize-content>Logout</span></a></li>
                 </ul>
             </div>
             <div class="px-3" style="font-size:15px;">
