@@ -9,6 +9,11 @@ namespace OposedApi.Utilities
         public static User GetCurrentUser(HttpContext context)
         {
             return (User)context.Items["User"];
+            if (context.Items.TryGetValue("User", out object? usr) && usr != null)
+            {
+                return (User)usr;
+            }
+            throw new Exception("User not found");
         }
 
         public static void SaveUser(User usr) {
