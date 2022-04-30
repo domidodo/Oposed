@@ -28,7 +28,7 @@ namespace OposedApi.Error
                     errorMessage = "Permission failed";
                     break;
                 case Errors.RESOURCE_NOT_FOUND:
-                    errorMessage = "Resource not found";
+                    errorMessage = "Room not found";
                     break;
                 case Errors.RESOURCE_DELETING_FAILED:
                 case Errors.EVENT_DELETING_FAILED:

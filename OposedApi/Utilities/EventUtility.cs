@@ -20,7 +20,7 @@ namespace OposedApi.Utilities
             }
         }
 
-        internal static List<Event> GetAllEventsOfResource(int resourceId, bool hitPast = false)
+        internal static List<Event> GetAllEventsOfRoom(int roomId, bool hitPast = false)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
@@ -35,12 +35,12 @@ namespace OposedApi.Utilities
                     var timePeriodDb = db.GetCollection<TimePeriod>();
                     var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
 
-                    return FillEventList(eventDb.Find(x => x.ResourceId == resourceId && timePeriodIds.Contains(x.Id)).ToList());
+                    return FillEventList(eventDb.Find(x => x.RoomId == roomId && timePeriodIds.Contains(x.Id)).ToList());
                 }
             }
         }
 
-        internal static Event? GetNextEventsOfResource(int resourceId)
+        internal static Event? GetNextEventsOfRoom(int roomId)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
@@ -52,7 +52,7 @@ namespace OposedApi.Utilities
 
                 foreach (var id in timePeriodIds) {
                     var evet = eventDb.FindById(id);
-                    if (evet != null && evet.ResourceId == resourceId) { 
+                    if (evet != null && evet.RoomId == roomId) { 
                         return FillEvent(evet, db);
                     }
                 }
@@ -71,7 +71,7 @@ namespace OposedApi.Utilities
 
         internal static Event? AddEvent(Event evt)
         {
-            if (EventUtility.GetBlockedTimePeriods(evt.ResourceId, evt.Schedule).Count > 0)
+            if (EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule).Count > 0)
             {
                 return null;
             }
@@ -102,7 +102,7 @@ namespace OposedApi.Utilities
             if (evt.Schedule != null) 
             {
                 var ownScheduleIds = evt.Schedule.Select(x => x.Id).ToList();
-                var blockedSchedules = EventUtility.GetBlockedTimePeriods(evt.ResourceId, evt.Schedule);
+                var blockedSchedules = EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule);
                 blockedSchedules = blockedSchedules.Where(x => !ownScheduleIds.Contains(x.Id)).ToList();
 
                 if (blockedSchedules.Count > 0) {
@@ -150,7 +150,7 @@ namespace OposedApi.Utilities
             }
         }
 
-        internal static List<TimePeriod> GetBlockedTimePeriods(int resourceId, List<TimePeriod> time)
+        internal static List<TimePeriod> GetBlockedTimePeriods(int roomId, List<TimePeriod> time)
         {
             List<TimePeriod> ret = new List<TimePeriod>();
             using (var db = new LiteDatabase(Settings.DatabasePath))
@@ -160,7 +160,7 @@ namespace OposedApi.Utilities
                 foreach (var t in time) {
                     var eventsIdInSameTime = timePeriodDb.Find(o => o.From < t.To && o.To > t.From).Select(x => x.EventId).ToList();
 
-                    var exists = eventDb.Query().Where(o => o.ResourceId == resourceId && eventsIdInSameTime.Contains(o.Id)).Exists();
+                    var exists = eventDb.Query().Where(o => o.RoomId == roomId && eventsIdInSameTime.Contains(o.Id)).Exists();
 
                     if (exists)
                     {
@@ -177,7 +177,7 @@ namespace OposedApi.Utilities
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var userDb = db.GetCollection<User>();
-                var resourceDb = db.GetCollection<Resource>();
+                var roomDb = db.GetCollection<Room>();
                 var scheduleDb = db.GetCollection<TimePeriod>();
 
                 foreach (var eventItem in events)
@@ -192,12 +192,12 @@ namespace OposedApi.Utilities
         private static Event FillEvent(Event eventItem, LiteDatabase conn)
         {
             var userDb = conn.GetCollection<User>();
-            var resourceDb = conn.GetCollection<Resource>();
+            var roomDb = conn.GetCollection<Room>();
             var scheduleDb = conn.GetCollection<TimePeriod>();
 
-            if (eventItem.Resource == null)
+            if (eventItem.Room == null)
             {
-                eventItem.Resource = resourceDb.FindById(eventItem.ResourceId);
+                eventItem.Room = roomDb.FindById(eventItem.RoomId);
             }
 
             if (eventItem.Organizer == null)

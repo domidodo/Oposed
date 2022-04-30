@@ -1,8 +1,8 @@
 ﻿namespace Oposed.Models
 {
-    public class ResourceViewModel
+    public class RoomEventViewModel
     {
-        public Resource Resource { get; set; }
+        public Room Room { get; set; }
         public List<EventWithSchedule> EventWithFrom { get; set; }
     }
 }

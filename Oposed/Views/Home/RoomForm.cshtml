@@ -1,5 +1,5 @@
 ﻿@using System.Web
-@model Resource
+@model Room
 @{
     ViewData["Title"] = "Home Page";
 
@@ -53,7 +53,7 @@
 
         $("#form").loading('start');
         $.ajax({
-            url:"/Proxy?Api=/Resource",
+            url:"/Proxy?Api=/Room",
             type:httpMethod,
             data:JSON.stringify(data),
             dataType:httpDataType,
@@ -133,13 +133,6 @@
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <form id="form">
-            <div class="form-group my-2">
-                <label for="type">Type  </label>
-                <select id="type" class="form-control">
-                    <option value="@ResourceType.Room" selected="@(Model.Type == ResourceType.Room)" localize-content>Room</option>
-                    <option value="@ResourceType.Device" selected="@(Model.Type == ResourceType.Device)" localize-content>Device</option>
-                </select>
-            </div>
             <div class="form-group row my-2">
                 <div class="col-sm-10">
                     <label for="image" localize-content>Image</label>

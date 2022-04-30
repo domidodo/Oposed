@@ -15,34 +15,34 @@ namespace OposedApi.Properties {
     /// <summary>
     ///   Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
     /// </summary>
-    // Diese Klasse wurde von der StronglyTypedResourceBuilder automatisch generiert
+    // Diese Klasse wurde von der StronglyTypedRoomBuilder automatisch generiert
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Rooms.Tools.StronglyTypedRoomBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Rooms {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static global::System.Resources.ResourceManager roomMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static global::System.Globalization.CultureInfo roomCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Rooms() {
         }
         
         /// <summary>
-        ///   Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+        ///   Gibt die zwischengespeicherte RoomManager-Instanz zurück, die von dieser Klasse verwendet wird.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager RoomManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OposedApi.Properties.Resources", typeof(Resources).Assembly);
-                    resourceMan = temp;
+                if (object.ReferenceEquals(roomMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OposedApi.Properties.Rooms", typeof(Rooms).Assembly);
+                    roomMan = temp;
                 }
-                return resourceMan;
+                return roomMan;
             }
         }
         
@@ -53,10 +53,10 @@ namespace OposedApi.Properties {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
             get {
-                return resourceCulture;
+                return roomCulture;
             }
             set {
-                resourceCulture = value;
+                roomCulture = value;
             }
         }
     }

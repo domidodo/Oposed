@@ -22,14 +22,14 @@ namespace Oposed.Controllers
         {
             var apiUrl = Settings.UrlApi;
 
-            List<Resource> resourcen = new List<Resource>();
+            List<Room> rooms = new List<Room>();
 
             try
             {
                 User usr = GetUser(HttpContext);
-                resourcen = await $"{apiUrl}/Resource"
+                rooms = await $"{apiUrl}/Room"
                                     .WithHeader("AuthKey", usr.AuthKey)
-                                    .GetJsonAsync<List<Resource>>();
+                                    .GetJsonAsync<List<Room>>();
             }
             catch (Exception)
             {
@@ -37,24 +37,24 @@ namespace Oposed.Controllers
                 return null;
             }
 
-            return View(resourcen);
+            return View(rooms);
         }
 
         [Auth]
-        [Route("Resource/{resourceId}")]
-        public async Task<IActionResult?> Resource(int resourceId)
-        { // /Home/Resource/1
+        [Route("Room/{roomId}")]
+        public async Task<IActionResult?> Room(int roomId)
+        {
              var apiUrl = Settings.UrlApi;
 
-           ResourceViewModel vm = new ResourceViewModel();
+           RoomEventViewModel vm = new RoomEventViewModel();
 
             try
             {
                 User usr = GetUser(HttpContext);
-                vm.Resource = await $"{apiUrl}/Resource/{resourceId}"
+                vm.Room = await $"{apiUrl}/Room/{roomId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
-                                    .GetJsonAsync<Resource>();
-                var eventList = await $"{apiUrl}/Event/Resource/{resourceId}"
+                                    .GetJsonAsync<Room>();
+                var eventList = await $"{apiUrl}/Event/Room/{roomId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<List<Event>>();
                 vm.EventWithFrom = ToEventWithSchedule(eventList, true);
@@ -70,18 +70,10 @@ namespace Oposed.Controllers
         }
 
         [Auth]
-        [Route("Resource/New")]
-        public IActionResult NewResource()
+        [Route("Room/New")]
+        public IActionResult NewRoom()
         {
-            var vm = new Resource();
-
-            if (Request.Query.TryGetValue("Type", out var type)) {
-                if (System.Enum.TryParse(typeof(Enum.ResourceType), type.ToString(), true, out var type2)) {
-#pragma warning disable CS8605
-                    vm.Type = (Enum.ResourceType)type2;
-#pragma warning restore CS8605
-                }
-            }
+            var vm = new Room();
 
             if (Request.Query.TryGetValue("Name", out var name))
             {
@@ -93,23 +85,23 @@ namespace Oposed.Controllers
                 vm.Description = description;
             }
 
-            return View("ResourceForm", vm);
+            return View("RoomForm", vm);
         }
 
         [Auth]
-        [Route("Resource/{resourceId}/Edit")]
-        public async Task<IActionResult?> EditResource(int resourceId)
+        [Route("Room/{roomId}/Edit")]
+        public async Task<IActionResult?> EditRoom(int roomId)
         {
             var apiUrl = Settings.UrlApi;
 
-            var vm = new Resource();
+            var vm = new Room();
 
             try
             {
                 User usr = GetUser(HttpContext);
-                vm = await $"{apiUrl}/Resource/{resourceId}"
+                vm = await $"{apiUrl}/Room/{roomId}"
                         .WithHeader("AuthKey", usr.AuthKey)
-                        .GetJsonAsync<Resource>();
+                        .GetJsonAsync<Room>();
             }
             catch (Exception)
             {
@@ -117,7 +109,7 @@ namespace Oposed.Controllers
                 return null;
             }
 
-            return View("ResourceForm", vm);
+            return View("RoomForm", vm);
         }
 
         [Auth]
@@ -152,9 +144,9 @@ namespace Oposed.Controllers
             var apiUrl = Settings.UrlApi;
             var vm = new EventViewModel();
 
-            if (Request.Query.TryGetValue("ResourceId", out var resourceId))
+            if (Request.Query.TryGetValue("RoomId", out var roomId))
             {
-                vm.Event.ResourceId = Int32.Parse(resourceId);
+                vm.Event.RoomId = Int32.Parse(roomId);
             }
 
             if (Request.Query.TryGetValue("isPrivate", out var isPrivate))
@@ -204,9 +196,9 @@ namespace Oposed.Controllers
 
             try
             {
-                vm.Resources = await $"{apiUrl}/Resource"
+                vm.Rooms = await $"{apiUrl}/Room"
                                     .WithHeader("AuthKey", usr.AuthKey)
-                                    .GetJsonAsync<List<Resource>>();
+                                    .GetJsonAsync<List<Room>>();
             }
             catch (Exception) { }
 
@@ -247,9 +239,9 @@ namespace Oposed.Controllers
 
             try
             {
-                vm.Resources = await $"{apiUrl}/Resource"
+                vm.Rooms = await $"{apiUrl}/Room"
                                     .WithHeader("AuthKey", usr.AuthKey)
-                                    .GetJsonAsync<List<Resource>>();
+                                    .GetJsonAsync<List<Room>>();
             }
             catch (Exception) { }
 
