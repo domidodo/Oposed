@@ -101,7 +101,7 @@
 	                delay: 4000
                 });
 
-                if($("#enableSaveAsPrivateTemplate").is(':checked')){
+                if($("#enableSaveAsPrivateTemplate").is(':checked') || ($("#enableSaveAsPublicTemplate").length !== 0 && $("#enableSaveAsPublicTemplate").is(':checked'))){
                     saveTemplate(data);
                 }
                 else
