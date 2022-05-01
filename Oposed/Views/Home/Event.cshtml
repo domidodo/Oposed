@@ -148,7 +148,7 @@ function doJoin(join){
                         {
                             <button class="btn btn-danger w-100" onClick="doJoin(false)" localize-content>Unjoin</button>
                         }
-                        else
+                        else if(Model.Visitors.Count < Model.MaxVisitorCount)
                         {
                             <button class="btn btn-primary w-100" onClick="doJoin(true)" localize-content>Join</button>
                         }
