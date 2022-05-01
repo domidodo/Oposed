@@ -204,6 +204,76 @@
         return true;
     }
 
+    function loadTemplate(templatId)
+    {
+        $("#form").loading('start');
+        
+        if(templatId === ''){
+            $("#name").val("");
+            $("#description").val("");
+            $("#imageBase64").val("");
+            $("#isPublic").attr("checked", "");
+            $("#enableJoinNotification").attr("checked", "");
+            $("#maxVisitorCount").val(0);
+            $("#tags").trigger('tokenize:clear');
+            $("#tags").trigger('tokenize:tokens:reorder');
+            
+            $("#form").loading('stop');
+            return;
+        }
+
+        $.ajax({
+            url:"/Proxy?Api=/Template/"+templatId,
+            type:'GET',
+            dataType:'json',
+            success: function(res){
+                let data = res.data;
+                
+                $("#name").val(data.name);
+                $("#description").val(data.description).trigger('change');
+                $("#imageView").attr("src",data.image);
+                $("#imageBase64").val(data.image);
+                if(data.isPrivate){
+                    $("#isPublic").removeAttr("checked");
+                }else{
+                    $("#isPublic").attr("checked", "");
+                }
+                if(data.enableJoinNotification){
+                    $("#enableJoinNotification").attr("checked", "");
+                }else{
+                    $("#enableJoinNotification").removeAttr("checked");
+                }
+                $("#maxVisitorCount").val(data.maxVisitorCount);
+                data.tags.forEach(tag => $("#tags").trigger('tokenize:tokens:add', ['value', tag, true]));
+                
+                $('#smartwizard').smartWizard("stepState", [1,2,3,4,5], "done");
+                $('#smartwizard').smartWizard("goToStep", 3);
+
+                $("#nextButton").hide();
+                $("#saveButton").show();
+
+                $("#form").loading('stop');
+            },
+            error: function(e){
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["Template could not be saved"]";
+                
+                notify({
+	                type: "error",
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+        });
+    }
+
     function updateAvatar()
 	{
 		var fileReader = new FileReader();
@@ -281,7 +351,7 @@
                     <div id="step-1" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
                             <label for="type" localize-content>Template</label>
-                            <select id="type" class="form-control">
+                            <select id="type" class="form-control" onChange="loadTemplate(this.value);">
                                 <option value="" localize-content>No</option>
                                 @foreach(var template in Model.Templates){
                                     <option value="@template.Id">@template.Data.Name</option>
@@ -394,7 +464,10 @@
                           showNextButton: false,
                           showPreviousButton: false
                       },
-                      disabledSteps: []
+                      disabledSteps: [],
+                      keyboardSettings: {
+                          keyNavigation: false
+                      }
                 };
                 if(window.id !== 0){
                     smartwizardConfig.disabledSteps.push(0);
