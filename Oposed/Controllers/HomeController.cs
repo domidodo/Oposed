@@ -298,13 +298,18 @@ namespace Oposed.Controllers
                 {
                     foreach (var schedule in evt.Schedule)
                     {
-                        if (schedule.From > now)
+                        if (schedule.To > now)
                         {
-                            list.Add(new EventWithSchedule()
+                            var eventWithSchedule = new EventWithSchedule()
                             {
                                 Event = evt,
                                 Schedule = schedule
-                            });
+                            };
+                            if (schedule.From < now)
+                            {
+                                eventWithSchedule.IsNow = true;
+                            }
+                            list.Add(eventWithSchedule);
                         }
                     }
                 }

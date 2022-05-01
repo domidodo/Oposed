@@ -26,11 +26,18 @@ int lastMonth = 0;
     {
         @Html.Raw(" <b class=\"mb-3\">");
         @Html.Raw(item.Schedule.From.ToString("D"));
-        @Html.Raw(" </b>");
+        @Html.Raw(" </b>")
+        ;
         lastDay = item.Schedule.From.Day;
     }
     <div class="card mb-3">
-        <h5 class="card-header">@item.Schedule.From.ToString("t") - @item.Schedule.To.ToString("t")</h5>
+        <h5 class="card-header">
+            @if (item.IsNow)
+            {
+                <img src="/img/live.gif" alt="live" width="25"/>   
+            }
+            @item.Schedule.From.ToString("t") - @item.Schedule.To.ToString("t")
+        </h5>
         <div class="card-body">
             <div class="row">
                 <div class="col-2">
