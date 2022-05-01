@@ -1,38 +1,43 @@
 ﻿using LiteDB;
-using Microsoft.AspNetCore.Mvc;
 using OposedApi.Models;
 
 namespace OposedApi.Utilities
 {
     public static class TemplateUtility
     {
-        public static int SaveTemplate(Template templ) {
+        public static Template GetTemplateById(int id)
+        {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var col = db.GetCollection<Template>();
+                return col.FindById(id);
+            }
+        }
+
+        public static List<Template> GetTemplatesByUserId(int userId)
+        {
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var col = db.GetCollection<Template>();
+
+                return col.Find(x => x.UserId == userId || x.UserId == 0).ToList();
+            }
+        }
+
+        public static bool SaveTemplate(Template templ) {
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var col = db.GetCollection<Template>();
+
+                var oldTemplate = col.FindOne(x => x.Data.Name == templ.Data.Name && x.UserId == templ.UserId);
+                if (oldTemplate != null)
+                {
+                    templ.Id = oldTemplate.Id;
+                    return col.Update(templ);
+                }
+                
                 var id = col.Insert(templ);
-                return id.AsInt32;
-            }
-        }
-
-        public static List<Template> GetAllTemplates()
-        {
-            List<Template> list = null;
-            using (var db = new LiteDatabase(Settings.DatabasePath))
-            {
-                var col = db.GetCollection<Template>();
-                list = col.Query().ToList();
-            }
-
-            return list;
-        }
-
-        internal static bool DeleteTemplateById(int id)
-        {
-            using (var db = new LiteDatabase(Settings.DatabasePath))
-            {
-                var col = db.GetCollection<Template>();
-                return col.Delete(id);
+                return id.AsInt32 > 0;
             }
         }
     }

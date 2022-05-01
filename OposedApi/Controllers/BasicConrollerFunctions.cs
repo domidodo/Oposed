@@ -33,7 +33,7 @@ namespace OposedApi.Controllers
         [HttpPut]
         [Auth(Role = UserRole.Admin)]
         [SwaggerOperation(Summary = "Update")]
-        public ActionResult Update(T t)
+        public virtual ActionResult Update(T t)
         {
             var successful = BasicUtilityFunctions<T>.Update(t);
             if (successful)
@@ -46,7 +46,7 @@ namespace OposedApi.Controllers
         [HttpPost]
         [Auth(Role = UserRole.Admin)]
         [SwaggerOperation(Summary = "Add")]
-        public ActionResult<int> Add(T t)
+        public virtual ActionResult<int> Add(T t)
         {
             return BasicUtilityFunctions<T>.Save(t);
         }

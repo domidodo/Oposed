@@ -84,10 +84,11 @@
             data:JSON.stringify(data),
             dataType:httpDataType,
             success: function(res){
-                window.id = res.id;
-                
-                $("#form").loading('stop');
-                
+
+                if(typeof res.id !== "undefined"){
+                    window.id = res.id;
+                }
+        
                 notify({
 	                type: "success", //alert | success | error | warning | info
 	                title: "@Localizer["Saved"]",
@@ -99,6 +100,14 @@
 	                autoHide: true,
 	                delay: 4000
                 });
+
+                if($("#enableSaveAsPrivateTemplate").is(':checked')){
+                    saveTemplate(data);
+                }
+                else
+                {
+                    $("#form").loading('stop');
+                }
             },
             error: function(e){
                 $("#form").loading('stop');
@@ -111,6 +120,53 @@
                 
                 notify({
 	                type: "error", //alert | success | error | warning | info
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+
+        });
+    }
+
+    function saveTemplate(data){
+        let templateData = {
+            data: data,
+            isPublic: $("#enableSaveAsPublicTemplate").length !== 0 && $("#enableSaveAsPublicTemplate").is(':checked')
+        };
+
+          $.ajax({
+            url:"/Proxy?Api=/Template",
+            type:'PUT',
+            data:JSON.stringify(templateData),
+            dataType:'',
+            success: function(res){
+                notify({
+	                type: "success",
+	                title: "@Localizer["Saved"]",
+	                message: "<p>@Localizer["Template saved"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+                $("#form").loading('stop');
+            },
+            error: function(e){
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["Template could not be saved"]";
+                
+                notify({
+	                type: "error",
 	                title: "@Localizer["Error"]",
 	                message: "<p localize-content>"+errTxt+"</p>",
 	                position: {
@@ -359,8 +415,30 @@
                     });
                 }
             </script>
-            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton" onclick="$('#smartwizard').smartWizard('next');" localize-content>Next</button>
-            <button type="button" class="btn btn-primary my-2" style="display:@(Model.Event.Id == 0 ? "none" : "block");" id="saveButton" onclick="save();" localize-content>Save</button>
+
+            <div class="row my-3" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton">
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary my-2" onclick="$('#smartwizard').smartWizard('next');" localize-content>Next</button>
+                </div>
+            </div>
+            <div style="display:@(Model.Event.Id == 0 ? "none" : "inline");" id="saveButton">
+                <div class="row my-3">
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary my-2" onclick="save();" localize-content>Save</button>
+                    </div>
+                    <div class="col-sm-3 mt-3">
+                        <input class="form-check-input" type="checkbox" id="enableSaveAsPrivateTemplate" value="1">
+                        <label class="form-check-label" for="enableSaveAsPrivateTemplate" localize-content>Save as private template</label>
+                    </div>
+                    @if (user.Role == UserRole.Admin)
+                    {
+                        <div class="col-sm-3 mt-3">
+                            <input class="form-check-input" type="checkbox" id="enableSaveAsPublicTemplate" value="1">
+                            <label class="form-check-label" for="enableSaveAsPublicTemplate" localize-content>Save as public template</label>
+                        </div>
+                    }
+                </div>
+            </div>
         </form>
     </div>
 </div>

@@ -255,6 +255,12 @@
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
   </data>
+  <data name="Save as private template" xml:space="preserve">
+    <value>Als private Vorlage speichern</value>
+  </data>
+  <data name="Save as public template" xml:space="preserve">
+    <value>Als öffentliche Vorlage speichern</value>
+  </data>
   <data name="Send mail" xml:space="preserve">
     <value>E-Mail senden</value>
   </data>
@@ -269,6 +275,12 @@
   </data>
   <data name="Template" xml:space="preserve">
     <value>Vorlage</value>
+  </data>
+  <data name="Template could not be saved" xml:space="preserve">
+    <value>Vorlage konnte nicht gespeichert werden</value>
+  </data>
+  <data name="Template saved" xml:space="preserve">
+    <value>Vorlage gespeichert</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>Bis</value>
