@@ -198,8 +198,17 @@
   <data name="Informations" xml:space="preserve">
     <value>Informationen</value>
   </data>
+  <data name="Is active" xml:space="preserve">
+    <value>Ist Aktiv</value>
+  </data>
+  <data name="Is admin" xml:space="preserve">
+    <value>Ist Admin</value>
+  </data>
   <data name="Join" xml:space="preserve">
     <value>Mitmachen</value>
+  </data>
+  <data name="Last login" xml:space="preserve">
+    <value>Zuletzt angemeldet</value>
   </data>
   <data name="Logged in as:" xml:space="preserve">
     <value>Angemeldet als:</value>
@@ -209,6 +218,9 @@
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Abmelden</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Mail</value>
   </data>
   <data name="Max. count of visitors" xml:space="preserve">
     <value>Max. Besucheranzahl</value>
@@ -270,6 +282,12 @@
   <data name="Some fields were not filled out correctly" xml:space="preserve">
     <value>Einige Felder wurden nicht korrekt ausgefüllt</value>
   </data>
+  <data name="Sync with LDAP" xml:space="preserve">
+    <value>Synchronisiere mit LDAP</value>
+  </data>
+  <data name="Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
   <data name="Tag-Manager" xml:space="preserve">
     <value>Tag-Manager</value>
   </data>
@@ -287,6 +305,9 @@
   </data>
   <data name="The device is already taking place in the specified period" xml:space="preserve">
     <value>Das Gerät ist zum ausgewählten Zeitpunk bereits ausgeliehen</value>
+  </data>
+  <data name="The user has been synced" xml:space="preserve">
+    <value>Der Benutzer wurde synchronisiert</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>Bis</value>

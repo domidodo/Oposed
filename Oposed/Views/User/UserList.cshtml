@@ -1,0 +1,83 @@
+﻿@using System.Globalization
+@model List<User>
+@{
+    ViewData["Title"] = "Home Page";
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+}
+
+<script>
+    function sync(usrId){
+        $.ajax({
+            url:"/Proxy?Api=/User/Refetch/"+usrId,
+            type:'PUT',
+            success: function(res){
+                notify({
+	                type: "success", //alert | success | error | warning | info
+	                title: "@Localizer["Synced"]",
+	                message: "<p>@Localizer["The user has been synced"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+                if(usrId == @user.Id){
+                    window.location = "/";
+                }
+            },
+            error: function(e){
+                let errTxt = "@Localizer["API connection failed"]";
+                
+                notify({
+	                type: "error", //alert | success | error | warning | info
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+        });
+    }
+</script>
+<div class="container px-4 px-lg-5">
+   <div class="row align-items-center my-5">
+        <div class="overflow-auto" style="width:100%">
+            @foreach(var usr in Model)
+            {
+                <div class="card mb-3">
+                    <h5 class="card-header">
+                        @usr.Name @usr.Surname
+                    </h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <img class="img-fluid rounded mb-4 mb-lg-0" src="@usr.Avatar" alt="" style="width:100%;">
+                            </div>
+                            <div class="col">
+                                <b localize-content>Is active</b> @(usr.Active ? "✔" : "✖")<br/>
+                                <b localize-content>Is admin</b> @(usr.Role == UserRole.Admin ? "✔" : "✖") <br/>
+                                <b localize-content>Mail</b> @usr.Mail<br/>
+                                <b localize-content>Last login</b> @usr.LastLogin<br/>
+
+                                <div class="pull-right">
+                                    <button onClick="sync(@usr.Id)" class="btn btn-primary" localize-content>Sync with LDAP</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

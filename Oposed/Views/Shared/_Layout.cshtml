@@ -45,11 +45,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="/Events"><i class="bi bi-calendar3"></i> <span localize-content>Events</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-bell"></i> <span localize-content>Notifications</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Notifications"><i class="bi bi-bell"></i> <span localize-content>Notifications</span></a></li>
                     @if (user.Role == Oposed.Enum.UserRole.Admin)
                     {
-                        <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-gear"></i> <span localize-content>Tag-Manager</span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-people"></i> <span localize-content>Users</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Tags"><i class="bi bi-gear"></i> <span localize-content>Tag-Manager</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Users"><i class="bi bi-people"></i> <span localize-content>Users</span></a></li>
                     }
                     <li class="nav-item"><a class="nav-link" href="/User/Login"><i class="bi bi-door-closed"></i> <span localize-content>Logout</span></a></li>
                 </ul>
