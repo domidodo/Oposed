@@ -5,7 +5,8 @@ namespace OposedApi.Models
     public class Event
     {
         public int Id { get; set; }
-        public int ResourceId { get; set; } = 0;
+        public int RoomId { get; set; } = 0;
+        public List<int> DevicesIds { get; set; } = new List<int>();
         public int OrganizerId { get; set; } = 0;
         public bool IsPrivate { get; set; } = false;
         public bool EnableJoinNotification { get; set; } = true;
@@ -19,7 +20,10 @@ namespace OposedApi.Models
 
 
         [BsonIgnore]
-        public Resource? Resource { get; set; } = null;
+        public Resource? Room { get; set; } = null;
+
+        [BsonIgnore]
+        public List<Resource> Devices { get; set; } = new List<Resource>();
 
         [BsonIgnore]
         public User? Organizer { get; set; } = null;

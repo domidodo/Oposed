@@ -35,7 +35,7 @@ namespace OposedApi.Utilities
                     var timePeriodDb = db.GetCollection<TimePeriod>();
                     var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
 
-                    return FillEventList(eventDb.Find(x => x.ResourceId == resourceId && timePeriodIds.Contains(x.Id)).ToList());
+                    return FillEventList(eventDb.Find(x => (x.RoomId == resourceId || x.DevicesIds.Contains(resourceId)) && timePeriodIds.Contains(x.Id)).ToList());
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace OposedApi.Utilities
 
                 foreach (var id in timePeriodIds) {
                     var evet = eventDb.FindById(id);
-                    if (evet != null && evet.ResourceId == resourceId) { 
+                    if (evet != null && (evet.RoomId == resourceId || evet.DevicesIds.Contains(resourceId))) { 
                         return FillEvent(evet, db);
                     }
                 }
@@ -71,9 +71,17 @@ namespace OposedApi.Utilities
 
         internal static Event? AddEvent(Event evt)
         {
-            if (EventUtility.GetBlockedTimePeriods(evt.ResourceId, evt.Schedule).Count > 0)
+            if (EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule).Count > 0)
             {
                 return null;
+            }
+
+            foreach (var id in evt.DevicesIds) 
+            {
+                if (EventUtility.GetBlockedTimePeriods(id, evt.Schedule).Count > 0)
+                {
+                    return null;
+                }
             }
 
             using (var db = new LiteDatabase(Settings.DatabasePath))
@@ -102,13 +110,24 @@ namespace OposedApi.Utilities
             if (evt.Schedule != null) 
             {
                 var ownScheduleIds = evt.Schedule.Select(x => x.Id).ToList();
-                var blockedSchedules = EventUtility.GetBlockedTimePeriods(evt.ResourceId, evt.Schedule);
+                var blockedSchedules = EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule);
                 blockedSchedules = blockedSchedules.Where(x => !ownScheduleIds.Contains(x.Id)).ToList();
 
                 if (blockedSchedules.Count > 0) {
                     return false;
                 }
             }
+
+            foreach (var id in evt.DevicesIds)
+            {
+                var blockedSchedules = EventUtility.GetBlockedTimePeriods(id, evt.Schedule);
+                blockedSchedules = blockedSchedules.Where(x => !evt.DevicesIds.Contains(x.Id)).ToList();
+                if (blockedSchedules.Count > 0)
+                {
+                    return false;
+                }
+            }
+            
 
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
@@ -160,7 +179,7 @@ namespace OposedApi.Utilities
                 foreach (var t in time) {
                     var eventsIdInSameTime = timePeriodDb.Find(o => o.From < t.To && o.To > t.From).Select(x => x.EventId).ToList();
 
-                    var exists = eventDb.Query().Where(o => o.ResourceId == resourceId && eventsIdInSameTime.Contains(o.Id)).Exists();
+                    var exists = eventDb.Query().Where(o => (o.RoomId == resourceId || o.DevicesIds.Contains(resourceId)) && eventsIdInSameTime.Contains(o.Id)).Exists();
 
                     if (exists)
                     {
@@ -195,9 +214,14 @@ namespace OposedApi.Utilities
             var resourceDb = conn.GetCollection<Resource>();
             var scheduleDb = conn.GetCollection<TimePeriod>();
 
-            if (eventItem.Resource == null)
+            if (eventItem.Room == null)
             {
-                eventItem.Resource = resourceDb.FindById(eventItem.ResourceId);
+                eventItem.Room = resourceDb.FindById(eventItem.RoomId);
+            }
+
+            if (eventItem.Devices == null)
+            {
+                eventItem.Devices = resourceDb.Find(x => eventItem.DevicesIds.Contains(x.Id)).ToList();
             }
 
             if (eventItem.Organizer == null)

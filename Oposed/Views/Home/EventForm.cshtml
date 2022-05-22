@@ -19,6 +19,7 @@
         let description = $("#description").val();
         let image = $("#imageBase64").val();
         let resourceId = parseInt($("#resourceId").val());
+        let deviceDOMs = $(".device");
         let fromDOMs = $(".from");
         let toDOMs = $(".to");
         let isPublic = $("#isPublic").is(':checked')
@@ -32,7 +33,8 @@
 
         let data = {
             id: id,
-            resourceId: resourceId,
+            roomId: resourceId,
+            devicesIds: [],
             organizerId: @user.Id,
             isPrivate: !isPublic,
             enableJoinNotification: enableJoinNotification,
@@ -51,6 +53,12 @@
                     from: toIsoString(new Date(fromDOMs[i].value)),
                     to: toIsoString(new Date(toDOMs[i].value))
                 });  
+            }
+        }
+
+        for(i = 0; i < deviceDOMs.length; i++){
+            if($(deviceDOMs[i]).is(':checked')){
+                data.devicesIds.push(parseInt(deviceDOMs[i].id.substring(7)));  
             }
         }
 
@@ -114,7 +122,7 @@
 
                 let errTxt = "@Localizer["API connection failed"]";
                 if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
-                    $('#smartwizard').smartWizard("goToStep", 3);
+                    $('#smartwizard').smartWizard("goToStep", 4);
                     errTxt = "@Localizer["An event is already taking place in the specified period"]";
                 }
                 
@@ -192,12 +200,12 @@
         }
 
         if(data.schedule.length === 0){
-            $('#smartwizard').smartWizard("goToStep", 3);
+            $('#smartwizard').smartWizard("goToStep", 4);
             return false;
         }
         
         if(data.maxVisitorCount < 0){
-            $('#smartwizard').smartWizard("goToStep", 4);
+            $('#smartwizard').smartWizard("goToStep", 5);
             return false;
         }
 
@@ -246,8 +254,8 @@
                 $("#maxVisitorCount").val(data.maxVisitorCount);
                 data.tags.forEach(tag => $("#tags").trigger('tokenize:tokens:add', ['value', tag, true]));
                 
-                $('#smartwizard').smartWizard("stepState", [1,2,3,4,5], "done");
-                $('#smartwizard').smartWizard("goToStep", 3);
+                $('#smartwizard').smartWizard("stepState", [1,2,3,4,5,6], "done");
+                $('#smartwizard').smartWizard("goToStep", 4);
 
                 $("#nextButton").hide();
                 $("#saveButton").show();
@@ -338,11 +346,16 @@
                    </li>
                    <li>
                        <a class="nav-link" href="#step-4" localize-content>
-                          When
+                          With
                        </a>
                    </li>
                    <li>
                        <a class="nav-link" href="#step-5" localize-content>
+                          When
+                       </a>
+                   </li>
+                   <li>
+                       <a class="nav-link" href="#step-6" localize-content>
                           Who
                        </a>
                    </li>
@@ -393,13 +406,34 @@
                                 @foreach(var resource in Model.Resources){
                                     if (resource.Type == ResourceType.Room)
                                     {
-                                        <option value="@resource.Id" selected="@(Model.Event.ResourceId == resource.Id)">@resource.Name</option>
+                                        <option value="@resource.Id" selected="@(Model.Event.RoomId == resource.Id)">@resource.Name</option>
                                     }
                                 }
                             </select>
                         </div>
                     </div>
                     <div id="step-4" class="tab-pane" role="tabpanel">
+                        <div class="form-group my-2">
+                            <label for="resourceId" localize-content>Device</label>
+                            @foreach(var resource in Model.Resources){
+                                if (resource.Type == ResourceType.Device)
+                                {
+                                     <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="form-group form-switch">
+                                                <input class="form-check-input device" type="checkbox" id="device_@resource.Id" value="1" @(Model.Event != null && Model.Event.DevicesIds.Contains(resource.Id) ? "checked" : "")>
+                                                <label class="form-check-label" for="device_@resource.Id">
+                                                    <img src="@resource.Image" alt="" style="width:100px; padding:5px;"/>
+                                                    @resource.Name
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div id="step-5" class="tab-pane" role="tabpanel">
                         <div id="timePeriods">
                             <div class="form-group row my-2">
                                 <div class="col-sm-5">
@@ -430,7 +464,7 @@
                         </script>
                         <button type="button" class="btn btn-success" onclick='addTimePeriod();' localize-content>Add period of time</button>
                     </div>
-                    <div id="step-5" class="tab-pane" role="tabpanel">
+                    <div id="step-6" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2 form-switch">
                             <input class="form-check-input" type="checkbox" id="isPublic" value="1" @(Model.Event.IsPrivate ? "" : "checked")>
                             <label class="form-check-label" for="isPublic" localize-content>Public </label>
@@ -483,7 +517,7 @@
                     $("#smartwizard").on("showStep", function() {
                         setTimeout(function() {
                             var stepIndex = $('#smartwizard').smartWizard("getStepIndex");
-                            if(stepIndex === 4){
+                            if(stepIndex === 5){
                                  $("#nextButton").hide();
                                  $("#saveButton").show();
                             }

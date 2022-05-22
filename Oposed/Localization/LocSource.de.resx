@@ -320,4 +320,7 @@
   <data name="Who" xml:space="preserve">
     <value>Wer</value>
   </data>
+  <data name="With" xml:space="preserve">
+    <value>Mit</value>
+  </data>
 </root>

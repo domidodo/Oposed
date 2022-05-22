@@ -154,7 +154,7 @@ namespace Oposed.Controllers
 
             if (Request.Query.TryGetValue("ResourceId", out var resourceId))
             {
-                vm.Event.ResourceId = Int32.Parse(resourceId);
+                vm.Event.RoomId = Int32.Parse(resourceId);
             }
 
             if (Request.Query.TryGetValue("isPrivate", out var isPrivate))

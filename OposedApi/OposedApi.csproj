@@ -47,6 +47,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+
     <Target Name="MakeMyDir" AfterTargets="Build">
 		<MakeDir Directories="$(OutDir)Database" />
 		<MakeDir Directories="Database" />

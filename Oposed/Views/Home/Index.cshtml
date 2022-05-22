@@ -1,13 +1,26 @@
 ﻿@model List<Resource>
 @{
     ViewData["Title"] = "Home Page";
-    
+
 
     int MAX_DESCRIPTION_LENGTH = 100;
     User user = new User();
     if (Context.Items.ContainsKey("User"))
     {
         user = Context.Items["User"] as User;
+    }
+
+    string GetDescription(string description)
+    {
+        if (description == null)
+        {
+            return "";
+        }
+        if (description.Length > MAX_DESCRIPTION_LENGTH)
+        {
+            return description.Substring(0, MAX_DESCRIPTION_LENGTH);
+        }
+        return description;
     }
 }
 
@@ -85,7 +98,7 @@ $(document).ready(function() {
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">@room.Name</h5>
-                        <p class="card-text">@(room.Description.Length < MAX_DESCRIPTION_LENGTH ? room.Description : room.Description.Substring(0, MAX_DESCRIPTION_LENGTH))</p>
+                        <p class="card-text">@GetDescription(room.Description)</p>
                         <div resourceId="@room.Id" style="height:55px;"></div>
                    </div>
                 </div>
@@ -119,7 +132,7 @@ $(document).ready(function() {
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">@device.Name</h5>
-                        <p class="card-text">@(device.Description.Length < MAX_DESCRIPTION_LENGTH ? device.Description : device.Description.Substring(0, MAX_DESCRIPTION_LENGTH))</p>
+                        <p class="card-text">@GetDescription(device.Description)</p>
                         <div resourceId="@device.Id" style="height:55px;"></div>
                    </div>
                 </div>
