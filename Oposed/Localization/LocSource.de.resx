@@ -332,6 +332,9 @@
   <data name="User not found" xml:space="preserve">
     <value>Benutzer existiert nicht</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Benutzer</value>
+  </data>
   <data name="Visitors" xml:space="preserve">
     <value>Besucher</value>
   </data>
