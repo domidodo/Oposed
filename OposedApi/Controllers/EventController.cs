@@ -28,36 +28,36 @@ namespace OposedApi.Controllers
         [HttpGet]
         [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Get all current and future events")]
-        public ActionResult<List<Event>> GetAllRoomEvents()
+        public ActionResult<List<Event>> GetAllResourceEvents()
         {
             return EventUtility.GetAllEvents();
         }
 
         [HttpGet]
         [Auth(Role = UserRole.User)]
-        [Route("Room/{roomId}")]
-        [SwaggerOperation(Summary = "Get all current and future events of room")]
-        public ActionResult<List<Event>> GetAllCurrentFutureEventsByRoomId(int roomId)
+        [Route("Resource/{resourceId}")]
+        [SwaggerOperation(Summary = "Get all current and future events of resource")]
+        public ActionResult<List<Event>> GetAllCurrentFutureEventsByResourceId(int resourceId)
         {
-            return EventUtility.GetAllEventsOfRoom(roomId);
+            return EventUtility.GetAllEventsOfResource(resourceId);
         }
 
         [HttpGet]
         [Auth(Role = UserRole.User)]
-        [Route("Room/{roomId}/All")]
-        [SwaggerOperation(Summary = "Get all current, future and past events of room")]
-        public ActionResult<List<Event>> GetAllEventsByRoomId(int roomId)
+        [Route("Resource/{resourceId}/All")]
+        [SwaggerOperation(Summary = "Get all current, future and past events of resource")]
+        public ActionResult<List<Event>> GetAllEventsByResourceId(int resourceId)
         {
-            return EventUtility.GetAllEventsOfRoom(roomId, true);
+            return EventUtility.GetAllEventsOfResource(resourceId, true);
         }
 
         [HttpGet]
         [Auth(Role = UserRole.User)]
-        [Route("Room/{roomId}/Next")]
-        [SwaggerOperation(Summary = "Get current or next events of room")]
-        public ActionResult<Event> GetNextEventsByRoomId(int roomId)
+        [Route("Resource/{resourceId}/Next")]
+        [SwaggerOperation(Summary = "Get current or next events of resource")]
+        public ActionResult<Event> GetNextEventsByResourceId(int resourceId)
         {
-            var evt = EventUtility.GetNextEventsOfRoom(roomId);
+            var evt = EventUtility.GetNextEventsOfResource(resourceId);
             if (evt != null)
                 return evt;
             else
@@ -66,11 +66,11 @@ namespace OposedApi.Controllers
 
         [HttpGet]
         [Auth(Role = UserRole.User)]
-        [Route("Room/{roomId}/BlockedTimePeriod")]
-        [SwaggerOperation(Summary = "Check if room is free. Entity in rentun are blocked.")]
-        public ActionResult<List<TimePeriod>> GetBlockedTimePeriod(int roomId, List<TimePeriod> time)
+        [Route("Resource/{resourceId}/BlockedTimePeriod")]
+        [SwaggerOperation(Summary = "Check if resource is free. Entity in rentun are blocked.")]
+        public ActionResult<List<TimePeriod>> GetBlockedTimePeriod(int resourceId, List<TimePeriod> time)
         {
-            return EventUtility.GetBlockedTimePeriods(roomId, time);
+            return EventUtility.GetBlockedTimePeriods(resourceId, time);
         }
 
         [HttpPost]
@@ -161,7 +161,7 @@ namespace OposedApi.Controllers
         [Auth(Role = UserRole.User)]
         [Route("{id}")]
         [SwaggerOperation(Summary = "Delete event")]
-        public ActionResult DeleteEventsToRoom(int id)
+        public ActionResult DeleteEventsToResource(int id)
         {
             var successful = EventUtility.DeleteEventById(id);
             if (successful)

@@ -51,7 +51,7 @@ namespace Oposed.Controllers
             
             foreach (var time in evt.Schedule) {
                 sb.AppendLine("BEGIN:VEVENT");
-                sb.AppendLine("LOCATION:"+evt.Room.Name);
+                sb.AppendLine("LOCATION:"+evt.Resource.Name);
                 sb.AppendLine("SUMMARY:"+evt.Name);
                 sb.AppendLine("DESCRIPTION:"+evt.Description + "<br/><br/><br/><a href='mailto:" + evt.Organizer.Mail + "'>" + evt.Organizer.Mail+ "</a><br/><br/><a href='" + url + "'>" + url+"</a>");
                 sb.AppendLine("DTSTART:"+ time.From.ToString("yyyyMMdd", DateTimeFormatInfo.InvariantInfo) +"T"+ time.From.ToString("HHmmss", DateTimeFormatInfo.InvariantInfo) + "Z");

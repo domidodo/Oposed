@@ -18,7 +18,7 @@
         let name = $("#name").val();
         let description = $("#description").val();
         let image = $("#imageBase64").val();
-        let roomId = parseInt($("#roomId").val());
+        let resourceId = parseInt($("#resourceId").val());
         let fromDOMs = $(".from");
         let toDOMs = $(".to");
         let isPublic = $("#isPublic").is(':checked')
@@ -32,7 +32,7 @@
 
         let data = {
             id: id,
-            roomId: roomId,
+            resourceId: resourceId,
             organizerId: @user.Id,
             isPrivate: !isPublic,
             enableJoinNotification: enableJoinNotification,
@@ -186,7 +186,7 @@
             return false;
         }
 
-        if(data.roomId === 0){
+        if(data.resourceId === 0){
             $('#smartwizard').smartWizard("goToStep", 2);
             return false;
         }
@@ -388,10 +388,13 @@
                     </div>
                     <div id="step-3" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
-                            <label for="roomId" localize-content>Room</label> <font color="red">*</font>
-                            <select id="roomId" class="form-control">
-                                @foreach(var room in Model.Rooms){
-                                    <option value="@room.Id" selected="@(Model.Event.RoomId == room.Id)">@room.Name</option>
+                            <label for="resourceId" localize-content>Room</label> <font color="red">*</font>
+                            <select id="resourceId" class="form-control">
+                                @foreach(var resource in Model.Resources){
+                                    if (resource.Type == ResourceType.Room)
+                                    {
+                                        <option value="@resource.Id" selected="@(Model.Event.ResourceId == resource.Id)">@resource.Name</option>
+                                    }
                                 }
                             </select>
                         </div>

@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace OposedApi.Controllers
 {
-
+   
     [ApiController]
     [Route("[controller]")]
     public class TemplateController : ControllerBase

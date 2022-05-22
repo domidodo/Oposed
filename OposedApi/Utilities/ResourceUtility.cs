@@ -3,50 +3,50 @@ using OposedApi.Models;
 
 namespace OposedApi.Utilities
 {
-    public class BasicUtilityFunctions<T>
+    public class ResourceUtility
     {
-        public static int Save(T t)
+        public static int SaveResource(Resource resource)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var col = db.GetCollection<T>();
-                var id = col.Insert(t);
+                var col = db.GetCollection<Resource>();
+                var id = col.Insert(resource);
                 return id.AsInt32;
             }
         }
 
-        public static bool Update(T t)
+        public static bool UpdateResource(Resource resource)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var col = db.GetCollection<T>();
-                return col.Update(t);
+                var col = db.GetCollection<Resource>();
+                return col.Update(resource);
             }
         }
 
-        public static bool DeleteById(int id)
+        public static bool DeleteResourceById(int id)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var col = db.GetCollection<T>();
+                var col = db.GetCollection<Resource>();
                 return col.Delete(id);
             }
         }
 
-        public static T GetById(int id)
+        public static Resource GetResourceById(int id)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var col = db.GetCollection<T>();
-                return col.FindById(id);
+                var col = db.GetCollection<Resource>();
+                return col.Query().Where(x => x.Id == id).FirstOrDefault();
             }
         }
 
-        public static List<T> GetAll()
+        public static List<Resource> GetAllResources()
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var col = db.GetCollection<T>();
+                var col = db.GetCollection<Resource>();
                 return col.Query().ToList();
             }
         }
