@@ -27,10 +27,19 @@
     </div>
     <br/>
     <div class="row gx-4 gx-lg-5 align-items-center">
-         <div class="col-md-4">
-            <a class="btn btn-success mb-3 w-100" href="/Event/New?ResourceId=@Model.Resource.Id" localize-content>Add event</a>
-         </div>
-         @if (user.Role == Oposed.Enum.UserRole.Admin)
+        @if (Model.Resource.Type == ResourceType.Room)
+        {
+            <div class="col-md-4">
+                <a class="btn btn-success mb-3 w-100" href="/Event/New?ResourceId=@Model.Resource.Id" localize-content>Add event</a>
+            </div>
+        }
+        else if (Model.Resource.Type == ResourceType.Device)
+        {
+            <div class="col-md-4">
+                <a class="btn btn-success mb-3 w-100" href="/Borrow/New?ResourceId=@Model.Resource.Id" localize-content>Borrow device</a>
+            </div>
+        }
+        @if (user.Role == Oposed.Enum.UserRole.Admin)
          {
               <div class="col-md-4">
                  <a class="btn btn-primary mb-3 w-100" href="/Resource/@Model.Resource.Id/Edit" localize-content>Edit</a>

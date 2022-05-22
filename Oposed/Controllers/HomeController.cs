@@ -283,6 +283,30 @@ namespace Oposed.Controllers
             return View("EventList", vm);
         }
 
+        [Auth]
+        [Route("Borrow/New")]
+        public async Task<IActionResult> NewBorrow()
+        {
+            User usr = GetUser(HttpContext);
+            var apiUrl = Settings.UrlApi;
+            var vm = new BorrowViewModel();
+
+            if (Request.Query.TryGetValue("ResourceId", out var resourceId))
+            {
+                vm.DeviceId = Int32.Parse(resourceId);
+            }
+
+            try
+            {
+                vm.Resources = await $"{apiUrl}/Resource"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Resource>>();
+            }
+            catch (Exception) { }
+
+            return View("BorrowForm", vm);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

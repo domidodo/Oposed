@@ -135,6 +135,9 @@
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
   </data>
+  <data name="Borrow device" xml:space="preserve">
+    <value>Gerät ausleihen</value>
+  </data>
   <data name="Changes saved" xml:space="preserve">
     <value>Änderungen gespeichert</value>
   </data>
@@ -281,6 +284,9 @@
   </data>
   <data name="Template saved" xml:space="preserve">
     <value>Vorlage gespeichert</value>
+  </data>
+  <data name="The device is already taking place in the specified period" xml:space="preserve">
+    <value>Das Gerät ist zum ausgewählten Zeitpunk bereits ausgeliehen</value>
   </data>
   <data name="To" xml:space="preserve">
     <value>Bis</value>

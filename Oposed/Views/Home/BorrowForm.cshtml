@@ -1,0 +1,183 @@
+﻿@using System.Web
+@model BorrowViewModel
+@{
+    ViewData["Title"] = "Home Page";
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+}
+<script>
+    function save()
+    {
+        let deviceId = $("#resourceId").val();
+        let fromDOMs = $(".from");
+        let toDOMs = $(".to");
+        
+        let data = {
+            id: 0,
+            roomId: 0,
+            devicesIds: [],
+            organizerId: @user.Id,
+            isPrivate: true,
+            enableJoinNotification: false,
+            name: '@user.Name @user.Surname',
+            description: '',
+            maxVisitorCount: 0,
+            image: '',
+            tags: [],
+            schedule: []
+        };
+
+        let i = 0;
+        for(i = 0; i < fromDOMs.length; i++){
+            if(fromDOMs[i].value !== "" && toDOMs[i].value !== ""){
+                data.schedule.push({
+                    from: toIsoString(new Date(fromDOMs[i].value)),
+                    to: toIsoString(new Date(toDOMs[i].value))
+                });  
+            }
+        }
+
+        data.devicesIds.push(parseInt(deviceId));  
+        
+        console.log(data);
+
+        if(!validateData(data)){
+            notify({
+	                type: "error",
+	                title: "@Localizer["Error"]",
+	                message: "<p>@Localizer["Some fields were not filled out correctly"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+            return;
+        }
+
+        let httpMethod = "POST";
+        let httpDataType = "json";
+
+        $("#form").loading('start');
+        $.ajax({
+            url:"/Proxy?Api=/Event",
+            type:httpMethod,
+            data:JSON.stringify(data),
+            dataType:httpDataType,
+            success: function(res){
+
+                if(typeof res.id !== "undefined"){
+                    window.id = res.id;
+                }
+        
+                notify({
+	                type: "success", //alert | success | error | warning | info
+	                title: "@Localizer["Saved"]",
+	                message: "<p>@Localizer["Changes saved"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+                 window.location = "/Resource/"+@Model.DeviceId;
+
+                $("#form").loading('stop');                
+            },
+            error: function(e){
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["API connection failed"]";
+                if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
+                    errTxt = "@Localizer["An device is already taking place in the specified period"]";
+                }
+                
+                notify({
+	                type: "error", //alert | success | error | warning | info
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+
+        });
+    }
+
+    function validateData(data){
+        if(data.schedule.length === 0){
+            return false;
+        }
+        
+        return true;
+    }
+
+    function addTimePeriod(from = '', to = ''){
+        let timePeriods = $("#timePeriods");
+        timePeriods.append('<div class="form-group row my-2"><div class="col-sm-5"> <input type="datetime-local" class="form-control from" value="'+from+'"></div><div class="col-sm-5"><input type="datetime-local" class="form-control to" value="'+to+'"></div><div class="col-sm-1"><button type="button" class="btn btn-danger" onclick="removeTimePeriod(this);">Remove</button></div></div>');
+        
+        $('#smartwizardContent').height($('#smartwizardContent').height() + 46);
+    }
+
+    function removeTimePeriod(btn){
+        $(btn)
+            .parent()
+            .parent()
+            .remove();
+
+        $('#smartwizardContent').height($('#smartwizardContent').height() - 46);
+    }
+</script>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+         <form id="form">
+            <div class="form-group my-2">
+                <label for="type" localize-content>Device</label>
+                <select id="resourceId" class="form-control">
+                    @foreach (var resource in Model.Resources)
+                    {
+                        if (resource.Type == ResourceType.Device)
+                        {
+                            <option value="@resource.Id" selected="@(Model.DeviceId == resource.Id)">@resource.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group my-2">
+                <div id="timePeriods">
+                    <div class="form-group row my-2">
+                        <div class="col-sm-5">
+                            <label for="" localize-content>From</label> <font color="red">*</font>
+                        </div>
+                        <div class="col-sm-5">
+                            <label for="" localize-content>To</label> <font color="red">*</font>
+                        </div>
+                    </div>
+                    <div class="form-group row my-2">
+                        <div class="col-sm-5">
+                            <input type="datetime-local" class="form-control from" value="" />
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="datetime-local" class="form-control to" value="" />
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success" onclick='addTimePeriod();' localize-content>Add period of time</button>
+            </div>
+
+            <button type="button" class="btn btn-primary my-2" onclick="save();" localize-content>Save</button>
+        </form>
+    </div>
+</div>

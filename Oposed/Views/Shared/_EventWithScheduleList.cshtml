@@ -4,17 +4,25 @@
 @{
 int lastDay = 0;
 int lastMonth = 0;
+
+string GetDescription(string description)
+{
+    if (description == null)
+    {
+        return "";
+    }
+    description = Regex.Replace(description, "<.*?>", " ");
+    if (description.Length > 200)
+    {
+        return description.Substring(0, 200);
+    }
+    return description;
+}
 }
 @foreach(var item in Model)
 {
     int freePlaces = item.Event.MaxVisitorCount - item.Event.Visitors.Count;
-    var description = item.Event.Description.ReplaceLineEndings(" ");
-    description = Regex.Replace(description, "<.*?>", " ");
-    if (description.Length >= 200)
-    {
-        description = description.Substring(0, 200) + "...";
-    }
-
+    
     if (lastMonth != item.Schedule.From.Month)
     {
         @Html.Raw(" <div class=\"card text-white bg-secondary mb-3 text-center\">");
@@ -26,8 +34,7 @@ int lastMonth = 0;
     {
         @Html.Raw(" <b class=\"mb-3\">");
         @Html.Raw(item.Schedule.From.ToString("D"));
-        @Html.Raw(" </b>")
-        ;
+        @Html.Raw(" </b>");
         lastDay = item.Schedule.From.Day;
     }
     <div class="card mb-3">
@@ -41,18 +48,21 @@ int lastMonth = 0;
         <div class="card-body">
             <div class="row">
                 <div class="col-2">
-                    <img class="img-fluid rounded mb-4 mb-lg-0" src="@item.Event.Image" alt="" style="width:100%;">
+                    <img class="img-fluid rounded mb-4 mb-lg-0" src="@(item.Event.Image == null || item.Event.Image.Length == 0 ? item.Event.Organizer.Avatar : item.Event.Image)" alt="" style="width:100%;">
                 </div>
                 <div class="col">
                     <h5 class="card-title">@item.Event.Name</h5>
-                    <p class="card-text">@description</p>
+                    <p class="card-text">@GetDescription(item.Event.Description)</p>
                     @foreach(var tag in item.Event.Tags)
                     {
                         <span class="badge text-black bg-light">@tag</span>
                     }
-                    <div class="pull-right">
-                        <b class="m-3">@freePlaces <i localize-content>Free places</i></b><a href="/Event/@item.Event.Id" class="btn btn-primary" localize-content>Informations</a>
-                    </div>
+                    @if (item.Event.Room != null)
+                    {
+                        <div class="pull-right">
+                            <b class="m-3">@freePlaces <i localize-content>Free places</i></b><a href="/Event/@item.Event.Id" class="btn btn-primary" localize-content>Informations</a>
+                        </div>  
+                    }
                 </div>
             </div>
         </div>
