@@ -29,8 +29,11 @@
         public static string SmtpServerMailAddress { get; } = Environment.GetEnvironmentVariable("SMTP_MAIL_ADDRESS");
         public static string SmtpServerMailPassword { get; } = Environment.GetEnvironmentVariable("SMTP_MAIL_PASSWORD");
         public static string SmtpServerIsSsl { get; } = Environment.GetEnvironmentVariable("SMTP_ENABLE_SSL");
+        public static string SmtpServerIgnoreInvalidCertificate { get; internal set; } = Environment.GetEnvironmentVariable("SMTP_IGNORE_INVALID_CERTIFICATE");
 
         #endregion // SMTP
 
+        public static string BaseUrl { get; } = Environment.GetEnvironmentVariable("OPOSED_BASE_URL");
+        
     }
 }

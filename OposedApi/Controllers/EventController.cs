@@ -2,6 +2,7 @@
 using OposedApi.Attributes;
 using OposedApi.Enum;
 using OposedApi.Error;
+using OposedApi.MailType;
 using OposedApi.Models;
 using OposedApi.Utilities;
 using Swashbuckle.AspNetCore.Annotations;
@@ -133,6 +134,9 @@ namespace OposedApi.Controllers
             evt.VisitorIds.Add(currentUser.Id);
 
             var successful = EventUtility.UpdateEvent(evt);
+
+            MailSenderUtility.Send(new Join(currentUser, evt));
+
             if (successful)
                 return Ok();
             else

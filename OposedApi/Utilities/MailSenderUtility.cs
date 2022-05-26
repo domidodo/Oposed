@@ -1,19 +1,21 @@
 ﻿using OposedApi.Enum;
+using OposedApi.MailType;
 using System.Net;
 using System.Net.Mail;
 
 namespace OposedApi.Utilities
 {
-    public class MailSenderUtility
+    internal class MailSenderUtility
     {
         private static SmtpClient? _smtpClient = null;
 
-        public static void Init()
+        private static void Init()
         {
             var host = Settings.SmtpServerHost;
             var port = Convert.ToInt32(Settings.SmtpServerPort);
             var mail = Settings.SmtpServerMailAddress;
             var password = Settings.SmtpServerMailPassword;
+            var ignoreInvalidCertificate = Convert.ToBoolean(Settings.SmtpServerIgnoreInvalidCertificate);
             var ssl = Convert.ToBoolean(Settings.SmtpServerIsSsl);
 
             if (host == null)
@@ -22,26 +24,36 @@ namespace OposedApi.Utilities
             _smtpClient = new SmtpClient(host)
             {
                 Port = port,
+                UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(mail, password),
                 EnableSsl = ssl,
             };
+            if (ignoreInvalidCertificate)
+            {
+                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            }
         }
 
-        public static void Send(string mail, MailTemplate template, Dictionary<string, string> param) 
+        internal static void Send(MailTypBase type)
         {
+            if (_smtpClient == null)
+                Init();
             if (_smtpClient == null)
                 return;
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("email"),
-                Subject = "subject",
-                Body = "<h1>Hello</h1>",
+                From = new MailAddress(Settings.SmtpServerMailAddress),
+                Subject = type.GetSubject(),
+                Body = type.GetHtmlContent(),
                 IsBodyHtml = true,
             };
-            mailMessage.To.Add("recipient");
+            foreach (var mail in type.GetMailList())
+            {
+                mailMessage.To.Add(mail);
+            }
 
-            _smtpClient.Send(mailMessage);
+            _smtpClient.SendMailAsync(mailMessage);
         }
     }
 }

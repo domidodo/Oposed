@@ -26,7 +26,9 @@
         "LDAP_SERVER_HOST": "",
         "SMTP_MAIL_ADDRESS": "",
         "LDAP_BASE_DN": "",
-        "SMTP_ENABLE_SSL": "true"
+        "SMTP_ENABLE_SSL": "true",
+        "SMTP_IGNORE_INVALID_CERTIFICATE": "false",
+        "OPOSED_BASE_URL": ""
       },
       "httpPort": 5000
     }
