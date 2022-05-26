@@ -198,6 +198,9 @@
   <data name="Image" xml:space="preserve">
     <value>Bild</value>
   </data>
+  <data name="Information" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="Informations" xml:space="preserve">
     <value>Informationen</value>
   </data>
@@ -257,6 +260,9 @@
   </data>
   <data name="Please enter your login-data" xml:space="preserve">
     <value>Bitte geben Sie Ihre anmeldedaten ein</value>
+  </data>
+  <data name="Please indicate which topics you are interested in.&lt;br/&gt;You will then be informed by email as soon as there are events related to your interests." xml:space="preserve">
+    <value>Geben Sie an für welche Themen Sie sich interessieren.&lt;br/&gt;Sie werden dann per Mail darüber Informiertn, sobald es Veranstaltungen in Verbindung zu Ihren interessen gibt.</value>
   </data>
   <data name="Public" xml:space="preserve">
     <value>Öffentlich</value>

@@ -45,30 +45,32 @@ namespace OposedApi.Utilities
 
         public static bool AddNewsletterToUser(User usr, int newsletterId)
         {
-            if (!usr.NewsletterIds.Contains(newsletterId)) {
-                usr.NewsletterIds.Add(newsletterId);
+            if (usr.DisabledNewsletterIds.Contains(newsletterId))
+            {
+                usr.DisabledNewsletterIds.Remove(newsletterId);
+
                 using (var db = new LiteDatabase(Settings.DatabasePath))
                 {
                     var col = db.GetCollection<User>();
                     return col.Update(usr);
                 }
             }
-            
+
             return true;
         }
 
         public static bool DeleteNewsletterToUser(User usr, int newsletterId)
         {
-            if (usr.NewsletterIds.Contains(newsletterId))
+            if (!usr.DisabledNewsletterIds.Contains(newsletterId))
             {
-                usr.NewsletterIds.Remove(newsletterId);
-
+                usr.DisabledNewsletterIds.Add(newsletterId);
                 using (var db = new LiteDatabase(Settings.DatabasePath))
                 {
                     var col = db.GetCollection<User>();
                     return col.Update(usr);
                 }
             }
+           
             return true;
         }
     }

@@ -79,6 +79,30 @@ namespace Oposed.Controllers
             return View("TagManager", newsletter);
         }
 
+        [Auth]
+        [Route("/Notifications")]
+        public async Task<IActionResult?> ShowNotificationSettings()
+        {
+            var apiUrl = Settings.UrlApi;
+
+            List<Newsletter> newsletter = new List<Newsletter>();
+            try
+            {
+                User usr = GetUser(HttpContext);
+
+                newsletter = await $"{apiUrl}/Newsletter/"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Newsletter>>();
+            }
+            catch (Exception)
+            {
+                HttpContext.Response.Redirect("/");
+                return null;
+            }
+
+            return View("Notification", newsletter);
+        }
+
 
         private User GetUser(HttpContext context)
         {

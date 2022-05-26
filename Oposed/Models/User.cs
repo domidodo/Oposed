@@ -27,5 +27,7 @@ namespace Oposed.Models
                 _avatar = value; 
             }
         }
+
+        public List<int> DisabledNewsletterIds { get; set; } = new List<int>();
     }
 }
