@@ -1,4 +1,5 @@
 ﻿@using System.Web
+@using System.Text.Json
 @model EventViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -323,6 +324,20 @@
 
         $('#smartwizardContent').height($('#smartwizardContent').height() - 46);
     }
+
+    function autoTag(){
+        let tags = @Html.Raw(JsonSerializer.Serialize(Model.Tags));
+        
+        let txt = $("#name").val() + " " + $("#description").val();
+        txt = txt.toUpperCase();
+        let i = 0;
+        for(i = 0; i < tags.length; i++){
+            let tag = tags[i];
+            if(new RegExp("\\b" + tag.toUpperCase() + "\\b").test(txt)){
+                $("#tags").trigger('tokenize:tokens:add', ['value', tag, true]);
+            }
+        }
+    }
 </script>
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
@@ -513,17 +528,16 @@
 
                 $('#smartwizard').smartWizard(smartwizardConfig);
 
-                if(window.id === 0){
-                    $("#smartwizard").on("showStep", function() {
-                        setTimeout(function() {
-                            var stepIndex = $('#smartwizard').smartWizard("getStepIndex");
-                            if(stepIndex === 5){
-                                 $("#nextButton").hide();
-                                 $("#saveButton").show();
-                            }
-                        }, 450);
-                    });
-                }
+                $("#smartwizard").on("showStep", function() {
+                    setTimeout(function() {
+                        var stepIndex = $('#smartwizard').smartWizard("getStepIndex");
+                        if(window.id === 0 && stepIndex === 5){
+                             $("#nextButton").hide();
+                             $("#saveButton").show();
+                        }
+                        autoTag();
+                    }, 450);
+                });
             </script>
 
             <div class="row my-3" style="display:@(Model.Event.Id == 0 ? "block" : "none");" id="nextButton">

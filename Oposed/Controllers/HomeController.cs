@@ -210,8 +210,13 @@ namespace Oposed.Controllers
             }
             catch (Exception) { }
 
-
-            vm.Tags = GetTags();
+            try
+            {
+                vm.Tags = await $"{apiUrl}/Newsletter/tags"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<string>>();
+            }
+            catch (Exception) { }
 
 
             return View("EventForm", vm);
@@ -253,8 +258,13 @@ namespace Oposed.Controllers
             }
             catch (Exception) { }
 
-            vm.Tags = GetTags();
-
+            try
+            {
+                vm.Tags = await $"{apiUrl}/Newsletter/tags"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<string>>();
+            }
+            catch (Exception) { }
 
             return View("EventForm", vm);
         }
@@ -348,12 +358,6 @@ namespace Oposed.Controllers
             }
 
             return list.OrderBy(o => o.Schedule.From).ToList();
-        }
-
-        private List<String> GetTags() 
-        {
-            // TODO: Use API
-            return new List<string>() { "Sipervision", "Kinder" };
         }
     }
 }
