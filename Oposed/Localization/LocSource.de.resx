@@ -129,6 +129,9 @@
   <data name="Add period of time" xml:space="preserve">
     <value>Zeitraum hinzufügen</value>
   </data>
+  <data name="Add Tag" xml:space="preserve">
+    <value>Tag hinzufügen</value>
+  </data>
   <data name="An event is already taking place in the specified period" xml:space="preserve">
     <value>Im angegebenen Zeitraum findet bereits ein Event statt</value>
   </data>

@@ -55,6 +55,30 @@ namespace Oposed.Controllers
             return View("UserList", users);
         }
 
+        [Auth]
+        [Route("/Tags")]
+        public async Task<IActionResult?> ShowAllTags()
+        {
+            var apiUrl = Settings.UrlApi;
+
+            List<Newsletter> newsletter = new List<Newsletter>();
+            try
+            {
+                User usr = GetUser(HttpContext);
+
+                newsletter = await $"{apiUrl}/Newsletter/"
+                                    .WithHeader("AuthKey", usr.AuthKey)
+                                    .GetJsonAsync<List<Newsletter>>();
+            }
+            catch (Exception)
+            {
+                HttpContext.Response.Redirect("/");
+                return null;
+            }
+
+            return View("TagManager", newsletter);
+        }
+
 
         private User GetUser(HttpContext context)
         {

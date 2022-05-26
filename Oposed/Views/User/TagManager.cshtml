@@ -1,0 +1,151 @@
+﻿@using System.Globalization
+@model List<Newsletter>
+@{
+    ViewData["Title"] = "Home Page";
+
+    User user = new User();
+    if (Context.Items.ContainsKey("User"))
+    {
+        user = Context.Items["User"] as User;
+    }
+}
+
+<script>
+
+    function save(){
+        let nameDOMs = $(".name");
+        let tagsDOMs = $(".tags");
+
+        let data = [];
+        let i = 0;
+        let valid = true;
+        for(i = 0; i < nameDOMs.length; i++){
+            let name = $(nameDOMs[i]).val();
+            let tags = $(tagsDOMs[i]).val();
+
+            if(name !== "" && tags.length > 0){
+                data.push({
+                    Name: name,
+                    Tags: tags
+                });  
+            }else{
+                valid = false;
+            }
+        }
+
+        if(valid){
+            $("#form").loading('start');
+        $.ajax({
+            url:"/Proxy?Api=/Newsletter",
+            type:'POST',
+            data:JSON.stringify(data),
+            success: function(res){
+
+                notify({
+	                type: "success", //alert | success | error | warning | info
+	                title: "@Localizer["Saved"]",
+	                message: "<p>@Localizer["Changes saved"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+
+                $("#form").loading('stop');
+            },
+            error: function(e){
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["API connection failed"]";
+                if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
+                    $('#smartwizard').smartWizard("goToStep", 4);
+                    errTxt = "@Localizer["An event is already taking place in the specified period"]";
+                }
+                
+                notify({
+	                type: "error", //alert | success | error | warning | info
+	                title: "@Localizer["Error"]",
+	                message: "<p localize-content>"+errTxt+"</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            }
+        });
+
+        }else{
+            notify({
+	                type: "error",
+	                title: "@Localizer["Error"]",
+	                message: "<p>@Localizer["Some fields were not filled out correctly"]</p>",
+	                position: {
+	                    x: "right",
+	                    y: "top"
+	                },
+	                autoHide: true,
+	                delay: 4000
+                });
+            return;
+        }
+    }
+
+    function addTag(){
+        let timePeriods = $("#tagsArea");
+        timePeriods.append('<div class="row"> <div class="col-4"> <div class="form-group my-2"> <label>Name <font color="red">*</font></label> <input type="text" class="form-control name" value=""> </div> </div> <div class="col-7"> <div class="form-group my-2"> <label>Tags <font color="red">*</font></label> <select class="tags" multiple=""> </select> </div> </div> <div class="col-1"> <br> <button type="button" class="btn btn-danger w-100" onclick="removeTag(this);">@Localizer["Delete"]</button> </div> </div>');
+        $('.tags').tokenize2({
+            dataSource: 'select',
+            tokensAllowCustom: true
+         });
+    }
+
+    function removeTag(btn){
+        $(btn)
+            .parent()
+            .parent()
+            .remove();
+    }
+</script>
+<div class="container my-5 px-4 px-lg-5">
+    <form id="form">
+        @foreach(var newsletter in Model)
+        {
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group my-2">
+                        <label localize-content>Name <font color="red">*</font></label>
+                        <input type="text" class="form-control name" value="@newsletter.Name">
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div class="form-group my-2">
+                        <label localize-content>Tags <font color="red">*</font></label>
+                        <select class="tags" multiple>
+                        @foreach(var tag in newsletter.Tags){
+                            <option value="@tag" selected="true">@tag</option>
+                        }
+                        </select>
+                    </div>
+                </div>
+                 <div class="col-1">
+                    <br/>
+                    <button type="button" class="btn btn-danger w-100" onclick='removeTag(this);' localize-content>Delete</button>
+                </div>
+            </div>
+        }
+        <script>
+             $('.tags').tokenize2({
+                dataSource: 'select',
+                tokensAllowCustom: true
+             });
+        </script>
+        <div id="tagsArea"></div>
+        <button type="button" class="btn btn-success" onclick='addTag();' localize-content>Add Tag</button><br/>
+        <br/>
+        <button type="button" class="btn btn-primary" onclick='save();' localize-content>Save</button>
+    </form>
+</div>

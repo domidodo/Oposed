@@ -310,7 +310,7 @@
 
     function addTimePeriod(from = '', to = ''){
         let timePeriods = $("#timePeriods");
-        timePeriods.append('<div class="form-group row my-2"><div class="col-sm-5"> <input type="datetime-local" class="form-control from" value="'+from+'"></div><div class="col-sm-5"><input type="datetime-local" class="form-control to" value="'+to+'"></div><div class="col-sm-1"><button type="button" class="btn btn-danger" onclick="removeTimePeriod(this);">Remove</button></div></div>');
+        timePeriods.append('<div class="form-group row my-2"><div class="col-sm-5"> <input type="datetime-local" class="form-control from" value="'+from+'"></div><div class="col-sm-5"><input type="datetime-local" class="form-control to" value="'+to+'"></div><div class="col-sm-1"><button type="button" class="btn btn-danger" onclick="removeTimePeriod(this);">@Localizer["Delete"]</button></div></div>');
         
         $('#smartwizardContent').height($('#smartwizardContent').height() + 46);
     }
