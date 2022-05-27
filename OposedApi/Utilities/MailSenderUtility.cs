@@ -1,5 +1,6 @@
 ﻿using OposedApi.Enum;
 using OposedApi.MailType;
+using OposedApi.Models;
 using System.Net;
 using System.Net.Mail;
 
@@ -34,7 +35,7 @@ namespace OposedApi.Utilities
             }
         }
 
-        internal static void Send(MailTypBase type)
+        internal static void Send(User to, MailTypBase type)
         {
             if (_smtpClient == null)
                 Init();
@@ -44,14 +45,12 @@ namespace OposedApi.Utilities
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(Settings.SmtpServerMailAddress),
-                Subject = type.GetSubject(),
-                Body = type.GetHtmlContent(),
+                Subject = type.GetSubject(to.Language),
+                Body = type.GetHtmlContent(to.Language),
                 IsBodyHtml = true,
             };
-            foreach (var mail in type.GetMailList())
-            {
-                mailMessage.To.Add(mail);
-            }
+            mailMessage.To.Add(to.Mail);
+            
 
             _smtpClient.SendMailAsync(mailMessage);
         }

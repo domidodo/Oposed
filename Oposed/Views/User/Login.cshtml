@@ -30,10 +30,18 @@
     function doSubmit(){
         let mail = $("#mail").val();
         let password = $("#password").val();
+        let language = 'en';
+
+        switch($("#dropdownLang").html()) {
+          case 'German':
+            language = 'de';
+            break;
+        } 
         
         let data = { 
             mail: mail, 
-            password: password 
+            password: password,
+            language: language
         };
 
         if(!validateData(data)){

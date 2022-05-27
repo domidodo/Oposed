@@ -134,8 +134,11 @@ namespace OposedApi.Controllers
             evt.VisitorIds.Add(currentUser.Id);
 
             var successful = EventUtility.UpdateEvent(evt);
-
-            MailSenderUtility.Send(new Join(currentUser, evt));
+            
+            if (evt.EnableJoinNotification)
+            {
+                MailSenderUtility.Send(evt.Organizer, new Join(currentUser, evt));
+            }
 
             if (successful)
                 return Ok();

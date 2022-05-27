@@ -59,20 +59,26 @@ namespace OposedApi.Utilities
                             .Where(x => x.Mail.Equals(auth.Mail))
                             .FirstOrDefault();
 
-                if (user == null) 
+                if (user == null)
                 {
                     // User is not in DB. Search in LDAP
                     user = GetLdapUser(auth.Mail);
                     if (user != null)
                     {
                         // User found in LDAP and import to DB
+                        user.Language = auth.Language;
                         col.Insert(user);
                     }
-                    else 
+                    else
                     {
                         // User is not in DB and not in LDAP
                         return null;
                     }
+                }
+                else 
+                {
+                    user.Language = auth.Language;
+                    col.Update(user);
                 }
             }
 
