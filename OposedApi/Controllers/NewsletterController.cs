@@ -22,7 +22,7 @@ namespace OposedApi.Controllers
         }
 
         [HttpGet]
-        [Auth(Role = UserRole.Admin)]
+        [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Get all newsletter-settings")]
         public ActionResult<List<Newsletter>> GetAllNewsletter()
         {
