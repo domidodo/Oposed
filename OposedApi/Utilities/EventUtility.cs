@@ -6,14 +6,14 @@ namespace OposedApi.Utilities
     public static class EventUtility
     {
 
-        internal static List<Event> GetAllEvents()
+        internal static List<Event> GetAllEvents(DateTime? until = null)
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 DateTime now = DateTime.Now;
 
                 var timePeriodDb = db.GetCollection<TimePeriod>();
-                var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+                var timePeriodIds = timePeriodDb.Find(o => now <= o.To && (until == null || until >= o.From)).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
             
                 var col = db.GetCollection<Event>();
                 return FillEventList(col.Find(x => timePeriodIds.Contains(x.Id)).ToList());

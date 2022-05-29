@@ -43,6 +43,27 @@ namespace OposedApi.Utilities
             return tags;
         }
 
+        public static List<string> GetAllSubscribedTagsByUser(User usr)
+        {
+            List<string> tags = GetAllTags();
+            List<Newsletter> newsletterList = null;
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var col = db.GetCollection<Newsletter>();
+                newsletterList = col.Query().Where(x => usr.DisabledNewsletterIds.Contains(x.Id)).ToList();
+            }
+
+            foreach (var newsletter in newsletterList)
+            {
+                foreach (var tag in newsletter.Tags) 
+                {
+                    tags.Remove(tag);
+                }
+            }
+
+            return tags;
+        }
+
         public static bool AddNewsletterToUser(User usr, int newsletterId)
         {
             if (usr.DisabledNewsletterIds.Contains(newsletterId))

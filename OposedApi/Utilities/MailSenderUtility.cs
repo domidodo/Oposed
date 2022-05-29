@@ -9,6 +9,7 @@ namespace OposedApi.Utilities
     internal class MailSenderUtility
     {
         private static SmtpClient? _smtpClient = null;
+        static readonly object lockname = new object();
 
         private static void Init()
         {
@@ -35,24 +36,30 @@ namespace OposedApi.Utilities
             }
         }
 
-        internal static void Send(User to, MailTypBase type)
+        internal static async void Send(User to, MailTypBase type)
         {
             if (_smtpClient == null)
                 Init();
             if (_smtpClient == null)
                 return;
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(Settings.SmtpServerMailAddress),
-                Subject = type.GetSubject(to.Language),
-                Body = type.GetHtmlContent(to.Language),
-                IsBodyHtml = true,
-            };
-            mailMessage.To.Add(to.Mail);
-            
+            await Task.Run(() => {
+                lock (lockname)
+                {
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress(Settings.SmtpServerMailAddress),
+                        Subject = type.GetSubject(to),
+                        Body = type.GetHtmlContent(to),
+                        IsBodyHtml = true,
+                    };
+                    mailMessage.To.Add(to.Mail);
 
-            _smtpClient.SendMailAsync(mailMessage);
+                    _smtpClient.Send(mailMessage);
+                }
+            });
+
+           
         }
     }
 }

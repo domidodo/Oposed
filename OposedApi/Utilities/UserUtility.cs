@@ -69,5 +69,14 @@ namespace OposedApi.Utilities
                 return col.Query().Where(x => x.Id == id).FirstOrDefault();
             }
         }
+
+        internal static List<User> GetUsers(List<int> ids)
+        {
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var col = db.GetCollection<User>();
+                return col.Query().Where(x => ids.Contains(x.Id)).ToList();
+            }
+        }
     }
 }
