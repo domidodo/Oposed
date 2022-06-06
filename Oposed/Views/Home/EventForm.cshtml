@@ -51,8 +51,8 @@
         for(i = 0; i < fromDOMs.length; i++){
             if(fromDOMs[i].value !== "" && toDOMs[i].value !== ""){
                 data.schedule.push({
-                    from: toIsoString(new Date(fromDOMs[i].value)),
-                    to: toIsoString(new Date(toDOMs[i].value))
+                    from: new Date(fromDOMs[i].value),
+                    to: new Date(toDOMs[i].value)
                 });  
             }
         }
@@ -77,6 +77,11 @@
                 });
 
             return;
+        }
+
+        for(i = 0; i < data.schedule.length; i++){
+            data.schedule[i].from = toIsoString(data.schedule[i].from);
+            data.schedule[i].to = toIsoString(data.schedule[i].to);
         }
 
         let httpMethod = "PUT";
@@ -203,6 +208,14 @@
         if(data.schedule.length === 0){
             $('#smartwizard').smartWizard("goToStep", 4);
             return false;
+        }
+
+        let i = 0;
+        for(i = 0; i < data.schedule.length; i++){
+            if(data.schedule[i].from > data.schedule[i].to){
+                $('#smartwizard').smartWizard("goToStep", 4);
+                return false;
+            }  
         }
         
         if(data.maxVisitorCount < 0){
