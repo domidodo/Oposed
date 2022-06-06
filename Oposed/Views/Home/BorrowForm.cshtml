@@ -100,7 +100,7 @@
 
                 let errTxt = "@Localizer["API connection failed"]";
                 if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
-                    errTxt = "@Localizer["An device is already taking place in the specified period"]";
+                    errTxt = "@Localizer["The device is already taking place in the specified period"]";
                 }
                 
                 notify({
