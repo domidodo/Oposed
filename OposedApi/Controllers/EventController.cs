@@ -101,25 +101,33 @@ namespace OposedApi.Controllers
         [HttpPut]
         [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Update event")]
-        public ActionResult<Event> UpdateEvent(Event eve)
+        public ActionResult<Event> UpdateEvent(Event evt)
         {
-            var organizer = UserUtility.GetUser(eve.OrganizerId);
+            var organizer = UserUtility.GetUser(evt.OrganizerId);
             var currentUser = UserUtility.GetCurrentUser(HttpContext);
             if (organizer == null)
             {
                 return ErrorManager.Get(Errors.USER_NOT_FOUND);
             }
 
-            if (currentUser.Role == UserRole.User && currentUser.Id != eve.OrganizerId) 
+            if (currentUser.Role == UserRole.User && currentUser.Id != evt.OrganizerId) 
             {
                 return ErrorManager.Get(Errors.PERMISSIONS_FAILED);
             }
 
-            var successful = EventUtility.UpdateEvent(eve);
+            var successful = EventUtility.UpdateEvent(evt);
             if (successful)
+            {
+                foreach (var usr in UserUtility.GetUsers(evt.DevicesIds))
+                {
+                    MailSenderUtility.Send(usr, new EditEvent(currentUser, evt));
+                }
                 return Ok();
+            }
             else
+            {
                 return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+            }
         }
 
         [HttpPut]
@@ -170,11 +178,20 @@ namespace OposedApi.Controllers
         [SwaggerOperation(Summary = "Delete event")]
         public ActionResult DeleteEventsToResource(int id)
         {
+            var currentUser = UserUtility.GetCurrentUser(HttpContext);
+            var evt = EventUtility.GetEventById(id);
+
             var successful = EventUtility.DeleteEventById(id);
             if (successful)
+            {
+                foreach (var usr in UserUtility.GetUsers(evt.DevicesIds))
+                {
+                    MailSenderUtility.Send(usr, new CancelEvent(currentUser, evt));
+                }
                 return Ok();
-            else
-                return ErrorManager.Get(Errors.EVENT_DELETING_FAILED);
+            }
+            
+            return ErrorManager.Get(Errors.EVENT_DELETING_FAILED);
         }
     }
 }
