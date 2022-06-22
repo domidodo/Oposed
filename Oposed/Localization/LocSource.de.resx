@@ -156,6 +156,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Gelöscht</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
@@ -361,5 +364,8 @@
   </data>
   <data name="With" xml:space="preserve">
     <value>Mit</value>
+  </data>
+  <data name="You are something to erase" xml:space="preserve">
+    <value>Sie sind dabei etwas zu entfernen</value>
   </data>
 </root>

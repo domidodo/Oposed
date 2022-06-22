@@ -50,6 +50,47 @@ function doJoin(join){
     });
 }
 
+function deleteEvent() {
+    if (confirm("@Localizer["You are something to erase"]") == true) {
+       $.ajax({
+            url:"/Proxy?Api=/Event/@Model.Id",
+            type:"Delete",
+            success: function(res){
+                notify({
+                    type: "success", //alert | success | error | warning | info
+                    title: "@Localizer["Deleted"]",
+                    message: "<p>@Localizer["Changes saved"]</p>",
+                    position: {
+                        x: "right",
+                        y: "top"
+                    },
+                    autoHide: true,
+                    delay: 4000
+                });
+                setTimeout(function(){
+                    window.location = "/Resource/@Model.RoomId";
+                }, 4000);
+            },
+            error: function(e){
+                $("#form").loading('stop');
+
+                let errTxt = "@Localizer["API connection failed"]";
+        
+                notify({
+                    type: "error", //alert | success | error | warning | info
+                    title: "@Localizer["Error"]",
+                    message: "<p localize-content>"+errTxt+"</p>",
+                    position: {
+                        x: "right",
+                        y: "top"
+                    },
+                    autoHide: true,
+                    delay: 4000
+                });
+            }
+        });
+    }
+}
 </script>
 
 <div class="container px-4 px-lg-5">
@@ -140,7 +181,7 @@ function doJoin(join){
                     @if (organizer.Id == user.Id)
                     {
                         <a class="btn btn-primary w-100 mb-2" href="/Event/@Model.Id/Edit" localize-content>Edit</a>
-                        <a class="btn btn-danger w-100" href="#!" localize-content>Delete</a>
+                        <button onClick="deleteEvent();" class="btn btn-danger w-100" localize-content>Delete</button>
                     }
                     else
                     {
