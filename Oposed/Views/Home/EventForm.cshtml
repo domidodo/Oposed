@@ -127,7 +127,7 @@
                 $("#form").loading('stop');
 
                 let errTxt = "@Localizer["API connection failed"]";
-                if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
+                if(e.responseJSON !== undefined && e.responseJSON.errorId === 403){
                     $('#smartwizard').smartWizard("goToStep", 4);
                     errTxt = "@Localizer["An event is already taking place in the specified period"]";
                 }

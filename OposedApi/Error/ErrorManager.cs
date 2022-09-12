@@ -15,6 +15,9 @@ namespace OposedApi.Error
                 case Errors.USER_BLOCKED:
                     errorMessage = "User is blocked";
                     break;
+                case Errors.USER_EXPIRATED_PASSWORD:
+                    errorMessage = "Password is expirated";
+                    break;
                 case Errors.USER_INVALID_PASSWORD:
                     errorMessage = "Password is invalid";
                     break;
@@ -49,7 +52,7 @@ namespace OposedApi.Error
 
             return new BadRequestObjectResult(new
             {
-                ErrorId = ((int)error)+1,
+                ErrorId = ((int)error),
                 ErrorCode = error.ToString(),
                 ErrorMessage = errorMessage
             });

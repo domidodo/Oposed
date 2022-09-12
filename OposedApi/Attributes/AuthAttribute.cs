@@ -19,7 +19,7 @@ namespace OposedApi.Attributes
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {
-                    ErrorCode = ((int)Errors.AUTHKEY_NOT_FOUND) + 1,
+                    ErrorCode = ((int)Errors.AUTHKEY_NOT_FOUND),
                     ErrorMessage = "AuthKey not found"
                 });
                 return;
@@ -30,7 +30,7 @@ namespace OposedApi.Attributes
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {
-                    ErrorCode = ((int)Errors.AUTHKEY_INVALID) + 1,
+                    ErrorCode = ((int)Errors.AUTHKEY_INVALID),
                     ErrorMessage = "AuthKey invalid"
                 });
                 return;
@@ -40,7 +40,7 @@ namespace OposedApi.Attributes
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {
-                    ErrorCode = ((int)Errors.PERMISSIONS_FAILED) + 1,
+                    ErrorCode = ((int)Errors.PERMISSIONS_FAILED),
                     ErrorMessage = "Permissions fail"
                 });
                 return;

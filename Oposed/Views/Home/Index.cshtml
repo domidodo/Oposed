@@ -73,7 +73,7 @@ $(document).ready(function() {
             },
             statusCode: {
                 400: function(e) {
-                    if(JSON.parse(e.responseText).errorId === 13){
+                    if(JSON.parse(e.responseText).errorId === 400){
                         me.html("<b class='text-success'>@Localizer["Currently free"]</b>");
                     }
                 }

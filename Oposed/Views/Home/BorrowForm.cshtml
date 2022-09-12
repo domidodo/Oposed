@@ -99,7 +99,7 @@
                 $("#form").loading('stop');
 
                 let errTxt = "@Localizer["API connection failed"]";
-                if(e.responseJSON !== undefined && e.responseJSON.errorId === 12){
+                if(e.responseJSON !== undefined && e.responseJSON.errorId === 403){
                     errTxt = "@Localizer["The device is already taking place in the specified period"]";
                 }
                 
