@@ -91,7 +91,10 @@
                       case "USER_INVALID_PASSWORD":
                         errTxt = "@Localizer["Password is invalid"]";
                         break;
-                    } 
+                      case "USER_EXPIRATED_PASSWORD":
+                        errTxt = "@Localizer["Password is expirated"]";
+                        break;
+                    }
                 }
 
                 notify({

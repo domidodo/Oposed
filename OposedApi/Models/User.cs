@@ -8,6 +8,7 @@ namespace OposedApi.Models
         public string AuthKey { get; set; }
         public string LdapDn { get; set; }
         public bool Active { get; set; } = false;
+        public DateTime PasswordExpirationDate { get; set; }
         public DateTime LastLogin { get; set; }
         public string Language { get; set; } = "en";
         public UserRole Role { get; set; } = UserRole.User;

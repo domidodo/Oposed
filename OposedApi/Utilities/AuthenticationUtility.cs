@@ -1,7 +1,7 @@
 ﻿using LiteDB;
 using Novell.Directory.Ldap;
 using OposedApi.Models;
-
+using System.Text;
 
 namespace OposedApi.Utilities
 {
@@ -102,7 +102,7 @@ namespace OposedApi.Utilities
                 cn.Connect(serverHost, serverPort);
                 cn.Bind(LdapConnection.LdapV3, bindDn, bindPassword);
                
-                string[] attrs = { "memberOf", "sn", "givenName", "jpegPhoto", "nsaccountlock" };
+                string[] attrs = { "memberOf", "sn", "givenName", "jpegPhoto", "nsaccountlock", "krbPasswordExpiration" };
                 string filter = "(&(" + userFilter + ")(mail=" + mail + "))";
                 var res = cn.Search(baseDn, LdapConnection.ScopeSub, filter, attrs, false);
 
@@ -111,7 +111,6 @@ namespace OposedApi.Utilities
                     try
                     {
                         LdapEntry item = res.Next();
-
                         usr = new User();
                         usr.LdapDn = item.Dn;
                         if (item.GetAttributeSet().ContainsKey("nsaccountlock"))
@@ -122,6 +121,12 @@ namespace OposedApi.Utilities
                         {
                             usr.Active = true;
                         }
+
+                        if (item.GetAttributeSet().ContainsKey("krbPasswordExpiration"))
+                        {
+                            usr.PasswordExpirationDate = DateTime.ParseExact(item.GetAttribute("krbPasswordExpiration").StringValue, "yyyyMMddHHmmssZ", null);
+                        }
+                        
                         if (item.GetAttributeSet().ContainsKey("jpegPhoto"))
                         {
                             usr.Avatar = "data:image/png;base64," + Convert.ToBase64String(item.GetAttribute("jpegPhoto").ByteValue);
@@ -156,7 +161,7 @@ namespace OposedApi.Utilities
 
             var serverIp = Settings.LdapServerHost;
             var serverPort = Convert.ToInt32(Settings.LdapServerPort);
-
+           
             bool correctPassword = false;
             using (var cn = new LdapConnection())
             {

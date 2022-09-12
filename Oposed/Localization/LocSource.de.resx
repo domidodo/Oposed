@@ -258,6 +258,9 @@
   <data name="Password" xml:space="preserve">
     <value>Passwort</value>
   </data>
+  <data name="Password is expirated" xml:space="preserve">
+    <value>Passwort ist abgelaufen</value>
+  </data>
   <data name="Password is invalid" xml:space="preserve">
     <value>Passwort ist ungültig</value>
   </data>

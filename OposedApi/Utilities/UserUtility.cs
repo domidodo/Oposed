@@ -44,7 +44,7 @@ namespace OposedApi.Utilities
 
         public static User Refetch(User usr)
         {
-            User ldapUser = AuthenticationUtility.GetLdapUser(usr.Mail);
+            User? ldapUser = AuthenticationUtility.GetLdapUser(usr.Mail);
 
             if (usr != null && ldapUser != null)
             {
@@ -53,6 +53,7 @@ namespace OposedApi.Utilities
                 usr.Role = ldapUser.Role;
                 usr.Avatar = ldapUser.Avatar;
                 usr.Active = ldapUser.Active;
+                usr.PasswordExpirationDate = ldapUser.PasswordExpirationDate;
                 usr.AuthKey = null;
                 usr.LdapDn = ldapUser.LdapDn;
 

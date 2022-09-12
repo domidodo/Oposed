@@ -23,13 +23,16 @@ namespace OposedApi.Controllers
                 return ErrorManager.Get(Errors.USER_NOT_FOUND);
 
             UserUtility.Refetch(user);
-            
-            if (!user.Active)
-                return ErrorManager.Get(Errors.USER_BLOCKED);
-             
+
             if (!AuthenticationUtility.CheckPassword(user, auth.Password))
                 return ErrorManager.Get(Errors.USER_INVALID_PASSWORD);
 
+            if (!user.Active)
+                return ErrorManager.Get(Errors.USER_BLOCKED);
+
+            if (user.PasswordExpirationDate < DateTime.Now)
+                return ErrorManager.Get(Errors.USER_EXPIRATED_PASSWORD);
+            
             user.AuthKey = AuthenticationUtility.GetNewAuthId();
             user.LastLogin = DateTime.Now;
 
