@@ -246,6 +246,9 @@
   <data name="No Events fount" xml:space="preserve">
     <value>Keine Events gefunden</value>
   </data>
+  <data name="No Rooms fount" xml:space="preserve">
+    <value>Keine Räume gefunden</value>
+  </data>
   <data name="No visitors joined" xml:space="preserve">
     <value>Es sind keine Besucher beigetreten</value>
   </data>

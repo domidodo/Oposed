@@ -88,68 +88,78 @@ $(document).ready(function() {
     <div class="card text-white bg-secondary my-5 text-center">
         <div class="card-body"><p class="text-white m-0" localize-content>Rooms</p></div>
     </div>
-    <div class="row gx-4 gx-lg-5">
-        @foreach(Resource room in Model.FindAll(e => e.Type == Oposed.Enum.ResourceType.Room).OrderBy(o=>o.Name).ToList())
-        {
-            <div class="col-md-4 mb-5">
-                <div class="card h-100" onClick="window.location = '/Resource/@room.Id'">
-                    <div class="overflow-hidden" style="height:200px;" >
-                        <img class="card-img-top" src="@room.Image" alt="@room.Name">
+    @if (user.Role == Oposed.Enum.UserRole.Admin || Model.Any(e => e.Type == Oposed.Enum.ResourceType.Room))
+    {
+        <div class="row gx-4 gx-lg-5">
+            @foreach (Resource room in Model.FindAll(e => e.Type == Oposed.Enum.ResourceType.Room).OrderBy(o => o.Name).ToList())
+            {
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" onClick="window.location = '/Resource/@room.Id'">
+                        <div class="overflow-hidden" style="height:200px;" >
+                            <img class="card-img-top" src="@room.Image" alt="@room.Name">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@room.Name</h5>
+                            <p class="card-text">@GetDescription(room.Description)</p>
+                            <div resourceId="@room.Id" style="height:55px;"></div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">@room.Name</h5>
-                        <p class="card-text">@GetDescription(room.Description)</p>
-                        <div resourceId="@room.Id" style="height:55px;"></div>
-                   </div>
                 </div>
-            </div>
-        }
-        @if (user.Role == Oposed.Enum.UserRole.Admin)
-        {
-            <div class="col-md-4 mb-5">
-                <div class="card d-flex h-100" onClick="window.location = '/Resource/New?Type=Room'">
-                  <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
-                    <h5 class="card-title" localize-content>Add new Room</h5>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                  </div>
-                </div>
-            </div>
-        }
-    </div>
-    <!-- Devives -->
-    <div class="card text-white bg-secondary my-5 text-center">
-        <div class="card-body"><p class="text-white m-0" localize-content>Devices</p></div>
-    </div>
-    <div class="row gx-4 gx-lg-5">
-        @foreach(Resource device in Model.FindAll(e => e.Type == Oposed.Enum.ResourceType.Device).OrderBy(o=>o.Name).ToList())
-        {
-            <div class="col-md-4 mb-5">
-                <div class="card h-100" onClick="window.location = '/Resource/@device.Id'">
-                    <div class="overflow-hidden" style="height:200px;" >
-                        <img class="card-img-top" src="@device.Image" alt="@device.Name">
+            }
+            @if (user.Role == Oposed.Enum.UserRole.Admin)
+            {
+                <div class="col-md-4 mb-5">
+                    <div class="card d-flex h-100" onClick="window.location = '/Resource/New?Type=Room'">
+                        <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
+                            <h5 class="card-title" localize-content>Add new Room</h5>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">@device.Name</h5>
-                        <p class="card-text">@GetDescription(device.Description)</p>
-                        <div resourceId="@device.Id" style="height:55px;"></div>
-                   </div>
                 </div>
-            </div>
-        }
-        @if (user.Role == Oposed.Enum.UserRole.Admin)
-        {
-            <div class="col-md-4 mb-5">
-                <div class="card h-100" onClick="window.location = '/Resource/New?Type=Device'">
-                  <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
-                    <h5 class="card-title" localize-content>Add new Device</h5>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                  </div>
+            }
+        </div>
+    }
+    else
+    {
+        <center localize-content>No Rooms fount</center>    
+    }
+    @if (user.Role == Oposed.Enum.UserRole.Admin || Model.Any(e => e.Type == Oposed.Enum.ResourceType.Device))
+    {
+        <!-- Devives -->
+        <div class="card text-white bg-secondary my-5 text-center">
+            <div class="card-body"><p class="text-white m-0" localize-content>Devices</p></div>
+        </div>
+        <div class="row gx-4 gx-lg-5">
+            @foreach (Resource device in Model.FindAll(e => e.Type == Oposed.Enum.ResourceType.Device).OrderBy(o => o.Name).ToList())
+            {
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" onClick="window.location = '/Resource/@device.Id'">
+                        <div class="overflow-hidden" style="height:200px;" >
+                            <img class="card-img-top" src="@device.Image" alt="@device.Name">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@device.Name</h5>
+                            <p class="card-text">@GetDescription(device.Description)</p>
+                            <div resourceId="@device.Id" style="height:55px;"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+            @if (user.Role == Oposed.Enum.UserRole.Admin)
+            {
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100" onClick="window.location = '/Resource/New?Type=Device'">
+                        <div class="text-center" style="margin-top: auto; margin-bottom: auto;">
+                            <h5 class="card-title" localize-content>Add new Device</h5>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
