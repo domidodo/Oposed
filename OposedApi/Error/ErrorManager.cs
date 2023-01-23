@@ -4,6 +4,16 @@ namespace OposedApi.Error
 {
     public static class ErrorManager
     {
+        public static BadRequestObjectResult Get(Exception e)
+        {
+            return new BadRequestObjectResult(new
+            {
+                ErrorId = 9999,
+                ErrorCode = "EXCEPTION",
+                ErrorMessage = e.Message
+            });
+        }
+
         public static BadRequestObjectResult Get(Errors error)
         {
             string errorMessage = "Unknown error";
