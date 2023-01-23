@@ -1,0 +1,95 @@
+version: '3.7'
+services:
+  Oposed-Api:
+    image: oposed_api
+    #ports:
+    #  - "5000:5000"
+    environment:
+      #- ASPNETCORE_ENVIRONMENT=Development
+      - LDAP_SERVER_HOST=openldap
+      - LDAP_SERVER_PORT=389
+      - LDAP_BASE_DN=dc=oposed,dc=de
+      - LDAP_BIND_DN=cn=admin,dc=oposed,dc=de
+      - LDAP_BIND_PASSWORD=admin
+      - LDAP_ADMIN_GROUP_DN=cn=admins,ou=groups,dc=oposed,dc=de
+      - LDAP_FILTER_USER=memberOf=cn=everybody,ou=groups,dc=oposed,dc=de
+      - SMTP_ENABLE_SSL=true
+      - SMTP_MAIL_ADDRESS=
+      - SMTP_MAIL_PASSWORD=
+      - SMTP_SERVER_HOST=
+      - SMTP_SERVER_PORT=465
+    volumes:
+      - ./Database.db:/app/Database/Database.db
+    restart: always
+    depends_on:
+      - openldap
+    networks:
+      - oposednetwork
+        
+  Oposed-Web:
+    image: oposed_web
+    ports:
+      - "8080:80"
+    environment:
+      #- ASPNETCORE_ENVIRONMENT=Development
+      - URL_LOGO=/img/Oposed-Logo.png
+      - URL_IMPRESSUM=
+      - URL_API=http://Oposed-Api:5000
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      #- LC_ALL=de_DE.UTF-8
+      #- LANG=de_DE.UTF-8
+    restart: always
+    networks:
+      - oposednetwork
+
+  openldap:
+    image: osixia/openldap:latest
+    container_name: openldap
+    command: [--copy-service]
+    volumes:
+      - ldap_db:/var/lib/ldap
+      - ldap_config:/etc/ldap/slapd.d
+      - ./demo.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+    environment:
+      - LDAP_ORGANISATION=oposed-de
+      - LDAP_DOMAIN=oposed.de
+      - LDAP_ADMIN_PASSWORD=admin
+      - LDAP_CONFIG_PASSWORD=config
+      - LDAP_RFC2307BIS_SCHEMA=true
+      - LDAP_REMOVE_CONFIG_AFTER_SETUP=true
+      - LDAP_TLS_VERIFY_CLIENT=try
+    ports:
+      - 389:389
+    networks:
+      - oposednetwork
+
+  openldap-ui:
+    image: wheelybird/ldap-user-manager:latest
+    container_name: openldap-ui
+    environment:
+      - LDAP_URI=ldap://openldap
+      - LDAP_BASE_DN=dc=oposed,dc=de
+      - LDAP_REQUIRE_STARTTLS=FALSE
+      - LDAP_ADMINS_GROUP=admins
+      - LDAP_ADMIN_BIND_DN=cn=admin,dc=oposed,dc=de
+      - LDAP_ADMIN_BIND_PWD=admin
+      - LDAP_IGNORE_CERT_ERRORS=true
+      - FORCE_RFC2307BIS=true
+      - NO_HTTPS=true
+      - PASSWORD_HASH=SSHA
+      - SERVER_HOSTNAME=localhost:8081
+    depends_on:
+      - openldap
+    ports:
+      - 8081:80
+    networks:
+      - oposednetwork
+
+volumes:
+  ldap_db:
+  ldap_config:
+
+networks:
+  oposednetwork:
+    name: oposednetwork
+    driver: bridge

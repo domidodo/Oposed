@@ -1,0 +1,93 @@
+﻿dn: dc=oposed,dc=de
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: oposed-de
+dc: oposed
+
+dn: ou=groups,dc=oposed,dc=de
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=people,dc=oposed,dc=de
+objectClass: organizationalUnit
+ou: people
+
+dn: cn=lastGID,dc=oposed,dc=de
+objectClass: device
+objectClass: top
+description: Records the last GID used to create a Posix group. This prevents th
+ e re-use of a GID from a deleted group.
+cn: lastGID
+serialNumber: 2002
+
+dn: cn=lastUID,dc=oposed,dc=de
+objectClass: device
+objectClass: top
+description: Records the last UID used to create a Posix account. This prevents 
+ the re-use of a UID from a deleted account.
+cn: lastUID
+serialNumber: 2004
+
+dn: uid=oposed-admin,ou=people,dc=oposed,dc=de
+givenName: Oposed
+sn: Admin
+uid: oposed-admin
+mail: admin@oposed.de
+cn: OposedAdmin
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: posixAccount
+userPassword: {SSHA}4PqitzXCIObRl7Fuoi432PZwYwhtbld3eFp4UA==
+uidNumber: 2001
+gidNumber: 2001
+loginShell: /bin/bash
+homeDirectory: /home/oposed-admin
+
+dn: uid=oposed-user1,ou=people,dc=oposed,dc=de
+givenName: Oposed
+sn: User1
+uid: oposed-user1
+mail: user1@oposed.de
+cn: OposedUser1
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: posixAccount
+userPassword: {SSHA}ryswychN5dJDo7HZGSBumjmhjmltbld3eFp4UA==
+uidNumber: 2003
+gidNumber: 2001
+loginShell: /bin/bash
+homeDirectory: /home/oposed-user1
+
+dn: uid=oposed-user2,ou=people,dc=oposed,dc=de
+givenName: oposed
+sn: user2
+uid: oposed-user2
+mail: user2@oposed.de
+cn: oposeduser2
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: posixAccount
+userPassword: {SSHA}qTco0jyLJfdW6i82ohCtYyc1YRttbld3eFp4UA==
+uidNumber: 2004
+gidNumber: 2001
+loginShell: /bin/bash
+homeDirectory: /home/oposed-user2
+
+dn: cn=everybody,ou=groups,dc=oposed,dc=de
+objectClass: top
+objectClass: posixGroup
+objectClass: groupOfUniqueNames
+cn: everybody
+uniqueMember: uid=oposed-admin,ou=people,dc=oposed,dc=de
+uniqueMember: uid=oposed-user1,ou=people,dc=oposed,dc=de
+uniqueMember: uid=oposed-user2,ou=people,dc=oposed,dc=de
+gidNumber: 2001
+
+dn: cn=admins,ou=groups,dc=oposed,dc=de
+objectClass: top
+objectClass: posixGroup
+objectClass: groupOfUniqueNames
+cn: admins
+uniqueMember: uid=oposed-admin,ou=people,dc=oposed,dc=de
+gidNumber: 2002
