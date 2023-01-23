@@ -2,6 +2,7 @@ version: '3.7'
 services:
   Oposed-Api:
     image: oposed_api
+    container_name: oposed_api
     #ports:
     #  - "5000:5000"
     environment:
@@ -28,6 +29,7 @@ services:
         
   Oposed-Web:
     image: oposed_web
+    container_name: oposed_web
     ports:
       - "8080:80"
     environment:
