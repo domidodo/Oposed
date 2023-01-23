@@ -37,6 +37,8 @@ services:
         - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
         #- LC_ALL=de_DE.UTF-8
         #- LANG=de_DE.UTF-8
+      depends_on:
+        - oposed_api
       restart: always
       networks:
         - oposed-network

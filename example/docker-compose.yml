@@ -39,6 +39,8 @@ services:
       #- LC_ALL=de_DE.UTF-8
       #- LANG=de_DE.UTF-8
     restart: always
+    depends_on:
+      - oposed_api
     networks:
       - oposednetwork
 
@@ -58,6 +60,7 @@ services:
       - LDAP_RFC2307BIS_SCHEMA=true
       - LDAP_REMOVE_CONFIG_AFTER_SETUP=true
       - LDAP_TLS_VERIFY_CLIENT=try
+    restart: always
     ports:
       - 389:389
     networks:
@@ -80,6 +83,7 @@ services:
       - SERVER_HOSTNAME=localhost:8081
     depends_on:
       - openldap
+    restart: always
     ports:
       - 8081:80
     networks:
