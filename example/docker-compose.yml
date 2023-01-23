@@ -42,7 +42,7 @@ services:
       #- LANG=de_DE.UTF-8
     restart: always
     depends_on:
-      - oposed_api
+      - Oposed-Api
     networks:
       - oposednetwork
 

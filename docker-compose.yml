@@ -40,7 +40,7 @@ services:
         #- LC_ALL=de_DE.UTF-8
         #- LANG=de_DE.UTF-8
       depends_on:
-        - oposed_api
+        - Oposed-Api
       restart: always
       networks:
         - oposed-network
