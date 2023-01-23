@@ -121,11 +121,15 @@ You need docker and docker-compose.
    ```sh
    cd example/
    ```
-3. Run `start.sh`
+3. Make the script runnable
+   ```sh
+   chmod +x start.sh
+   ```
+4. Run `start.sh`
    ```sh
    ./start.sh
    ```
-4. Open your browser on `http://localhost:8080` and log in with one of the following access data:
+5. Open your browser on `http://localhost:8080` and log in with one of the following access data:
 
 | Role  | Mail            | Password     |
 | ----- | --------------- | ------------ |
@@ -146,11 +150,15 @@ You can manage the users over der <a href="https://github.com/wheelybird/ldap-us
    ```sh
    nano docker-compose.yml
    ```
-3. Run `start.sh`
+3. Make the script runnable
+   ```sh
+   chmod +x start.sh
+   ```
+4. Run `start.sh`
    ```sh
    ./start.sh
    ```
-4. Open your browser on http://localhost:80
+5. Open your browser on http://localhost:80
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
