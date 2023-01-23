@@ -126,7 +126,11 @@ namespace OposedApi.Utilities
                         {
                             usr.PasswordExpirationDate = DateTime.ParseExact(item.GetAttribute("krbPasswordExpiration").StringValue, "yyyyMMddHHmmssZ", null);
                         }
-                        
+                        else
+                        {
+                            usr.PasswordExpirationDate = DateTime.MaxValue;
+                        }
+
                         if (item.GetAttributeSet().ContainsKey("jpegPhoto"))
                         {
                             usr.Avatar = "data:image/png;base64," + Convert.ToBase64String(item.GetAttribute("jpegPhoto").ByteValue);
