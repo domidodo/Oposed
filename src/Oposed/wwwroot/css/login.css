@@ -1,5 +1,9 @@
 body {
     background-color: #006f44;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: multiply;
 }
 
 a:link, a:visited {

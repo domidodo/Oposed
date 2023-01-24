@@ -14,6 +14,17 @@
     <script src="~/lib/jquery-loading/jquery.loading.min.js"></script>
     <script src="~/lib/jquery-notify/jquery.notify.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        if (!string.IsNullOrEmpty(Settings.LoginBackground))
+        {
+            <style>
+                body {
+                    background-image:url("@Settings.LoginBackground");
+                    background-color: grey;
+                }
+            </style>
+        }
+    }
 </head>
 <body>
      @RenderBody()

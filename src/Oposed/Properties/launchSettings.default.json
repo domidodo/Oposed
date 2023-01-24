@@ -14,7 +14,8 @@
       "environmentVariables": {
         "URL_LOGO": "/img/Oposed-Logo.png",
         "URL_IMPRESSUM": "",
-        "URL_API": "http://localhost:5000"
+        "URL_API": "http://localhost:5000",
+        "BACKGROUND_LOGIN":  "" 
       },
       "applicationUrl": "http://localhost:5147",
       "dotnetRunMessages": true
