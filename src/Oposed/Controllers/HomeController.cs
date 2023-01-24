@@ -134,6 +134,11 @@ namespace Oposed.Controllers
                 evt = await $"{apiUrl}/Event/{eventId}"
                                     .WithHeader("AuthKey", usr.AuthKey)
                                     .GetJsonAsync<Event>();
+                
+                if (evt.Organizer != null)
+                {
+                    evt.Organizer.OrganizedEventWithSchedule = ToEventWithSchedule(evt.Organizer.OrganizedEvents, false, true);
+                }
             }
             catch (Exception)
             {
@@ -330,17 +335,17 @@ namespace Oposed.Controllers
             return context.Items["User"] as User;
         }
 
-        private List<EventWithSchedule> ToEventWithSchedule(List<Event> eventList, bool addPrivateEvents = false) 
+        private List<EventWithSchedule> ToEventWithSchedule(List<Event> eventList, bool showPrivateEvents = false, bool showPastEvents = false) 
         {
             DateTime now = DateTime.Now;
             var list = new List<EventWithSchedule>();
             foreach (var evt in eventList)
             {
-                if (addPrivateEvents || !evt.IsPrivate)
+                if (showPrivateEvents || !evt.IsPrivate)
                 {
                     foreach (var schedule in evt.Schedule)
                     {
-                        if (schedule.To > now)
+                        if (showPastEvents || schedule.To > now)
                         {
                             var eventWithSchedule = new EventWithSchedule()
                             {

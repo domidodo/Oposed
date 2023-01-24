@@ -1,4 +1,5 @@
-﻿using Oposed.Enum;
+﻿using Newtonsoft.Json;
+using Oposed.Enum;
 
 namespace Oposed.Models
 {
@@ -30,5 +31,9 @@ namespace Oposed.Models
         }
 
         public List<int> DisabledNewsletterIds { get; set; } = new List<int>();
+        public List<Event> OrganizedEvents { get; set; } = new List<Event>();
+        
+        [JsonIgnore]
+        public List<EventWithSchedule> OrganizedEventWithSchedule { get; set; } = new List<EventWithSchedule>();
     }
 }

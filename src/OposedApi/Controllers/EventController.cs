@@ -21,9 +21,17 @@ namespace OposedApi.Controllers
         {
             var evt = EventUtility.GetEventById(id);
             if (evt != null)
+            {
+                if (evt.Organizer != null)
+                {
+                    evt.Organizer.OrganizedEvents = EventUtility.GetEventsOfUser(evt.OrganizerId, true);
+                }
+
                 return evt;
-            else
-                return ErrorManager.Get(Errors.EVENT_NOT_FOUND);
+            }
+
+            
+            return ErrorManager.Get(Errors.EVENT_NOT_FOUND);
         }
 
         [HttpGet]

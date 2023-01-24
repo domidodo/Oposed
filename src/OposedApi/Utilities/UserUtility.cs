@@ -62,11 +62,13 @@ namespace OposedApi.Utilities
             return usr;
         }
 
-        internal static User? GetUser(int id)
+        internal static User GetUser(int id)
         {
-            using var db = new LiteDatabase(Settings.DatabasePath);
-            var col = db.GetCollection<User>();
-            return col.Query().Where(x => x.Id == id).FirstOrDefault();
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var col = db.GetCollection<User>();
+                return col.Query().Where(x => x.Id == id).FirstOrDefault();
+            }
         }
 
         internal static List<User> GetUsers(List<int> ids)

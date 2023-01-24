@@ -68,6 +68,27 @@ namespace OposedApi.Utilities
                 return FillEvent(col.FindById(id), db);
             }
         }
+        
+        internal static List<Event> GetEventsOfUser(int userId, bool hitPast = false)
+        {
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                var eventDb = db.GetCollection<Event>();
+                if (hitPast)
+                {
+                    return FillEventList(eventDb.Find(x => x.OrganizerId == userId).ToList());
+                }
+                else
+                {
+                    DateTime now = DateTime.Now;
+                    var timePeriodDb = db.GetCollection<TimePeriod>();
+                    var timePeriodIds = timePeriodDb.Find(o => now < o.To).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+
+                    return FillEventList(eventDb.Find(x => x.OrganizerId == userId && timePeriodIds.Contains(x.Id)).ToList());
+                }
+            }
+        }
+
 
         internal static Event? AddEvent(Event evt)
         {
@@ -191,10 +212,6 @@ namespace OposedApi.Utilities
         {
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
-                var userDb = db.GetCollection<User>();
-                var resourceDb = db.GetCollection<Resource>();
-                var scheduleDb = db.GetCollection<TimePeriod>();
-
                 foreach (var eventItem in events)
                 {
                     FillEvent(eventItem, db);
@@ -223,8 +240,11 @@ namespace OposedApi.Utilities
             if (eventItem.Organizer == null)
             {
                 eventItem.Organizer = userDb.FindById(eventItem.OrganizerId);
-                eventItem.Organizer.AuthKey = "";
-                eventItem.Organizer.LdapDn = "";
+                if (eventItem.Organizer != null)
+                {
+                    eventItem.Organizer.AuthKey = "";
+                    eventItem.Organizer.LdapDn = "";
+                }
             }
 
             if (eventItem.Visitors == null)
@@ -232,8 +252,11 @@ namespace OposedApi.Utilities
                 eventItem.Visitors = userDb.Find(x => eventItem.VisitorIds.Contains(x.Id)).ToList();
                 foreach (var visiror in eventItem.Visitors) 
                 {
-                    visiror.AuthKey = "";
-                    visiror.LdapDn = "";
+                    if (visiror != null)
+                    {
+                        visiror.AuthKey = "";
+                        visiror.LdapDn = "";
+                    }
                 }
             }
 

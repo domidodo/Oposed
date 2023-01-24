@@ -17,5 +17,6 @@ namespace OposedApi.Models
         public string Surname { get; set; }
         public string Avatar { get; set; }
         public List<int> DisabledNewsletterIds { get; set; } = new List<int>();
+        public List<Event> OrganizedEvents { get; set; } = new List<Event>();
     }
 }

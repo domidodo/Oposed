@@ -276,6 +276,9 @@
   <data name="Public" xml:space="preserve">
     <value>Öffentlich</value>
   </data>
+  <data name="Reliability" xml:space="preserve">
+    <value>Zuverlässigkeit</value>
+  </data>
   <data name="Remove image" xml:space="preserve">
     <value>Bild löschen</value>
   </data>

@@ -37,12 +37,16 @@ string GetDescription(string description)
         @Html.Raw(" </b>");
         lastDay = item.Schedule.From.Day;
     }
-    <div class="card mb-3">
+    <div class="card mb-3 p-0">
         <h5 class="card-header">
             @if (item.Schedule.IsCurrentlsRunning)
             {
                 <img src="/img/live.gif" alt="live" width="25"/>   
+            }else if (!item.Schedule.IsExecutedOnTime)
+            {
+                <i class="bi bi-exclamation-triangle-fill" title="Nicht rechtzeitig"></i>
             }
+
             @item.Schedule.From.ToString("t") - @item.Schedule.To.ToString("t")
         </h5>
         <div class="card-body">
