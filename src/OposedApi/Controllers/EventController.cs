@@ -70,14 +70,14 @@ namespace OposedApi.Controllers
         [SwaggerOperation(Summary = "Add event")]
         public ActionResult<Event> AddEvent(Event eve)
         {
-            var organizer = UserUtility.GetUser(eve.OrganizerId);
             var currentUser = UserUtility.GetCurrentUser(HttpContext);
-            if (organizer == null)
+            if (UserUtility.GetUser(eve.OrganizerId) == null)
             {
                 return ErrorManager.Get(Errors.USER_NOT_FOUND);
             }
 
-            if (currentUser.Role == UserRole.User && currentUser.Id != eve.OrganizerId)
+            eve.OrganizerId = currentUser.Id;
+            if (currentUser.Role == UserRole.User)
             {
                 return ErrorManager.Get(Errors.PERMISSIONS_FAILED);
             }

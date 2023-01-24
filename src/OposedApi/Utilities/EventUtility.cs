@@ -75,14 +75,14 @@ namespace OposedApi.Utilities
             {
                 foreach (var timePeriod in evt.Schedule)
                 {
-                    if (EventUtility.IsResourceBlockedByEvent(evt.RoomId, timePeriod, new List<int>() { evt.Id }))
+                    if (EventUtility.IsResourceBlockedByEvent(evt.RoomId, timePeriod))
                     {
                         return null;
                     }
 
                     foreach (var devicesId in evt.DevicesIds)
                     {
-                        if (EventUtility.IsResourceBlockedByEvent(devicesId, timePeriod, new List<int>() { evt.Id }))
+                        if (EventUtility.IsResourceBlockedByEvent(devicesId, timePeriod))
                         {
                             return null;
                         }
@@ -178,14 +178,13 @@ namespace OposedApi.Utilities
                 excludedEventIds = new List<int>();
             }
 
-            List<TimePeriod> ret = new List<TimePeriod>();
-            using (var db = new LiteDatabase(Settings.DatabasePath))
-            {
-                var timePeriodDb = db.GetCollection<TimePeriod>();
-                var eventDb = db.GetCollection<Event>();
+            using var db = new LiteDatabase(Settings.DatabasePath);
+            var timePeriodDb = db.GetCollection<TimePeriod>();
+            var eventDb = db.GetCollection<Event>();
                 
-                return timePeriodDb.Find(o => o.From <= time.To && o.To >= time.From && o.EventId.HasValue && !excludedEventIds.Contains(o.EventId.Value)).Select(x => x.EventId).Any();
-            }
+            var eventsIdInSameTime = timePeriodDb.Find(o => o.From < time.To && o.To > time.From && o.EventId.HasValue && !excludedEventIds.Contains(o.EventId.Value)).Select(x => x.EventId).ToList();
+                
+            return eventDb.Find(o => (o.RoomId == resourceId || o.DevicesIds.Contains(resourceId)) && eventsIdInSameTime.Contains(o.Id)).Any();
         }
 
         private static List<Event> FillEventList(List<Event> events)
