@@ -94,18 +94,14 @@ namespace OposedApi.Controllers
         [SwaggerOperation(Summary = "Update event")]
         public ActionResult<Event> UpdateEvent(Event evt)
         {
-            var organizer = UserUtility.GetUser(evt.OrganizerId);
             var currentUser = UserUtility.GetCurrentUser(HttpContext);
-            if (organizer == null)
-            {
-                return ErrorManager.Get(Errors.USER_NOT_FOUND);
-            }
+            evt.OrganizerId = EventUtility.GetEventById(evt.Id).OrganizerId;
 
             if (currentUser.Role == UserRole.User && currentUser.Id != evt.OrganizerId) 
             {
                 return ErrorManager.Get(Errors.PERMISSIONS_FAILED);
             }
-
+            
             var successful = EventUtility.UpdateEvent(evt);
             if (successful)
             {
