@@ -178,7 +178,7 @@ function deleteEvent() {
                 <img src="@Model.Image" alt="" class="w-100"/>
                 <div class="card-body">
                     <h2>@Model.Name</h2>
-                    @if (organizer.Id == user.Id)
+                    @if (organizer.Id == user.Id || user.Role == UserRole.Admin)
                     {
                         <a class="btn btn-primary w-100 mb-2" href="/Event/@Model.Id/Edit" localize-content>Edit</a>
                         <button onClick="deleteEvent();" class="btn btn-danger w-100" localize-content>Delete</button>

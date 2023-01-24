@@ -71,19 +71,25 @@ namespace OposedApi.Utilities
 
         internal static Event? AddEvent(Event evt)
         {
-            if (EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule).Count > 0)
+            if (evt.Schedule != null)
             {
-                return null;
-            }
-
-            foreach (var id in evt.DevicesIds) 
-            {
-                if (EventUtility.GetBlockedTimePeriods(id, evt.Schedule).Count > 0)
+                foreach (var timePeriod in evt.Schedule)
                 {
-                    return null;
+                    if (EventUtility.IsResourceBlockedByEvent(evt.RoomId, timePeriod, new List<int>() { evt.Id }))
+                    {
+                        return null;
+                    }
+
+                    foreach (var devicesId in evt.DevicesIds)
+                    {
+                        if (EventUtility.IsResourceBlockedByEvent(devicesId, timePeriod, new List<int>() { evt.Id }))
+                        {
+                            return null;
+                        }
+                    }
                 }
             }
-
+            
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
@@ -109,26 +115,22 @@ namespace OposedApi.Utilities
         {
             if (evt.Schedule != null) 
             {
-                var ownScheduleIds = evt.Schedule.Select(x => x.Id).ToList();
-                var blockedSchedules = EventUtility.GetBlockedTimePeriods(evt.RoomId, evt.Schedule);
-                blockedSchedules = blockedSchedules.Where(x => !ownScheduleIds.Contains(x.Id)).ToList();
-
-                if (blockedSchedules.Count > 0) {
-                    return false;
-                }
-            }
-
-            foreach (var id in evt.DevicesIds)
-            {
-                var blockedSchedules = EventUtility.GetBlockedTimePeriods(id, evt.Schedule);
-                blockedSchedules = blockedSchedules.Where(x => !evt.DevicesIds.Contains(x.Id)).ToList();
-                if (blockedSchedules.Count > 0)
+                foreach (var timePeriod in evt.Schedule)
                 {
-                    return false;
+                    if(EventUtility.IsResourceBlockedByEvent(evt.RoomId, timePeriod, new List<int>(){ evt.Id })){
+                        return false;
+                    }
+
+                    foreach (var devicesId in evt.DevicesIds)
+                    {
+                        if (EventUtility.IsResourceBlockedByEvent(devicesId, timePeriod, new List<int>() { evt.Id }))
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
             
-
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
@@ -168,28 +170,23 @@ namespace OposedApi.Utilities
                 return eventDb.Delete(id);
             }
         }
-
-        internal static List<TimePeriod> GetBlockedTimePeriods(int resourceId, List<TimePeriod> time)
+        
+        internal static bool IsResourceBlockedByEvent(int resourceId, TimePeriod time, List<int>? excludedEventIds = null)
         {
+            if (excludedEventIds == null)
+            {
+                excludedEventIds = new List<int>();
+            }
+
             List<TimePeriod> ret = new List<TimePeriod>();
             using (var db = new LiteDatabase(Settings.DatabasePath))
             {
                 var timePeriodDb = db.GetCollection<TimePeriod>();
                 var eventDb = db.GetCollection<Event>();
-                foreach (var t in time) {
-                    var eventsIdInSameTime = timePeriodDb.Find(o => o.From < t.To && o.To > t.From).Select(x => x.EventId).ToList();
-
-                    var exists = eventDb.Query().Where(o => (o.RoomId == resourceId || o.DevicesIds.Contains(resourceId)) && eventsIdInSameTime.Contains(o.Id)).Exists();
-
-                    if (exists)
-                    {
-                        ret.Add(t);
-                    }
-                }
+                
+                return timePeriodDb.Find(o => o.From <= time.To && o.To >= time.From && o.EventId.HasValue && !excludedEventIds.Contains(o.EventId.Value)).Select(x => x.EventId).Any();
             }
-            return ret;
         }
-
 
         private static List<Event> FillEventList(List<Event> events)
         {

@@ -65,15 +65,6 @@ namespace OposedApi.Controllers
                 return ErrorManager.Get(Errors.EVENT_NOT_FOUND);
         }
 
-        [HttpGet]
-        [Auth(Role = UserRole.User)]
-        [Route("Resource/{resourceId}/BlockedTimePeriod")]
-        [SwaggerOperation(Summary = "Check if resource is free. Entity in rentun are blocked.")]
-        public ActionResult<List<TimePeriod>> GetBlockedTimePeriod(int resourceId, List<TimePeriod> time)
-        {
-            return EventUtility.GetBlockedTimePeriods(resourceId, time);
-        }
-
         [HttpPost]
         [Auth(Role = UserRole.User)]
         [SwaggerOperation(Summary = "Add event")]
