@@ -20,6 +20,8 @@ services:
         - SMTP_MAIL_PASSWORD=
         - SMTP_SERVER_HOST=
         - SMTP_SERVER_PORT=465
+        - OPOSED_BASE_URL=http://local.host
+        - PING_KEY=
       volumes:
         - db:/app/Database/
       restart: always
@@ -37,6 +39,7 @@ services:
         - URL_IMPRESSUM=
         - URL_API=http://Oposed-Api:5000
         - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+        - BACKGROUND_LOGIN=
         #- LC_ALL=de_DE.UTF-8
         #- LANG=de_DE.UTF-8
       depends_on:

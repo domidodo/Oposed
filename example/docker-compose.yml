@@ -19,6 +19,8 @@ services:
       - SMTP_MAIL_PASSWORD=
       - SMTP_SERVER_HOST=
       - SMTP_SERVER_PORT=465
+      - OPOSED_BASE_URL=http://localhost:8080
+      - PING_KEY=
     volumes:
       - ./Database.db:/app/Database/Database.db
     restart: always
@@ -35,9 +37,10 @@ services:
     environment:
       #- ASPNETCORE_ENVIRONMENT=Development
       - URL_LOGO=/img/Oposed-Logo.png
-      - URL_IMPRESSUM=
+      - URL_IMPRESSUM=https://github.com/Kinderschutzbund-Karlsruhe/Oposed
       - URL_API=http://Oposed-Api:5000
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      - BACKGROUND_LOGIN=https://images.pexels.com/photos/1766838/pexels-photo-1766838.jpeg
       #- LC_ALL=de_DE.UTF-8
       #- LANG=de_DE.UTF-8
     restart: always
