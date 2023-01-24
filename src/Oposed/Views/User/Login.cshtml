@@ -166,10 +166,10 @@
                                     });
                                </script>
                             </div>
-                             <div class="pt-1 mb-4 float-end">
+                             <div class="float-end">
                                 <button class="btn btn-dark btn-lg btn-block" type="button" id="btnLogin" onclick="doSubmit()" localize-content>Login</button>
                             </div>     
-                            <div class="w-50">
+                            <div class="w-50 pt-2">
                                 <language-nav cookie-handler-url="?lng={0}"></language-nav>
                                 <script>
                                     $(document).ready(function(){
@@ -179,7 +179,9 @@
                             </div>
                             @if (!string.IsNullOrEmpty(impressumUrl))
                             {
-                                <a href="@impressumUrl" class="small text-muted">Impressum</a>
+                                <div class="w-100 mt-3 text-center">
+                                    <a href="@impressumUrl" class="small text-muted">Impressum</a>
+                                </div>
                             }
                             <div class="clearfix"></div>
                         </form>
