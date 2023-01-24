@@ -193,5 +193,15 @@ namespace OposedApi.Controllers
             
             return ErrorManager.Get(Errors.EVENT_DELETING_FAILED);
         }
+
+        [HttpPut]
+        [Auth(Role = UserRole.PingKey)]
+        [Route("Ping/{roomId}")]
+        [SwaggerOperation(Summary = "Ping on activity")]
+        public ActionResult Ping(int roomId)
+        {
+            EventUtility.PingByRoomId(roomId);
+            return Ok();
+        }
     }
 }

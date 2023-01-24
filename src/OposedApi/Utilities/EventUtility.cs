@@ -248,5 +248,29 @@ namespace OposedApi.Utilities
             
             return eventItem;
         }
+
+        public static void PingByRoomId(int roomId)
+        {
+            using (var db = new LiteDatabase(Settings.DatabasePath))
+            {
+                DateTime now = DateTime.Now;
+
+                var timePeriodDb = db.GetCollection<TimePeriod>();
+                var eventIds = timePeriodDb.Find(o => now <= o.To && now >= o.From).GroupBy(o => o.EventId).ToList().Select(o => o.Key).ToList();
+
+                var events = db.GetCollection<Event>();
+                var currentRunningEvent = events.Find(o => o.RoomId == roomId && eventIds.Contains(o.Id)).FirstOrDefault();
+
+                if (currentRunningEvent != null)
+                {
+                    var timePeriod = timePeriodDb.Find(o => o.EventId == currentRunningEvent.Id && now <= o.To && now >= o.From).FirstOrDefault();
+                    if (timePeriod != null)
+                    {
+                        timePeriod.LastPing = now;
+                        timePeriodDb.Update(timePeriod);
+                    }
+                }
+            }
+        }
     }
 }

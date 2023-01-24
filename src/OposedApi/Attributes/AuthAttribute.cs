@@ -17,11 +17,23 @@ namespace OposedApi.Attributes
         {
             if (!context.HttpContext.Request.Headers.TryGetValue(AUTHNAME, out var extractedApiKey))
             {
-                context.Result = new UnauthorizedObjectResult(new
+                if (!context.HttpContext.Request.Headers.TryGetValue($"X-{AUTHNAME}", out extractedApiKey))
                 {
-                    ErrorCode = ((int)Errors.AUTHKEY_NOT_FOUND),
-                    ErrorMessage = "AuthKey not found"
-                });
+                    context.Result = new UnauthorizedObjectResult(new
+                    {
+                        ErrorCode = ((int)Errors.AUTHKEY_NOT_FOUND),
+                        ErrorMessage = "AuthKey not found"
+                    });
+                    return;
+                }
+            }
+
+            if (Role == UserRole.PingKey)
+            {
+                if (!string.IsNullOrEmpty(Settings.PingKey) && Settings.PingKey == extractedApiKey)
+                {
+                    await next();
+                }
                 return;
             }
 

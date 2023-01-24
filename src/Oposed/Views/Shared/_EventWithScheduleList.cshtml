@@ -39,7 +39,7 @@ string GetDescription(string description)
     }
     <div class="card mb-3">
         <h5 class="card-header">
-            @if (item.IsNow)
+            @if (item.Schedule.IsCurrentlsRunning)
             {
                 <img src="/img/live.gif" alt="live" width="25"/>   
             }

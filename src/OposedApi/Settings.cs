@@ -34,6 +34,7 @@
         #endregion // SMTP
 
         public static string BaseUrl { get; } = Environment.GetEnvironmentVariable("OPOSED_BASE_URL");
+        public static string PingKey { get; } = Environment.GetEnvironmentVariable("PING_KEY");
         
     }
 }

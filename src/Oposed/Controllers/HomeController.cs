@@ -347,10 +347,6 @@ namespace Oposed.Controllers
                                 Event = evt,
                                 Schedule = schedule
                             };
-                            if (schedule.From < now)
-                            {
-                                eventWithSchedule.IsNow = true;
-                            }
                             list.Add(eventWithSchedule);
                         }
                     }

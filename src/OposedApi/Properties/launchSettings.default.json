@@ -28,7 +28,8 @@
         "LDAP_BASE_DN": "",
         "SMTP_ENABLE_SSL": "true",
         "SMTP_IGNORE_INVALID_CERTIFICATE": "false",
-        "OPOSED_BASE_URL": ""
+        "OPOSED_BASE_URL": "",
+        "PING_KEY": ""
       },
       "httpPort": 5000
     }

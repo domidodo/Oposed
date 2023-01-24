@@ -6,6 +6,7 @@ namespace OposedApi.Enum
     public enum UserRole
     {
         User,
-        Admin
+        Admin,
+        PingKey
     }
 }
