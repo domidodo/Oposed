@@ -18,10 +18,10 @@
    ```
 5. Open your browser on `http://localhost:8080` and log in with one of the following access data:
 
-| Role  | Mail            | Password     |
-| ----- | --------------- | ------------ |
-| Admin | admin@oposed.de | Oposed-Admin |
-| User  | user1@oposed.de | oposed-user1 |
-| User  | user2@oposed.de | oposed-user2 |
+| Role  | Mail            | Username     | Password     |
+| ----- | --------------- | ------------ | ------------ |
+| Admin | admin@oposed.de | Oposed-Admin | Oposed-Admin |
+| User  | user1@oposed.de | oposed-user1 | oposed-user1 |
+| User  | user2@oposed.de | oposed-user2 | oposed-user2 |
 
 You can manage the users over der <a href="https://github.com/wheelybird/ldap-user-manager">LDAP-User-Manager</a> under `http://localhost:8081/log_in/`
