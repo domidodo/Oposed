@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add event" xml:space="preserve">
-    <value>Event hinzufügen</value>
+    <value>Ereignis hinzufügen</value>
   </data>
   <data name="Add new Device" xml:space="preserve">
     <value>Gerät hinzufügen</value>
@@ -133,7 +133,7 @@
     <value>Tag hinzufügen</value>
   </data>
   <data name="An event is already taking place in the specified period" xml:space="preserve">
-    <value>Im angegebenen Zeitraum findet bereits ein Event statt</value>
+    <value>Im angegebenen Zeitraum findet bereits ein Ereignis statt</value>
   </data>
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
@@ -244,7 +244,7 @@
     <value>Keine</value>
   </data>
   <data name="No Events fount" xml:space="preserve">
-    <value>Keine Events gefunden</value>
+    <value>Keine Ereignis gefunden</value>
   </data>
   <data name="No Rooms fount" xml:space="preserve">
     <value>Keine Räume gefunden</value>
