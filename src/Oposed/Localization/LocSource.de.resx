@@ -246,8 +246,8 @@
   <data name="No devices found" xml:space="preserve">
     <value>Keine Geräte gefunden</value>
   </data>
-  <data name="No Events found" xml:space="preserve">
-    <value>Keine Ereignis gefunden</value>
+  <data name="No events found" xml:space="preserve">
+    <value>Keine Ereignise gefunden</value>
   </data>
   <data name="No interests found" xml:space="preserve">
     <value>Keine Interessen gefunden</value>
