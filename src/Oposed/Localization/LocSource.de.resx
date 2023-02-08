@@ -243,10 +243,16 @@
   <data name="No" xml:space="preserve">
     <value>Keine</value>
   </data>
-  <data name="No Events fount" xml:space="preserve">
+  <data name="No devices found" xml:space="preserve">
+    <value>Keine Geräte gefunden</value>
+  </data>
+  <data name="No Events found" xml:space="preserve">
     <value>Keine Ereignis gefunden</value>
   </data>
-  <data name="No Rooms fount" xml:space="preserve">
+  <data name="No interests found" xml:space="preserve">
+    <value>Keine Interessen gefunden</value>
+  </data>
+  <data name="No Rooms found" xml:space="preserve">
     <value>Keine Räume gefunden</value>
   </data>
   <data name="No visitors joined" xml:space="preserve">
@@ -269,9 +275,6 @@
   </data>
   <data name="Please enter your login-data" xml:space="preserve">
     <value>Bitte geben Sie Ihre anmeldedaten ein</value>
-  </data>
-  <data name="Please indicate which topics you are interested in.&lt;br/&gt;You will then be informed by email as soon as there are events related to your interests." xml:space="preserve">
-    <value>Geben Sie an für welche Themen Sie sich interessieren.&lt;br/&gt;Sie werden dann per Mail darüber Informiertn, sobald es Veranstaltungen in Verbindung zu Ihren interessen gibt.</value>
   </data>
   <data name="Public" xml:space="preserve">
     <value>Öffentlich</value>
@@ -376,5 +379,8 @@
   </data>
   <data name="You are something to erase" xml:space="preserve">
     <value>Sie sind dabei etwas zu entfernen</value>
+  </data>
+  <data name="Your interests" xml:space="preserve">
+    <value>Ihre Interessen</value>
   </data>
 </root>

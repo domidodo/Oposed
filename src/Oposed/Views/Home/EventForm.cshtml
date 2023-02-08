@@ -443,21 +443,25 @@
                     <div id="step-4" class="tab-pane" role="tabpanel">
                         <div class="form-group my-2">
                             <label for="resourceId" localize-content>Device</label>
-                            @foreach(var resource in Model.Resources){
-                                if (resource.Type == ResourceType.Device)
-                                {
-                                     <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="form-group form-switch">
-                                                <input class="form-check-input device" type="checkbox" id="device_@resource.Id" value="1" @(Model.Event != null && Model.Event.DevicesIds.Contains(resource.Id) ? "checked" : "")>
-                                                <label class="form-check-label" for="device_@resource.Id">
-                                                    <img src="@resource.Image" alt="" style="width:100px; padding:5px;"/>
-                                                    @resource.Name
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                            @{
+                                var devicesList = Model.Resources.Where(o => o.Type == ResourceType.Device).ToList();
+                            }
+                            @foreach(var device in devicesList){
+                                <div class="card mb-3">
+                                   <div class="card-body">
+                                       <div class="form-group form-switch">
+                                           <input class="form-check-input device" type="checkbox" id="device_@device.Id" value="1" @(Model.Event != null && Model.Event.DevicesIds.Contains(device.Id) ? "checked" : "")>
+                                           <label class="form-check-label" for="device_@device.Id">
+                                               <img src="@device.Image" alt="" style="width:100px; padding:5px;"/>
+                                               @device.Name
+                                           </label>
+                                       </div>
+                                   </div>
+                                </div>
+                            }
+                            @if (devicesList.Count == 0)
+                            {
+                                <center localize-content>No devices found</center>
                             }
                         </div>
                     </div>
