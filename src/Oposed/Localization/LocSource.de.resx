@@ -252,6 +252,9 @@
   <data name="No interests found" xml:space="preserve">
     <value>Keine Interessen gefunden</value>
   </data>
+  <data name="No questions found" xml:space="preserve">
+    <value>Keine Fragen gefunden</value>
+  </data>
   <data name="No Rooms found" xml:space="preserve">
     <value>Keine Räume gefunden</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Public" xml:space="preserve">
     <value>Öffentlich</value>
+  </data>
+  <data name="Questions" xml:space="preserve">
+    <value>Fragen</value>
   </data>
   <data name="Reliability" xml:space="preserve">
     <value>Zuverlässigkeit</value>
