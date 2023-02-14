@@ -189,6 +189,52 @@ namespace OposedApi.Controllers
             return ErrorManager.Get(Errors.EVENT_DELETING_FAILED);
         }
 
+        [HttpPost]
+        [Auth(Role = UserRole.User)]
+        [Route("{eventId}/Question")]
+        [SwaggerOperation(Summary = "Add a question to event")]
+        public ActionResult AddQuestion(int eventId, [FromBody] string question)
+        {
+            if (string.IsNullOrEmpty(question))
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+
+            var evt = EventUtility.GetEventById(eventId);
+            evt.Questions.Add(question, new List<string>());
+            var successful = EventUtility.UpdateEvent(evt);
+
+            if (successful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+            }
+        }
+
+        [HttpPost]
+        [Auth(Role = UserRole.User)]
+        [Route("{eventId}/Question/{questionIndex}/Answer")]
+        [SwaggerOperation(Summary = "Add a answer to question of event")]
+        public ActionResult AddAnswer(int eventId, int questionIndex, [FromBody] string answer)
+        {
+            if(string.IsNullOrEmpty(answer))
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+
+            var evt = EventUtility.GetEventById(eventId);
+            evt.Questions.ElementAt(questionIndex).Value.Add(answer);
+            var successful = EventUtility.UpdateEvent(evt);
+
+            if (successful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ErrorManager.Get(Errors.EVENT_UPDATING_FAILED);
+            }
+        }
+
         [HttpPut]
         [Auth(Role = UserRole.PingKey)]
         [Route("Ping/{roomId}")]

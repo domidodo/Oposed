@@ -13,6 +13,7 @@ namespace OposedApi.Models
         public string Name { get; set; } = "";
         public string? Image { get; set; } = null;
         public string Description { get; set; } = "";
+        public Dictionary<string, List<string>> Questions { get; set; } = new Dictionary<string, List<string>>();
         public List<int> VisitorIds { get; set; } = new List<int>();
         public int MaxVisitorCount { get; set; }
         public List<int> TimePeriodIds { get; set; } = new List<int>();

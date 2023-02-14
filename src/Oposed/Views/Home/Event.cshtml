@@ -92,6 +92,68 @@ function deleteEvent() {
         });
     }
 }
+
+function askQuestion() {
+    let url = "/Proxy?Api=/Event/@(Model.Id)/Question";
+    
+    $("#contentBox").loading('start');
+    $.ajax({
+        url: url,
+        type:"POST",
+            data: JSON.stringify($('#newQuestion').val()),
+        success: function(res) {
+            location.reload();
+            $("#contentBox").loading('stop');
+        },
+        error: function(e){
+            $("#contentBox").loading('stop');
+
+            notify({
+                type: "error", //alert | success | error | warning | info
+                title: "@Localizer["Error"]",
+                message: "<p localize-content>@Localizer["Unexpected error"]</p>",
+                position: {
+                    x: "right",
+                    y: "top"
+                },
+                autoHide: true,
+                delay: 4000
+            });
+        }
+    });
+}
+
+function answerQuestion(questionIndex) {
+    let url = "/Proxy?Api=/Event/@(Model.Id)/Question/" + questionIndex + "/Answer";
+    
+    $("#contentBox").loading('start');
+    $.ajax({
+        url: url,
+        type:"POST", 
+        data: JSON.stringify($('#answer_' + questionIndex).val()),
+        success: function(res) {
+            location.reload();
+            $("#contentBox").loading('stop');
+        },
+        error: function(e){
+            $("#contentBox").loading('stop');
+
+            notify({
+                type: "error", //alert | success | error | warning | info
+                title: "@Localizer["Error"]",
+                message: "<p localize-content>@Localizer["Unexpected error"]</p>",
+                position: {
+                    x: "right",
+                    y: "top"
+                },
+                autoHide: true,
+                delay: 4000
+            });
+        }
+    });
+}
+
+    
 </script>
 
 <div class="container px-4 px-lg-5">
@@ -137,7 +199,63 @@ function deleteEvent() {
                     }
                 </div>
                 <div class="tab-pane fade m-3" id="questions" role="tabpanel" aria-labelledby="questions-tab">
-                    <center localize-content>No questions found</center>
+                    
+                    <div class="input-group mb-5">
+                        <input type="text" class="form-control" id="newQuestion" placeholder="Do you want to ask a question?" aria-label="do you want to ask a question?" aria-describedby="basic-addon2" value="">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" onClick="askQuestion()" localize-content>Ask Question</button>
+                        </div>
+                    </div>
+                    @{
+                        int questionIndex = 0;
+                    }
+                    @foreach (var question in Model.Questions)
+                    {
+                        <ul class="chat">
+                            <li class="left clearfix">
+                                <span class="pull-left">
+                                    <span class="bi bi-question-circle" style="font-size: 45px;"></span>
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div>
+                                        <strong localize-content>Question</strong>
+                                    </div>
+                                    <p>
+                                        @question.Key
+                                    </p>
+                                </div>
+                            </li>
+
+                            @foreach (var answer in @question.Value)
+                            {
+                                <li class="left clearfix ms-5">
+                                    <span class="pull-left">
+                                        <span class="bi bi-exclamation-circle" style="font-size: 45px;"></span>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div>
+                                            <strong localize-content>Answer</strong>
+                                        </div>
+                                        <p>
+                                            @answer
+                                        </p>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <div class="row">
+                            <div class="col-11 ms-5">
+                                <div class="input-group mb-3 col-5">
+                                    <input type="text" class="form-control" id="answer_@questionIndex" placeholder="" aria-label="" aria-describedby="basic-addon2" value="">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onClick="answerQuestion(@questionIndex)" localize-content>Answer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        questionIndex++;
+                    }
                 </div>
                 <div class="tab-pane fade m-3" id="visitors" role="tabpanel" aria-labelledby="visitors-tab">
                     @foreach(var visitor in Model.Visitors)

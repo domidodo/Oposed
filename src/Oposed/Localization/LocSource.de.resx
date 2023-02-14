@@ -135,8 +135,14 @@
   <data name="An event is already taking place in the specified period" xml:space="preserve">
     <value>Im angegebenen Zeitraum findet bereits ein Ereignis statt</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Antwort</value>
+  </data>
   <data name="API connection failed" xml:space="preserve">
     <value>API-Verbindung fehlgeschlagen</value>
+  </data>
+  <data name="Ask Question" xml:space="preserve">
+    <value>Frage stellen</value>
   </data>
   <data name="Borrow device" xml:space="preserve">
     <value>Gerät ausleihen</value>
@@ -281,6 +287,9 @@
   </data>
   <data name="Public" xml:space="preserve">
     <value>Öffentlich</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Frage</value>
   </data>
   <data name="Questions" xml:space="preserve">
     <value>Fragen</value>

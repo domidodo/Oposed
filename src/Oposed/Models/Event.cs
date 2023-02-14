@@ -18,6 +18,7 @@
         public Resource? Room { get; set; } = null;
         public List<Resource> Devices { get; set; } = new List<Resource>();
         public User? Organizer { get; set; } = null;
+        public Dictionary<string, List<string>> Questions { get; set; } = new Dictionary<string, List<string>>();
         public List<User>? Visitors { get; set; } = null;
         public List<TimePeriod>? Schedule { get; set; } = null;
     }
