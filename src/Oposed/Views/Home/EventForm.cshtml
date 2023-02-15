@@ -266,7 +266,7 @@
                     $("#enableJoinNotification").removeAttr("checked");
                 }
                 $("#maxVisitorCount").val(data.maxVisitorCount);
-                data.tags.forEach(tag => $("#tags").trigger('tokenize:tokens:add', ['value', tag, true]));
+                data.tags.forEach(tag => $("#tags").trigger('tokenize:tokens:add', [tag, tag, true]));
                 
                 $('#smartwizard').smartWizard("stepState", [1,2,3,4,5,6], "done");
                 $('#smartwizard').smartWizard("goToStep", 4);
@@ -347,7 +347,7 @@
         for(i = 0; i < tags.length; i++){
             let tag = tags[i];
             if(new RegExp("\\b" + tag.toUpperCase() + "\\b").test(txt)){
-                $("#tags").trigger('tokenize:tokens:add', ['value', tag, true]);
+                $("#tags").trigger('tokenize:tokens:add', [tag, tag, true]);
             }
         }
     }
