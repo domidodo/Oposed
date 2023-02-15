@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Oposed.Attributes;
 using Oposed.Models;
+using System;
 using System.Diagnostics;
 
 namespace Oposed.Controllers
@@ -156,12 +157,39 @@ namespace Oposed.Controllers
             User usr = GetUser(HttpContext);
             var apiUrl = Settings.UrlApi;
             var vm = new EventViewModel();
+            
+            if (Request.Query.TryGetValue("templateid", out var templateid))
+            {
+                var template =  await $"{apiUrl}/Template/{templateid}"
+                    .WithHeader("AuthKey", usr.AuthKey)
+                    .GetJsonAsync<Template>();
+                vm.Event = template.Data;
+            }
 
             if (Request.Query.TryGetValue("ResourceId", out var resourceId))
             {
                 vm.Event.RoomId = Int32.Parse(resourceId);
             }
 
+            if (Request.Query.TryGetValue("roomid", out var roomid))
+            {
+                vm.Event.RoomId = Int32.Parse(roomid);
+            }
+
+            if (Request.Query.TryGetValue("start", out var start) && Request.Query.TryGetValue("span", out var span))
+            {
+                if (vm.Event.Schedule == null)
+                {
+                    vm.Event.Schedule = new List<TimePeriod>();
+                }
+                
+                vm.Event.Schedule.Add(new TimePeriod()
+                {
+                    From = DateTime.Now,
+                    To = DateTime.Now.AddMinutes(Int32.Parse(span)),
+                });
+            }
+            
             if (Request.Query.TryGetValue("isPrivate", out var isPrivate))
             {
                 vm.Event.IsPrivate = bool.Parse(isPrivate);
