@@ -334,9 +334,23 @@ namespace Oposed.Controllers
             var apiUrl = Settings.UrlApi;
             var vm = new BorrowViewModel();
 
+            if (Request.Query.TryGetValue("deviceid", out var deviceid))
+            {
+                vm.DeviceId = Int32.Parse(deviceid);
+            }
+
             if (Request.Query.TryGetValue("ResourceId", out var resourceId))
             {
                 vm.DeviceId = Int32.Parse(resourceId);
+            }
+
+            if (Request.Query.TryGetValue("start", out var start) && Request.Query.TryGetValue("span", out var span))
+            {
+                vm.Schedule.Add(new TimePeriod()
+                {
+                    From = DateTime.Now,
+                    To = DateTime.Now.AddMinutes(Int32.Parse(span)),
+                });
             }
 
             try

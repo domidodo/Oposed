@@ -149,6 +149,13 @@
 
         $('#smartwizardContent').height($('#smartwizardContent').height() - 46);
     }
+
+    $(document).ready(function() {
+        @foreach (var schedule in Model.Schedule)
+        {
+            @Html.Raw("addTimePeriod('" + schedule.From.ToString("s") + "', '" + schedule.To.ToString("s") + "');")
+        }
+    });
 </script>
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
