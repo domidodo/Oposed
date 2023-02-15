@@ -85,11 +85,7 @@ namespace OposedApi.Controllers
             }
 
             eve.OrganizerId = currentUser.Id;
-            if (currentUser.Role == UserRole.User)
-            {
-                return ErrorManager.Get(Errors.PERMISSIONS_FAILED);
-            }
-
+            
             var newEvent = EventUtility.AddEvent(eve);
             if (newEvent != null)
                 return newEvent;
