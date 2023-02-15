@@ -11,38 +11,53 @@ namespace OposedApi.Utilities
         private static SmtpClient? _smtpClient = null;
         static readonly object lockname = new object();
 
-        private static void Init()
+        private static bool Init()
         {
-            var host = Settings.SmtpServerHost;
-            var port = Convert.ToInt32(Settings.SmtpServerPort);
-            var mail = Settings.SmtpServerMailAddress;
-            var password = Settings.SmtpServerMailPassword;
-            var ignoreInvalidCertificate = Convert.ToBoolean(Settings.SmtpServerIgnoreInvalidCertificate);
-            var ssl = Convert.ToBoolean(Settings.SmtpServerIsSsl);
-
-            if (host == null)
-                return;
-
-            _smtpClient = new SmtpClient(host)
+            try
             {
-                Port = port,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(mail, password),
-                EnableSsl = ssl,
-            };
-            if (ignoreInvalidCertificate)
-            {
-                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                var host = Settings.SmtpServerHost;
+                var port = Convert.ToInt32(Settings.SmtpServerPort);
+                var mail = Settings.SmtpServerMailAddress;
+                var password = Settings.SmtpServerMailPassword;
+                var ignoreInvalidCertificate = Convert.ToBoolean(Settings.SmtpServerIgnoreInvalidCertificate);
+                var ssl = Convert.ToBoolean(Settings.SmtpServerIsSsl);
+
+                if (string.IsNullOrEmpty(host))
+                    return false;
+
+                _smtpClient = new SmtpClient(host)
+                {
+                    Port = port,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(mail, password),
+                    EnableSsl = ssl,
+                };
+                if (ignoreInvalidCertificate)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback =
+                        (sender, certificate, chain, sslPolicyErrors) => true;
+                }
+
+                return true;
             }
+            catch (Exception)
+            {
+                _smtpClient = null;
+            }
+
+            return false;
         }
 
         internal static async void Send(User to, MailTypBase type)
         {
             if (_smtpClient == null)
-                Init();
-            if (_smtpClient == null)
-                return;
-
+            {
+                if (!Init())
+                {
+                    return;
+                }
+            }
+            
             await Task.Run(() => {
                 lock (lockname)
                 {
